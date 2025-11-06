@@ -144,6 +144,22 @@ function DashboardLogout() {
         }
     };
 
+    const commitMinPrice = () => {
+        const numeric = Number(priceDraft.min);
+        const base = Number.isNaN(numeric) ? priceRange.min : numeric;
+        const clamped = Math.min(Math.max(base, priceBounds.min), priceRange.max);
+        setPriceRange(prev => (prev.min === clamped ? prev : { ...prev, min: clamped }));
+        setPriceDraft(prev => (prev.min === clamped.toString() ? prev : { ...prev, min: clamped.toString() }));
+    };
+
+    const commitMaxPrice = () => {
+        const numeric = Number(priceDraft.max);
+        const base = Number.isNaN(numeric) ? priceRange.max : numeric;
+        const clamped = Math.max(Math.min(base, priceBounds.max), priceRange.min);
+        setPriceRange(prev => (prev.max === clamped ? prev : { ...prev, max: clamped }));
+        setPriceDraft(prev => (prev.max === clamped.toString() ? prev : { ...prev, max: clamped.toString() }));
+    };
+
     const handlePriceBlur = (event: ReactFocusEvent<HTMLDivElement>) => {
         const nextFocus = event.relatedTarget as Node | null;
         if (nextFocus && priceContainerRef.current?.contains(nextFocus)) {
