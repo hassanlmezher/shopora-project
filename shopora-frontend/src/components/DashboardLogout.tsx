@@ -32,7 +32,7 @@ function DashboardLogout() {
             image: tShirt,
             name: "Metalica",
             namee: "T-shirt",
-            price: "$199",
+            price: "$299",
             description: "A high quality clothes brand.",
             ratings: "(101)",
             by: "Hassan's shop"
@@ -41,7 +41,7 @@ function DashboardLogout() {
             image: shoes,
             name: "Travis",
             namee: "Nike shoes",
-            price: "$199",
+            price: "$399",
             description: "Crafted for comfort. Designed for confidence.",
             ratings: "(211)",
             by: "Dani's shop"
