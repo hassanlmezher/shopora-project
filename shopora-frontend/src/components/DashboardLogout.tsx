@@ -266,7 +266,7 @@ function DashboardLogout() {
         commitMaxPrice();
     };
 
-    const MobileLayout = () => (
+    const renderMobileLayout = () => (
         <div className="flex min-h-screen flex-col gap-6 bg-[#5AB688] px-4 pb-16 pt-6 text-white">
             <header className="flex items-center justify-between">
                 <img className="w-24" src={logo} alt="logo" />
@@ -379,7 +379,7 @@ function DashboardLogout() {
         </div>
     );
 
-    const DesktopLayout = () => (
+    const renderDesktopLayout = () => (
         <div className="bg-[#5AB688] h-230 pt-5 ">
             <div className="bg-white mr-5 rounded-2xl flex justify-between items-center pl-5 pr-10 h-19">
                 <img className="w-30" src={logo} alt="logo" />
@@ -565,7 +565,7 @@ function DashboardLogout() {
 
   return (
     <div className="min-h-screen bg-[#5AB688]">
-        {isDesktopLayout ? <DesktopLayout /> : <MobileLayout />}
+        {isDesktopLayout ? renderDesktopLayout() : renderMobileLayout()}
     </div>
   )
 }
