@@ -51,7 +51,6 @@ function DashboardLogout() {
     <div className="bg-[#5AB688] h-230 pt-5 ">
         <div className="bg-white mr-5 rounded-2xl flex justify-between items-center pl-5 pr-10 h-19">
             <img className="w-30" src={logo} alt="logo" />
-            <img className="w-9 absolute right-40" src={cart} alt="cart icon" />
             <img className="w-[40px] h-[40px]" src={lightMode} alt="" />
         </div>
         <div className="absolute bg-white w-290 h-fit pb-20 right-5 top-20 pl-20">
@@ -82,12 +81,8 @@ function DashboardLogout() {
                 <img className="w-8" src={price} alt="price range logo" />
                 Price Range
             </button>
-            <button className="flex gap-4 p-3 items-center w-44 h-11 rounded-2xl text-white text-[16px] font-bold transition duration-300 ease-in-out hover:bg-white hover:text-[#E6C79A]" onClick={() => navigate('/settings')}>
-                <img className="w-6"  src={settings} alt="settings logo" />
-                Settings
-            </button>
-            <button className="flex gap-4 p-5 ml-1 h-15 mt-3 items-center border-2 text-white font-bold text-[19px] border-[#DDC59E] w-38 rounded-2xl transition duration-300 ease-in-out hover:bg-white hover:text-[#DDC59E] hover:w-42 hover:border-none" onClick={() => navigate('/login')}>
-                <img className="w-9" src={login} alt="login logo" />
+            <button className="flex gap-4 p-5 ml-1 h-15 mt-3 items-center border-2 text-white font-bold text-[18px] border-[#DDC59E] w-38 rounded-2xl transition duration-300 ease-in-out hover:bg-white hover:text-[#DDC59E] hover:w-42 hover:border-none" onClick={() => navigate('/login')}>
+                <img className="w-8" src={login} alt="login logo" />
                 Log In
             </button>
             

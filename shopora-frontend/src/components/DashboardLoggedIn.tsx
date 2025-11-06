@@ -13,6 +13,7 @@ import price from "../images/price.png"
 import login from "../images/login.png"
 import { useNavigate } from 'react-router-dom'
 import cart from "../images/cart.png"
+import logout from "../images/logout.png"
 
 
 
@@ -67,28 +68,28 @@ function DashboardLogout() {
         </div>
         <div className="pt-16 pl-2 flex flex-col justify-center  gap-8 fixed top-20 left-0">
             <button className="flex gap-4 p-4 items-center bg-white w-44 h-11 rounded-2xl">
-                <img className="w-8" src={home} alt="home logo" />
-                <p className="text-[#E6C79A] font-bold text-[18px]">Home</p>
+                <img className="w-6" src={home} alt="home logo" />
+                <p className="text-[#E6C79A] font-bold text-[16px]">Home</p>
             </button>
-            <button className="flex gap-4 p-4 items-center w-44 text-white font-bold text-[18px] h-11 rounded-2xl transition duration-300 ease-in-out hover:bg-white hover:text-[#E6C79A]">
-                <img className="w-8" src={search} alt="search logo" />
+            <button className="flex gap-4 p-4 items-center w-44 text-white font-bold text-[16px] h-11 rounded-2xl transition duration-300 ease-in-out hover:bg-white hover:text-[#E6C79A]">
+                <img className="w-6" src={search} alt="search logo" />
                 Search
             </button>
-            <button className="flex text-white text-[18px] font-bold gap-4 p-4 items-center w-44 h-11 rounded-2xl transition duration-300 ease-in-out hover:bg-white hover:text-[#E6C79A]">
-                <img className="w-8" src={categories} alt="categories logo" />
+            <button className="flex text-white text-[15px] font-bold gap-4 p-4 items-center w-44 h-11 rounded-2xl transition duration-300 ease-in-out hover:bg-white hover:text-[#E6C79A]">
+                <img className="w-6" src={categories} alt="categories logo" />
                 Categories
             </button>
-            <button className="flex  p-2.5 items-center w-44 h-11 rounded-2xl text-white font-bold text-[18px]  transition duration-300 ease-in-out hover:bg-white hover:text-[#E6C79A]">
-                <img className="w-10" src={price} alt="price range logo" />
+            <button className="flex  p-2.5 items-center w-44 h-11 rounded-2xl text-white font-bold text-[16px]  transition duration-300 ease-in-out hover:bg-white hover:text-[#E6C79A]">
+                <img className="w-8" src={price} alt="price range logo" />
                 Price Range
             </button>
-            <button className="flex gap-4 p-3 items-center w-44 h-11 rounded-2xl text-white text-[18px] font-bold transition duration-300 ease-in-out hover:bg-white hover:text-[#E6C79A]" onClick={() => navigate('/settings')}>
-                <img className="w-9"  src={settings} alt="settings logo" />
+            <button className="flex gap-4 p-3 items-center w-44 h-11 rounded-2xl text-white text-[16px] font-bold transition duration-300 ease-in-out hover:bg-white hover:text-[#E6C79A]" onClick={() => navigate('/settings')}>
+                <img className="w-6"  src={settings} alt="settings logo" />
                 Settings
             </button>
-            <button className="flex gap-4 p-5 ml-1 h-15 mt-3 items-center border-2 text-white font-bold text-[19px] border-[#DDC59E] w-38 rounded-2xl transition duration-300 ease-in-out hover:bg-white hover:text-[#DDC59E] hover:w-42 hover:border-none" onClick={() => navigate('/login')}>
-                <img className="w-9" src={login} alt="login logo" />
-                Log In
+            <button className="flex gap-2 p-5 ml-1 h-15 mt-3 items-center border-2 text-white font-bold text-[17px] border-[#DDC59E] w-38 rounded-2xl transition duration-300 ease-in-out hover:bg-white hover:text-[#DDC59E] hover:w-42 hover:border-none" onClick={() => navigate('/login')}>
+                <img className="w-8" src={logout} alt="login logo" />
+                Log Out
             </button>
             
         </div>
