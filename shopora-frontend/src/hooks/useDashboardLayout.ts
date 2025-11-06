@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 
 const DESKTOP_MIN_WIDTH = 1024;
+const DESKTOP_SWAP_DELTA = 20;
 
 const getInitialLayoutState = () => {
     if (typeof window === "undefined") {
@@ -36,12 +37,14 @@ export default function useDashboardLayout() {
                 return;
             }
 
-            if (width < DESKTOP_MIN_WIDTH) {
+            const shrinkThreshold = Math.max(DESKTOP_MIN_WIDTH, baseline - DESKTOP_SWAP_DELTA);
+
+            if (width < shrinkThreshold) {
                 setIsDesktopLayout(false);
                 return;
             }
 
-            setIsDesktopLayout(width >= baseline);
+            setIsDesktopLayout(true);
         };
 
         window.addEventListener("resize", updateLayout);
