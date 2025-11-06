@@ -53,7 +53,9 @@ const catalogue = [
     }
 ];
 
-const categoryOptions = ["Shirts", "Shoes", "Headphones"] as const;
+const ALL_CATEGORIES = "All Categories";
+
+const categoryOptions = [ALL_CATEGORIES, "Shirts", "Headphones", "Shoes"] as const;
 
 const priceValues = catalogue.map(item => item.priceValue);
 const priceBounds = {
@@ -65,7 +67,7 @@ function DashboardLogout() {
     const navigate = useNavigate();
     const [searchTerm, setSearchTerm] = useState("");
     const [isSearchExpanded, setIsSearchExpanded] = useState(false);
-    const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+    const [selectedCategory, setSelectedCategory] = useState<(typeof categoryOptions)[number]>(ALL_CATEGORIES);
     const [isCategoriesExpanded, setIsCategoriesExpanded] = useState(false);
     const [priceRange, setPriceRange] = useState({ min: priceBounds.min, max: priceBounds.max });
     const [priceDraft, setPriceDraft] = useState({ min: priceBounds.min.toString(), max: priceBounds.max.toString() });
@@ -81,7 +83,7 @@ function DashboardLogout() {
             const haystack = `${item.name} ${item.namee} ${item.description} ${item.by} ${item.category}`.toLowerCase();
             const matchesSearch = !normalized || haystack.includes(normalized);
             const matchesPrice = item.priceValue >= priceRange.min && item.priceValue <= priceRange.max;
-            const matchesCategory = !selectedCategory || item.category === selectedCategory;
+            const matchesCategory = selectedCategory === ALL_CATEGORIES || item.category === selectedCategory;
             return matchesSearch && matchesPrice && matchesCategory;
         });
     }, [searchTerm, priceRange, selectedCategory]);
@@ -150,7 +152,7 @@ function DashboardLogout() {
     };
 
     const handleCategorySelect = (option: string) => {
-        setSelectedCategory((current) => (current === option ? null : option));
+        setSelectedCategory(option);
         setIsCategoriesExpanded(false);
     };
 
@@ -336,7 +338,7 @@ function DashboardLogout() {
                 <img className="w-6" src={categories} alt="categories logo" />
                 <div className="flex flex-1 items-center justify-between">
                     <span className="font-bold text-[16px]">
-                        {selectedCategory ?? "Categories"}
+                        {selectedCategory}
                     </span>
                     <svg
                         className={`h-3 w-3 transform transition-transform duration-200 ${isCategoriesExpanded ? "rotate-180" : ""}`}
@@ -445,3 +447,4 @@ function DashboardLogout() {
 }
 
 export default DashboardLogout
+

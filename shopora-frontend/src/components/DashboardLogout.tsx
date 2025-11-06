@@ -25,7 +25,8 @@ const catalogue = [
         priceValue: 199,
         description: "A perfect balance of high-fidelity audio",
         ratings: "(123)",
-        by: "Ali's shop"
+        by: "Ali's shop",
+        category: "Headphones"
     },
     {
         image: tShirt,
@@ -35,7 +36,8 @@ const catalogue = [
         priceValue: 299,
         description: "A high quality clothes brand.",
         ratings: "(101)",
-        by: "Hassan's shop"
+        by: "Hassan's shop",
+        category: "Shirts"
     },
     {
         image: shoes,
@@ -45,9 +47,14 @@ const catalogue = [
         priceValue: 399,
         description: "Crafted for comfort. Designed for confidence.",
         ratings: "(211)",
-        by: "Dani's shop"
+        by: "Dani's shop",
+        category: "Shoes"
     }
 ];
+
+const ALL_CATEGORIES = "All Categories";
+
+const categoryOptions = [ALL_CATEGORIES, "Shirts", "Headphones", "Shoes"] as const;
 
 const priceValues = catalogue.map(item => item.priceValue);
 const priceBounds = {
@@ -59,6 +66,8 @@ function DashboardLogout() {
     const navigate = useNavigate();
     const [searchTerm, setSearchTerm] = useState("");
     const [isSearchExpanded, setIsSearchExpanded] = useState(false);
+    const [selectedCategory, setSelectedCategory] = useState<(typeof categoryOptions)[number]>(ALL_CATEGORIES);
+    const [isCategoriesExpanded, setIsCategoriesExpanded] = useState(false);
     const [priceRange, setPriceRange] = useState({ min: priceBounds.min, max: priceBounds.max });
     const [priceDraft, setPriceDraft] = useState({ min: priceBounds.min.toString(), max: priceBounds.max.toString() });
     const [isPriceExpanded, setIsPriceExpanded] = useState(false);
@@ -70,12 +79,13 @@ function DashboardLogout() {
     const filteredItems = useMemo(() => {
         const normalized = searchTerm.trim().toLowerCase();
         return catalogue.filter(item => {
-            const haystack = `${item.name} ${item.namee} ${item.description} ${item.by}`.toLowerCase();
+            const haystack = `${item.name} ${item.namee} ${item.description} ${item.by} ${item.category}`.toLowerCase();
             const matchesSearch = !normalized || haystack.includes(normalized);
             const matchesPrice = item.priceValue >= priceRange.min && item.priceValue <= priceRange.max;
-            return matchesSearch && matchesPrice;
+            const matchesCategory = selectedCategory === ALL_CATEGORIES || item.category === selectedCategory;
+            return matchesSearch && matchesPrice && matchesCategory;
         });
-    }, [searchTerm, priceRange]);
+    }, [searchTerm, priceRange, selectedCategory]);
 
     const expandSearch = () => {
         if (isSearchExpanded) {
@@ -114,6 +124,35 @@ function DashboardLogout() {
                 searchInputRef.current?.blur();
             }, 0);
         }
+    };
+
+    const toggleCategories = () => {
+        setIsCategoriesExpanded((prev) => !prev);
+    };
+
+    const handleCategoriesBlur = (event: ReactFocusEvent<HTMLDivElement>) => {
+        const nextFocus = event.relatedTarget as Node | null;
+        if (!nextFocus || !event.currentTarget.contains(nextFocus)) {
+            setIsCategoriesExpanded(false);
+        }
+    };
+
+    const handleCategoriesKeyDown = (event: ReactKeyboardEvent<HTMLDivElement>) => {
+        if (event.key === "Escape") {
+            event.preventDefault();
+            setIsCategoriesExpanded(false);
+            return;
+        }
+
+        if (event.key === "Enter" || event.key === " ") {
+            event.preventDefault();
+            toggleCategories();
+        }
+    };
+
+    const handleCategorySelect = (option: string) => {
+        setSelectedCategory(option);
+        setIsCategoriesExpanded(false);
     };
 
     const expandPrice = () => {
@@ -280,10 +319,68 @@ function DashboardLogout() {
                     <span className="font-bold text-[16px]">Search</span>
                 )}
             </div>
-            <button className="flex text-white text-[15px] font-bold gap-4 p-4 items-center w-44 h-11 rounded-2xl transition duration-300 ease-in-out hover:bg-white hover:text-[#E6C79A]">
+            <div
+                className={`relative flex items-center gap-3 h-11 rounded-2xl px-4 transition-all duration-300 ease-in-out focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#5AB688] ${isCategoriesExpanded ? "w-56 bg-white text-[#5DBC8C] shadow-lg" : "w-44 text-white hover:bg-white hover:text-[#E6C79A] cursor-pointer"}`}
+                onClick={(event) => {
+                    event.currentTarget.focus();
+                    toggleCategories();
+                }}
+                onBlur={handleCategoriesBlur}
+                onKeyDown={handleCategoriesKeyDown}
+                role="button"
+                tabIndex={0}
+                aria-haspopup="listbox"
+                aria-expanded={isCategoriesExpanded}
+                aria-label="Filter by product category"
+            >
                 <img className="w-6" src={categories} alt="categories logo" />
-                Categories
-            </button>
+                <div className="flex flex-1 items-center justify-between">
+                    <span className="font-bold text-[16px]">
+                        {selectedCategory}
+                    </span>
+                    <svg
+                        className={`h-3 w-3 transform transition-transform duration-200 ${isCategoriesExpanded ? "rotate-180" : ""}`}
+                        viewBox="0 0 12 8"
+                        xmlns="http://www.w3.org/2000/svg"
+                        aria-hidden="true"
+                    >
+                        <path
+                            d="M1 1.333 6 6.333 11 1.333"
+                            stroke="currentColor"
+                            strokeWidth="1.5"
+                            fill="none"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                        />
+                    </svg>
+                </div>
+                {isCategoriesExpanded && (
+                    <ul
+                        className="absolute left-0 top-full z-10 mt-2 w-full overflow-hidden rounded-2xl bg-white py-1 shadow-xl ring-1 ring-[#CDE6D6]"
+                        role="listbox"
+                    >
+                        {categoryOptions.map(option => {
+                            const isActive = option === selectedCategory;
+                            return (
+                                <li key={option}>
+                                    <button
+                                        type="button"
+                                        className={`w-full px-4 py-2 text-left text-sm font-semibold transition-colors duration-150 ${isActive ? "bg-[#5DBC8C] text-white" : "text-[#5DBC8C] hover:bg-[#F3FBF6]"}`}
+                                        onClick={(event) => {
+                                            event.stopPropagation();
+                                            handleCategorySelect(option);
+                                        }}
+                                        role="option"
+                                        aria-selected={isActive}
+                                    >
+                                        {option}
+                                    </button>
+                                </li>
+                            );
+                        })}
+                    </ul>
+                )}
+            </div>
             <div
                 ref={priceContainerRef}
                 className={`flex items-center gap-3 h-11 rounded-2xl px-4 transition-all duration-300 ease-in-out focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#5AB688] ${isPriceExpanded ? "w-80 bg-white text-[#5DBC8C] shadow-lg cursor-text" : "w-44 text-white hover:bg-white hover:text-[#E6C79A] cursor-pointer"}`}
@@ -344,3 +441,4 @@ function DashboardLogout() {
 }
 
 export default DashboardLogout
+
