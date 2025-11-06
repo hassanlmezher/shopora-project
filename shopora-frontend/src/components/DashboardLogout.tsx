@@ -7,12 +7,10 @@ import tShirt from "../images/t-shirt.png"
 import shoes from "../images/shoes.png"
 import home from "../images/home.png"
 import search from "../images/search.png"
-import settings from "../images/settings.png"
 import categories from "../images/categories.png"
 import price from "../images/price.png"
 import login from "../images/login.png"
 import { useNavigate } from 'react-router-dom'
-import cart from "../images/cart.png"
 import { useMemo, useRef, useState } from "react";
 import type { ChangeEvent, FocusEvent as ReactFocusEvent, KeyboardEvent as ReactKeyboardEvent } from "react";
 
@@ -150,7 +148,7 @@ function DashboardLogout() {
         }
     };
 
-    const handleCategorySelect = (option: string) => {
+    const handleCategorySelect = (option: (typeof categoryOptions)[number]) => {
         setSelectedCategory(option);
         setIsCategoriesExpanded(false);
     };
@@ -335,7 +333,7 @@ function DashboardLogout() {
             >
                 <img className="w-6" src={categories} alt="categories logo" />
                 <div className="flex flex-1 items-center justify-between">
-                    <span className="font-bold text-[16px]">
+                    <span className="font-bold text-[15px] whitespace-nowrap">
                         {selectedCategory}
                     </span>
                     <svg

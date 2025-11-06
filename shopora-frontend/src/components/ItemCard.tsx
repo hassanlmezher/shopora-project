@@ -1,6 +1,3 @@
-import headphones from "../images/headphones.png"
-import tShirt from "../images/t-shirt.png"
-import shoes from "../images/shoes.png"
 import stars from "../images/5stars.png"
 
 
