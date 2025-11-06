@@ -48,7 +48,7 @@ function DashboardLogout() {
         }
     ];
   return (
-    <div className="bg-[#5AB688] h-250 pt-5 ">
+    <div className="bg-[#5AB688] h-230 pt-5 ">
         <div className="bg-white mr-5 rounded-2xl flex justify-between items-center pl-5 pr-10 h-19">
             <img className="w-30" src={logo} alt="logo" />
             <img className="w-9 absolute right-40" src={cart} alt="cart icon" />
@@ -70,21 +70,21 @@ function DashboardLogout() {
                 <img className="w-8" src={home} alt="home logo" />
                 <p className="text-[#E6C79A] font-bold text-[18px]">Home</p>
             </button>
-            <button className="flex gap-4 p-4 items-center w-44 h-11 rounded-2xl">
+            <button className="flex gap-4 p-4 items-center w-44 text-white font-bold text-[18px] h-11 rounded-2xl transition duration-300 ease-in-out hover:bg-white hover:text-[#E6C79A]">
                 <img className="w-8" src={search} alt="search logo" />
-                <p className="text-white font-bold text-[18px]">Search</p>
+                Search
             </button>
-            <button className="flex gap-4 p-4 items-center w-44 h-11 rounded-2xl">
+            <button className="flex text-white text-[18px] font-bold gap-4 p-4 items-center w-44 h-11 rounded-2xl transition duration-300 ease-in-out hover:bg-white hover:text-[#E6C79A]">
                 <img className="w-8" src={categories} alt="categories logo" />
-                <p className="text-white text-[18px] font-bold ">Categories</p>
+                Categories
             </button>
-            <button className="flex  p-2.5 items-center w-44 h-11 rounded-2xl">
+            <button className="flex  p-2.5 items-center w-44 h-11 rounded-2xl text-white font-bold text-[18px]  transition duration-300 ease-in-out hover:bg-white hover:text-[#E6C79A]">
                 <img className="w-10" src={price} alt="price range logo" />
-                <p className="text-white text-[18px] font-bold">Price Range</p>
+                Price Range
             </button>
-            <button className="flex gap-4 p-3 items-center w-44 h-11 rounded-2xl">
-                <img className="w-10" src={settings} alt="settings logo" />
-                <p className="text-white text-[18px] font-bold">Settings</p>
+            <button className="flex gap-4 p-3 items-center w-44 h-11 rounded-2xl text-white text-[18px] font-bold transition duration-300 ease-in-out hover:bg-white hover:text-[#E6C79A]" onClick={() => navigate('/settings')}>
+                <img className="w-9"  src={settings} alt="settings logo" />
+                Settings
             </button>
             <button className="flex gap-4 p-5 ml-1 h-15 mt-3 items-center border-2 text-white font-bold text-[19px] border-[#DDC59E] w-38 rounded-2xl transition duration-300 ease-in-out hover:bg-white hover:text-[#DDC59E] hover:w-42 hover:border-none" onClick={() => navigate('/login')}>
                 <img className="w-9" src={login} alt="login logo" />

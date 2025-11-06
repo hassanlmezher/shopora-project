@@ -4,6 +4,7 @@ import DashboardLogout from "./components/DashboardLogout";
 import Login from "./components/Login";
 import Stores from "./components/Stores";
 import Signup from "./components/Signup";
+import Settings from './components/Settings';
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         <Route path="/stores" element={<Stores />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/settings" element={<Settings />} />
       </Routes>
     </Router>
   );
