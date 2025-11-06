@@ -29,10 +29,6 @@ function Settings() {
   const navigate = useNavigate();
   const { isLoggedIn } = useAuthStore();
   return (
-    <div className="min-h-screen bg-[#F4F7F6] pb-16">
-      <div className="px-4 pt-6">
-        <Header />
-      </div>
       <div className="mx-auto mt-6 flex w-full max-w-5xl flex-col gap-10 px-4">
         <button
           type="button"
@@ -60,7 +56,7 @@ function Settings() {
           ))}
         </div>
       </div>
-    </div>
+
   )
 }
 
