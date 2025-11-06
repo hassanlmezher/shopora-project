@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import auth from "../images/auth.png"
 import { useNavigate } from 'react-router-dom'
-
+import useAuthStore from "../store/useAuthStore";
 
 
 function Login() {
@@ -12,6 +12,8 @@ function Login() {
     const [ passwordd, setPassWordd ] = useState("");
     const [showPopup, setShowPopup] = useState(false);
     const [popupMessage, setPopupMessage] = useState("");
+    const { login, logout } = useAuthStore();
+    
     const handleEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
       setEmaill(e.target.value)
     };
@@ -24,10 +26,12 @@ function Login() {
         setShowPopup(true);
         setTimeout(() => {
           setShowPopup(false);
+          login();
           navigate('/DashboardLoggedIn');
         }, 1000);
       } else {
         setPopupMessage("Login failed! Please check your credentials.");
+        logout();
         setShowPopup(true);
       }
     };
