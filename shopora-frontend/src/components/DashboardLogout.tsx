@@ -279,7 +279,17 @@ function DashboardLogout() {
             <div className="grid grid-cols-3 gap-4 mt-13 ml-[-50px]">
                 {filteredItems.length > 0 ? (
                     filteredItems.map(item => (
-                        <ItemCard key={item.namee} image={item.image} name={item.name} namee={item.namee} price={item.price} description={item.description} ratings={item.ratings} by={item.by}/>
+                        <ItemCard
+                            key={item.namee}
+                            image={item.image}
+                            name={item.name}
+                            namee={item.namee}
+                            price={item.price}
+                            priceValue={item.priceValue}
+                            description={item.description}
+                            ratings={item.ratings}
+                            by={item.by}
+                        />
                     ))
                 ) : (
                     <p className="col-span-3 text-center text-gray-500">No items match your filters right now.</p>

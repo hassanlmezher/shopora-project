@@ -15,6 +15,7 @@ import cart from "../images/cart.png"
 import logout from "../images/logout.png"
 import { useMemo, useRef, useState } from "react";
 import type { ChangeEvent, FocusEvent as ReactFocusEvent, KeyboardEvent as ReactKeyboardEvent } from "react";
+import useCartStore from "../store/useCartStore";
 
 const catalogue = [
     {
@@ -75,6 +76,9 @@ function DashboardLogout() {
     const priceContainerRef = useRef<HTMLDivElement | null>(null);
     const minPriceInputRef = useRef<HTMLInputElement | null>(null);
     const maxPriceInputRef = useRef<HTMLInputElement | null>(null);
+    const totalCartItems = useCartStore(
+        (state) => state.items.reduce((sum, item) => sum + item.quantity, 0)
+    );
 
     const filteredItems = useMemo(() => {
         const normalized = searchTerm.trim().toLowerCase();
@@ -267,10 +271,26 @@ function DashboardLogout() {
     };
   return (
     <div className="bg-[#5AB688] h-230 pt-5 ">
-        <div className="bg-white mr-5 rounded-2xl flex justify-between items-center pl-5 pr-10 h-19">
+        <div className="bg-white mr-5 rounded-2xl flex items-center justify-between pl-5 pr-10 h-19 relative">
             <img className="w-30" src={logo} alt="logo" />
-            <img className="w-9 absolute right-40" onClick={() => navigate('/cart')} src={cart} alt="cart icon" />
-            <img className="w-[40px] h-[40px]" src={lightMode} alt="" />
+            <div className="flex items-center gap-6">
+                <div className="relative">
+                    <button
+                        type="button"
+                        onClick={() => navigate('/cart')}
+                        className="relative"
+                        aria-label="Go to cart"
+                    >
+                        <img className="w-9" src={cart} alt="" />
+                        {totalCartItems > 0 && (
+                            <span className="absolute -bottom-1 -right-2 flex h-5 min-w-[1.25rem] items-center justify-center rounded-full bg-[#FF6B6B] px-1 text-xs font-bold text-white">
+                                {totalCartItems}
+                            </span>
+                        )}
+                    </button>
+                </div>
+                <img className="w-[40px] h-[40px]" src={lightMode} alt="" />
+            </div>
         </div>
         <div className="absolute bg-white w-290 h-fit pb-20 right-5 top-20 pl-20">
             <div className="bg-linear-to-b from-[#5DBC8C] to-[#E3C59F] w-250 h-50 mt-10">
@@ -282,7 +302,17 @@ function DashboardLogout() {
             <div className="grid grid-cols-3 gap-4 mt-13 ml-[-50px]">
                 {filteredItems.length > 0 ? (
                     filteredItems.map(item => (
-                        <ItemCard key={item.namee} image={item.image} name={item.name} namee={item.namee} price={item.price} description={item.description} ratings={item.ratings} by={item.by}/>
+                        <ItemCard
+                            key={item.namee}
+                            image={item.image}
+                            name={item.name}
+                            namee={item.namee}
+                            price={item.price}
+                            priceValue={item.priceValue}
+                            description={item.description}
+                            ratings={item.ratings}
+                            by={item.by}
+                        />
                     ))
                 ) : (
                     <p className="col-span-3 text-center text-gray-500">No items match your filters right now.</p>
