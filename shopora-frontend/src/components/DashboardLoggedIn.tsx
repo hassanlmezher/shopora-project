@@ -612,10 +612,10 @@ function DashboardLoggedIn() {
 
   return (
     <div className="min-h-screen bg-[#5AB688]">
-        <div className="lg:hidden">
+        <div className="xl:hidden">
             <MobileLayout />
         </div>
-        <div className="hidden lg:block">
+        <div className="hidden xl:block">
             <DesktopLayout />
         </div>
     </div>
