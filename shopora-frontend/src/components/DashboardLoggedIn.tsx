@@ -63,7 +63,7 @@ const priceBounds = {
     max: Math.max(...priceValues)
 };
 
-function DashboardLogout() {
+function DashboardLoggedIn() {
     const navigate = useNavigate();
     const [searchTerm, setSearchTerm] = useState("");
     const [isSearchExpanded, setIsSearchExpanded] = useState(false);
@@ -269,211 +269,357 @@ function DashboardLogout() {
     const handleMaxPriceBlur = () => {
         commitMaxPrice();
     };
-  return (
-    <div className="bg-[#5AB688] h-230 pt-5 ">
-        <div className="bg-white mr-5 rounded-2xl flex items-center justify-between pl-5 pr-10 h-19 relative">
-            <img className="w-30" src={logo} alt="logo" />
-            <div className="flex items-center gap-6">
-                <div className="relative">
+
+    const MobileLayout = () => (
+        <div className="flex min-h-screen flex-col gap-6 bg-[#5AB688] px-4 pb-16 pt-6 text-white">
+            <header className="flex items-center justify-between">
+                <img className="w-24" src={logo} alt="logo" />
+                <div className="flex items-center gap-4">
                     <button
                         type="button"
                         onClick={() => navigate('/cart')}
-                        className="relative"
+                        className="relative rounded-full bg-white/20 p-2"
                         aria-label="Go to cart"
                     >
-                        <img className="w-9" src={cart} alt="" />
+                        <img className="w-7" src={cart} alt="cart" />
                         {totalCartItems > 0 && (
-                            <span className="absolute -bottom-1 -right-2 flex h-5 min-w-[1.25rem] items-center justify-center rounded-full bg-[#FF6B6B] px-1 text-xs font-bold text-white">
+                            <span className="absolute -top-1 -right-1 flex h-5 min-w-[1.25rem] items-center justify-center rounded-full bg-[#FF6B6B] px-1 text-xs font-bold text-white">
                                 {totalCartItems}
                             </span>
                         )}
                     </button>
+                    <img className="h-10 w-10 rounded-full bg-white/20 p-2" src={lightMode} alt="toggle theme" />
                 </div>
-                <img className="w-[40px] h-[40px]" src={lightMode} alt="" />
-            </div>
-        </div>
-        <div className="absolute bg-white w-290 h-fit pb-20 right-5 top-20 pl-20">
-            <div className="bg-linear-to-b from-[#5DBC8C] to-[#E3C59F] w-250 h-50 mt-10">
-                <img className="w-80 absolute top-[-11px] right-40" src={women} alt="women" />
-                <p className="text-white text-5xl font-bold absolute top-15 left-40">Check out</p>
-                <p className="text-white text-4xl font-bold absolute top-30 left-45">All available</p>
-                <button className="bg-white text-[#DDC59E] text-2xl font-bold rounded-2xl w-35 h-12 absolute top-45 left-70 transition duration-300 ease-in-out hover:bg-[#DDC59E] hover:text-white hover:border-1 hover:border-amber-50" onClick={() => navigate('/stores')}>Stores</button>
-            </div>
-            <div className="grid grid-cols-3 gap-4 mt-13 ml-[-50px]">
-                {filteredItems.length > 0 ? (
-                    filteredItems.map(item => (
-                        <ItemCard
-                            key={item.namee}
-                            image={item.image}
-                            name={item.name}
-                            namee={item.namee}
-                            price={item.price}
-                            priceValue={item.priceValue}
-                            description={item.description}
-                            ratings={item.ratings}
-                            by={item.by}
-                        />
-                    ))
-                ) : (
-                    <p className="col-span-3 text-center text-gray-500">No items match your filters right now.</p>
-                )}
-            </div>
-        </div>
-        <div className="pt-16 pl-2 flex flex-col justify-center  gap-8 fixed top-20 left-0">
-            <button className="flex gap-4 p-4 items-center bg-white w-44 h-11 rounded-2xl">
-                <img className="w-6" src={home} alt="home logo" />
-                <p className="text-[#E6C79A] font-bold text-[16px]">Home</p>
-            </button>
-            <div
-                className={`flex items-center gap-3 h-11 rounded-2xl px-4 transition-all duration-300 ease-in-out focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#5AB688] ${isSearchExpanded ? "w-72 bg-white text-[#5DBC8C] shadow-lg cursor-text" : "w-44 text-white hover:bg-white hover:text-[#E6C79A] cursor-pointer"}`}
-                onClick={expandSearch}
-                onFocus={expandSearch}
-                onKeyDown={handleSearchContainerKeyDown}
-                role="button"
-                tabIndex={0}
-                aria-expanded={isSearchExpanded}
-            >
-                <img className="w-6" src={search} alt="search logo" />
-                {isSearchExpanded ? (
-                    <input
-                        ref={searchInputRef}
-                        value={searchTerm}
-                        onChange={(event) => setSearchTerm(event.target.value)}
-                        onBlur={handleSearchBlur}
-                        onKeyDown={handleSearchInputKeyDown}
-                        onClick={(event) => event.stopPropagation()}
-                        type="search"
-                        placeholder="Type to search..."
-                        className="flex-1 bg-transparent font-bold text-[#5DBC8C] placeholder-[#9DB7AA] focus:outline-none"
-                    />
-                ) : (
-                    <span className="font-bold text-[16px]">Search</span>
-                )}
-            </div>
-            <div
-                className={`relative flex items-center gap-3 h-11 rounded-2xl px-4 transition-all duration-300 ease-in-out focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#5AB688] ${isCategoriesExpanded ? "w-56 bg-white text-[#5DBC8C] shadow-lg" : "w-44 text-white hover:bg-white hover:text-[#E6C79A] cursor-pointer"}`}
-                onClick={(event) => {
-                    event.currentTarget.focus();
-                    toggleCategories();
-                }}
-                onBlur={handleCategoriesBlur}
-                onKeyDown={handleCategoriesKeyDown}
-                role="button"
-                tabIndex={0}
-                aria-haspopup="listbox"
-                aria-expanded={isCategoriesExpanded}
-                aria-label="Filter by product category"
-            >
-                <img className="w-6" src={categories} alt="categories logo" />
-                <div className="flex flex-1 items-center justify-between">
-                    <span className="font-bold text-[15px] whitespace-nowrap">
-                        {selectedCategory}
-                    </span>
-                    <svg
-                        className={`h-3 w-3 transform transition-transform duration-200 ${isCategoriesExpanded ? "rotate-180" : ""}`}
-                        viewBox="0 0 12 8"
-                        xmlns="http://www.w3.org/2000/svg"
-                        aria-hidden="true"
-                    >
-                        <path
-                            d="M1 1.333 6 6.333 11 1.333"
-                            stroke="currentColor"
-                            strokeWidth="1.5"
-                            fill="none"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                        />
-                    </svg>
-                </div>
-                {isCategoriesExpanded && (
-                    <ul
-                        className="absolute left-0 top-full z-10 mt-2 w-full overflow-hidden rounded-2xl bg-white py-1 shadow-xl ring-1 ring-[#CDE6D6]"
-                        role="listbox"
-                    >
-                        {categoryOptions.map(option => {
-                            const isActive = option === selectedCategory;
-                            return (
-                                <li key={option}>
-                                    <button
-                                        type="button"
-                                        className={`w-full px-4 py-2 text-left text-sm font-semibold transition-colors duration-150 ${isActive ? "bg-[#5DBC8C] text-white" : "text-[#5DBC8C] hover:bg-[#F3FBF6]"}`}
-                                        onClick={(event) => {
-                                            event.stopPropagation();
-                                            handleCategorySelect(option);
-                                        }}
-                                        role="option"
-                                        aria-selected={isActive}
-                                    >
-                                        {option}
-                                    </button>
-                                </li>
-                            );
-                        })}
-                    </ul>
-                )}
-            </div>
-            <div
-                ref={priceContainerRef}
-                className={`flex items-center gap-3 h-11 rounded-2xl px-4 transition-all duration-300 ease-in-out focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#5AB688] ${isPriceExpanded ? "w-80 bg-white text-[#5DBC8C] shadow-lg cursor-text" : "w-44 text-white hover:bg-white hover:text-[#E6C79A] cursor-pointer"}`}
-                onClick={handlePriceContainerClick}
-                onFocus={expandPrice}
-                onBlur={handlePriceBlur}
-                onKeyDown={handlePriceContainerKeyDown}
-                role="button"
-                tabIndex={0}
-                aria-expanded={isPriceExpanded}
-                aria-label="Filter by price range"
-            >
-                <img className="w-8" src={price} alt="price range logo" />
-                {isPriceExpanded ? (
-                    <div
-                        className="flex w-full items-center gap-2"
-                        onClick={(event) => event.stopPropagation()}
-                        role="group"
-                        aria-label="Price range inputs"
-                    >
+            </header>
+            <section className="rounded-3xl bg-gradient-to-br from-[#5DBC8C] to-[#E3C59F] p-6 shadow-lg">
+                <p className="text-3xl font-bold">Check out</p>
+                <p className="text-2xl font-semibold">All available</p>
+                <button
+                    className="mt-6 w-full rounded-2xl bg-white py-3 text-lg font-semibold text-[#DDC59E] transition duration-300 ease-in-out hover:bg-[#DDC59E] hover:text-white"
+                    onClick={() => navigate('/stores')}
+                >
+                    Stores
+                </button>
+            </section>
+            <section className="space-y-4 rounded-3xl bg-white/20 p-4 backdrop-blur-sm">
+                <div>
+                    <label className="text-sm font-semibold text-white/80">Search</label>
+                    <div className="mt-2 flex items-center gap-3 rounded-2xl bg-white px-3 py-2">
+                        <img className="w-5" src={search} alt="search" />
                         <input
-                            ref={minPriceInputRef}
+                            value={searchTerm}
+                            onChange={(event) => setSearchTerm(event.target.value)}
+                            type="search"
+                            placeholder="Type to search..."
+                            className="flex-1 bg-transparent text-sm font-semibold text-[#5DBC8C] placeholder-[#9DB7AA] focus:outline-none"
+                        />
+                    </div>
+                </div>
+                <div>
+                    <label className="text-sm font-semibold text-white/80">Categories</label>
+                    <select
+                        value={selectedCategory}
+                        onChange={(event) => handleCategorySelect(event.target.value as (typeof categoryOptions)[number])}
+                        className="mt-2 w-full rounded-2xl border border-white/60 bg-white px-4 py-3 text-sm font-semibold text-[#5DBC8C] focus:outline-none focus:ring-2 focus:ring-white"
+                    >
+                        {categoryOptions.map(option => (
+                            <option key={option} value={option}>
+                                {option}
+                            </option>
+                        ))}
+                    </select>
+                </div>
+                <div className="grid gap-4 sm:grid-cols-2">
+                    <div className="flex flex-col">
+                        <label className="text-sm font-semibold text-white/80">Min price</label>
+                        <input
                             value={priceDraft.min}
                             onChange={handleMinPriceChange}
                             onBlur={handleMinPriceBlur}
-                            onKeyDown={handlePriceInputKeyDown}
                             type="number"
                             min={priceBounds.min}
                             max={priceBounds.max}
-                            className="w-24 rounded-xl border border-[#CDE6D6] bg-white px-3 py-1 text-sm font-semibold text-[#5DBC8C] focus:border-transparent focus:outline-none focus:ring-2 focus:ring-[#5DBC8C]"
+                            className="mt-2 rounded-2xl border border-white/60 bg-white px-4 py-3 text-sm font-semibold text-[#5DBC8C] focus:outline-none focus:ring-2 focus:ring-white"
                         />
-                        <span className="text-[#5DBC8C] font-semibold">-</span>
+                    </div>
+                    <div className="flex flex-col">
+                        <label className="text-sm font-semibold text-white/80">Max price</label>
                         <input
-                            ref={maxPriceInputRef}
                             value={priceDraft.max}
                             onChange={handleMaxPriceChange}
                             onBlur={handleMaxPriceBlur}
-                            onKeyDown={handlePriceInputKeyDown}
                             type="number"
                             min={priceBounds.min}
                             max={priceBounds.max}
-                            className="w-24 rounded-xl border border-[#CDE6D6] bg-white px-3 py-1 text-sm font-semibold text-[#5DBC8C] focus:border-transparent focus:outline-none focus:ring-2 focus:ring-[#5DBC8C]"
+                            className="mt-2 rounded-2xl border border-white/60 bg-white px-4 py-3 text-sm font-semibold text-[#5DBC8C] focus:outline-none focus:ring-2 focus:ring-white"
                         />
                     </div>
+                </div>
+            </section>
+            <section className="space-y-4">
+                {filteredItems.length > 0 ? (
+                    <div className="grid gap-4 sm:grid-cols-2">
+                        {filteredItems.map(item => (
+                            <ItemCard
+                                key={item.namee}
+                                image={item.image}
+                                name={item.name}
+                                namee={item.namee}
+                                price={item.price}
+                                priceValue={item.priceValue}
+                                description={item.description}
+                                ratings={item.ratings}
+                                by={item.by}
+                            />
+                        ))}
+                    </div>
                 ) : (
-                    <span className="font-bold text-[16px]">Price Range</span>
+                    <p className="rounded-2xl bg-white/20 p-6 text-center text-sm font-semibold text-white">
+                        No items match your filters right now.
+                    </p>
                 )}
+            </section>
+            <div className="mt-auto flex flex-col gap-3">
+                <button
+                    className="flex items-center justify-center gap-2 rounded-2xl bg-white px-4 py-3 text-sm font-bold text-[#E6C79A] transition duration-300 ease-in-out hover:bg-[#E6C79A] hover:text-white"
+                    onClick={() => navigate('/DashboardLoggedIn')}
+                >
+                    <img className="w-5" src={home} alt="home" />
+                    Home
+                </button>
+                <button
+                    className="flex items-center justify-center gap-2 rounded-2xl bg-white px-4 py-3 text-sm font-bold text-[#E6C79A] transition duration-300 ease-in-out hover:bg-[#E6C79A] hover:text-white"
+                    onClick={() => navigate('/settings')}
+                >
+                    <img className="w-5" src={settings} alt="settings" />
+                    Settings
+                </button>
+                <button
+                    className="flex items-center justify-center gap-2 rounded-2xl border-2 border-white bg-transparent px-4 py-3 text-sm font-bold text-white transition duration-300 ease-in-out hover:bg-white hover:text-[#65CD99]"
+                    onClick={() => navigate('/login')}
+                >
+                    <img className="w-5" src={logout} alt="logout" />
+                    Log Out
+                </button>
             </div>
-            <button className="flex gap-4 p-3 items-center w-44 h-11 rounded-2xl text-white text-[16px] font-bold transition duration-300 ease-in-out hover:bg-white hover:text-[#E6C79A]" onClick={() => navigate('/settings')}>
-                <img className="w-6"  src={settings} alt="settings logo" />
-                Settings
-            </button>
-            <button className="flex gap-2 p-5 ml-1 h-15 mt-3 items-center border-2 text-white font-bold text-[17px] border-[#DDC59E] w-38 rounded-2xl transition duration-300 ease-in-out hover:bg-white hover:text-[#DDC59E] hover:w-42 hover:border-none" onClick={() => navigate('/login')}>
-                <img className="w-8" src={logout} alt="login logo" />
-                Log Out
-            </button>
-            
         </div>
-      
+    );
+
+    const DesktopLayout = () => (
+        <div className="bg-[#5AB688] h-230 pt-5 ">
+            <div className="bg-white mr-5 rounded-2xl flex items-center justify-between pl-5 pr-10 h-19 relative">
+                <img className="w-30" src={logo} alt="logo" />
+                <div className="flex items-center gap-6">
+                    <div className="relative">
+                        <button
+                            type="button"
+                            onClick={() => navigate('/cart')}
+                            className="relative"
+                            aria-label="Go to cart"
+                        >
+                            <img className="w-9" src={cart} alt="cart" />
+                            {totalCartItems > 0 && (
+                                <span className="absolute -bottom-1 -right-2 flex h-5 min-w-[1.25rem] items-center justify-center rounded-full bg-[#FF6B6B] px-1 text-xs font-bold text-white">
+                                    {totalCartItems}
+                                </span>
+                            )}
+                        </button>
+                    </div>
+                    <img className="w-[40px] h-[40px]" src={lightMode} alt="toggle theme" />
+                </div>
+            </div>
+            <div className="absolute bg-white w-290 h-fit pb-20 right-5 top-20 pl-20">
+                <div className="bg-linear-to-b from-[#5DBC8C] to-[#E3C59F] w-250 h-50 mt-10">
+                    <img className="w-80 absolute top-[-11px] right-40" src={women} alt="women" />
+                    <p className="text-white text-5xl font-bold absolute top-15 left-40">Check out</p>
+                    <p className="text-white text-4xl font-bold absolute top-30 left-45">All available</p>
+                    <button className="bg-white text-[#DDC59E] text-2xl font-bold rounded-2xl w-35 h-12 absolute top-45 left-70 transition duration-300 ease-in-out hover:bg-[#DDC59E] hover:text-white hover:border-1 hover:border-amber-50" onClick={() => navigate('/stores')}>Stores</button>
+                </div>
+                <div className="grid grid-cols-3 gap-4 mt-13 ml-[-50px]">
+                    {filteredItems.length > 0 ? (
+                        filteredItems.map(item => (
+                            <ItemCard
+                                key={item.namee}
+                                image={item.image}
+                                name={item.name}
+                                namee={item.namee}
+                                price={item.price}
+                                priceValue={item.priceValue}
+                                description={item.description}
+                                ratings={item.ratings}
+                                by={item.by}
+                            />
+                        ))
+                    ) : (
+                        <p className="col-span-3 text-center text-gray-500">No items match your filters right now.</p>
+                    )}
+                </div>
+            </div>
+            <div className="pt-16 pl-2 flex flex-col justify-center  gap-8 fixed top-20 left-0">
+                <button className="flex gap-4 p-4 items-center bg-white w-44 h-11 rounded-2xl">
+                    <img className="w-6" src={home} alt="home logo" />
+                    <p className="text-[#E6C79A] font-bold text-[16px]">Home</p>
+                </button>
+                <div
+                    className={`flex items-center gap-3 h-11 rounded-2xl px-4 transition-all duration-300 ease-in-out focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#5AB688] ${isSearchExpanded ? "w-72 bg-white text-[#5DBC8C] shadow-lg cursor-text" : "w-44 text-white hover:bg-white hover:text-[#E6C79A] cursor-pointer"}`}
+                    onClick={expandSearch}
+                    onFocus={expandSearch}
+                    onKeyDown={handleSearchContainerKeyDown}
+                    role="button"
+                    tabIndex={0}
+                    aria-expanded={isSearchExpanded}
+                >
+                    <img className="w-6" src={search} alt="search logo" />
+                    {isSearchExpanded ? (
+                        <input
+                            ref={searchInputRef}
+                            value={searchTerm}
+                            onChange={(event) => setSearchTerm(event.target.value)}
+                            onBlur={handleSearchBlur}
+                            onKeyDown={handleSearchInputKeyDown}
+                            onClick={(event) => event.stopPropagation()}
+                            type="search"
+                            placeholder="Type to search..."
+                            className="flex-1 bg-transparent font-bold text-[#5DBC8C] placeholder-[#9DB7AA] focus:outline-none"
+                        />
+                    ) : (
+                        <span className="font-bold text-[16px]">Search</span>
+                    )}
+                </div>
+                <div
+                    className={`relative flex items-center gap-3 h-11 rounded-2xl px-4 transition-all duration-300 ease-in-out focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#5AB688] ${isCategoriesExpanded ? "w-56 bg-white text-[#5DBC8C] shadow-lg" : "w-44 text-white hover:bg-white hover:text-[#E6C79A] cursor-pointer"}`}
+                    onClick={(event) => {
+                        event.currentTarget.focus();
+                        toggleCategories();
+                    }}
+                    onBlur={handleCategoriesBlur}
+                    onKeyDown={handleCategoriesKeyDown}
+                    role="button"
+                    tabIndex={0}
+                    aria-haspopup="listbox"
+                    aria-expanded={isCategoriesExpanded}
+                    aria-label="Filter by product category"
+                >
+                    <img className="w-6" src={categories} alt="categories logo" />
+                    <div className="flex flex-1 items-center justify-between">
+                        <span className="font-bold text-[15px] whitespace-nowrap">
+                            {selectedCategory}
+                        </span>
+                        <svg
+                            className={`h-3 w-3 transform transition-transform duration-200 ${isCategoriesExpanded ? "rotate-180" : ""}`}
+                            viewBox="0 0 12 8"
+                            xmlns="http://www.w3.org/2000/svg"
+                            aria-hidden="true"
+                        >
+                            <path
+                                d="M1 1.333 6 6.333 11 1.333"
+                                stroke="currentColor"
+                                strokeWidth="1.5"
+                                fill="none"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                            />
+                        </svg>
+                    </div>
+                    {isCategoriesExpanded && (
+                        <ul
+                            className="absolute left-0 top-full z-10 mt-2 w-full overflow-hidden rounded-2xl bg-white py-1 shadow-xl ring-1 ring-[#CDE6D6]"
+                            role="listbox"
+                        >
+                            {categoryOptions.map(option => {
+                                const isActive = option === selectedCategory;
+                                return (
+                                    <li key={option}>
+                                        <button
+                                            type="button"
+                                            className={`w-full px-4 py-2 text-left text-sm font-semibold transition-colors duration-150 ${isActive ? "bg-[#5DBC8C] text-white" : "text-[#5DBC8C] hover:bg-[#F3FBF6]"}`}
+                                            onClick={(event) => {
+                                                event.stopPropagation();
+                                                handleCategorySelect(option);
+                                            }}
+                                            role="option"
+                                            aria-selected={isActive}
+                                        >
+                                            {option}
+                                        </button>
+                                    </li>
+                                );
+                            })}
+                        </ul>
+                    )}
+                </div>
+                <div
+                    ref={priceContainerRef}
+                    className={`flex items-center gap-3 h-11 rounded-2xl px-4 transition-all duration-300 ease-in-out focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#5AB688] ${isPriceExpanded ? "w-80 bg-white text-[#5DBC8C] shadow-lg cursor-text" : "w-44 text-white hover:bg-white hover:text-[#E6C79A] cursor-pointer"}`}
+                    onClick={handlePriceContainerClick}
+                    onFocus={expandPrice}
+                    onBlur={handlePriceBlur}
+                    onKeyDown={handlePriceContainerKeyDown}
+                    role="button"
+                    tabIndex={0}
+                    aria-expanded={isPriceExpanded}
+                    aria-label="Filter by price range"
+                >
+                    <img className="w-8" src={price} alt="price range logo" />
+                    {isPriceExpanded ? (
+                        <div
+                            className="flex w-full items-center gap-2"
+                            onClick={(event) => event.stopPropagation()}
+                            role="group"
+                            aria-label="Price range inputs"
+                        >
+                            <input
+                                ref={minPriceInputRef}
+                                value={priceDraft.min}
+                                onChange={handleMinPriceChange}
+                                onBlur={handleMinPriceBlur}
+                                onKeyDown={handlePriceInputKeyDown}
+                                type="number"
+                                min={priceBounds.min}
+                                max={priceBounds.max}
+                                className="w-24 rounded-xl border border-[#CDE6D6] bg-white px-3 py-1 text-sm font-semibold text-[#5DBC8C] focus:border-transparent focus:outline-none focus:ring-2 focus:ring-[#5DBC8C]"
+                            />
+                            <span className="text-[#5DBC8C] font-semibold">-</span>
+                            <input
+                                ref={maxPriceInputRef}
+                                value={priceDraft.max}
+                                onChange={handleMaxPriceChange}
+                                onBlur={handleMaxPriceBlur}
+                                onKeyDown={handlePriceInputKeyDown}
+                                type="number"
+                                min={priceBounds.min}
+                                max={priceBounds.max}
+                                className="w-24 rounded-xl border border-[#CDE6D6] bg-white px-3 py-1 text-sm font-semibold text-[#5DBC8C] focus:border-transparent focus:outline-none focus:ring-2 focus:ring-[#5DBC8C]"
+                            />
+                        </div>
+                    ) : (
+                        <span className="font-bold text-[16px]">Price Range</span>
+                    )}
+                </div>
+                <button className="flex gap-4 p-3 items-center w-44 h-11 rounded-2xl text-white text-[16px] font-bold transition duration-300 ease-in-out hover:bg-white hover:text-[#E6C79A]" onClick={() => navigate('/settings')}>
+                    <img className="w-6"  src={settings} alt="settings logo" />
+                    Settings
+                </button>
+                <button className="flex gap-2 p-5 ml-1 h-15 mt-3 items-center border-2 text-white font-bold text-[17px] border-[#DDC59E] w-38 rounded-2xl transition duration-300 ease-in-out hover:bg-white hover:text-[#DDC59E] hover:w-42 hover:border-none" onClick={() => navigate('/login')}>
+                    <img className="w-8" src={logout} alt="login logo" />
+                    Log Out
+                </button>
+                
+            </div>
+          
+        </div>
+    );
+
+  return (
+    <div className="min-h-screen bg-[#5AB688]">
+        <div className="lg:hidden">
+            <MobileLayout />
+        </div>
+        <div className="hidden lg:block">
+            <DesktopLayout />
+        </div>
     </div>
   )
 }
 
-export default DashboardLogout
-
+export default DashboardLoggedIn

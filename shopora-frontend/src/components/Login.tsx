@@ -39,24 +39,46 @@ function Login() {
       setShowPopup(false);
     };
   return (
-    <div className="flex justify-center items-center bg-linear-to-b from-[#66CE9A] to-[#388063] h-screen">
-      <div className="bg-[#D9D9D9] flex flex-col justify-center items-center h-120 w-100 rounded-l-4xl">
-        <p className="text-[#4EA67D] text-5xl font-bold">Log In</p>
-        <input type="text" className="border-1 border-[#0E5861] w-70 h-10 mr-5 mt-10 p-2 rounded-2xl " onChange={handleEmail} placeholder="Email address"/>
-        <input type="password" className="border-1 border-[#0E5861] w-70 h-10 mr-5 mt-5 p-2 rounded-2xl" onChange={handlePassword} placeholder="Password"/>
-        <div className="flex gap-2 mt-6 mr-9">
-            <p className="text-[13px] text-[#666666]">Don't have an account?</p>
-            <button className="text-[13px] font-bold text-[#5FC392] transition duration-300 ease-in-out hover:text-[#0E5861]" onClick={() => navigate('/signup')}>Sign Up</button>
+    <div className="flex min-h-screen items-center justify-center bg-linear-to-b from-[#66CE9A] to-[#388063] px-4 py-10">
+      <div className="flex w-full max-w-5xl flex-col overflow-hidden rounded-3xl bg-[#D9D9D9] shadow-xl lg:flex-row">
+        <div className="flex w-full flex-col justify-center gap-6 px-8 py-10 lg:w-1/2 lg:px-12">
+          <p className="text-center text-4xl font-bold text-[#4EA67D] sm:text-5xl lg:text-left">Log In</p>
+          <input
+            type="text"
+            className="h-12 w-full rounded-2xl border border-[#0E5861] px-4 text-base focus:border-[#65CD99] focus:outline-none"
+            onChange={handleEmail}
+            placeholder="Email address"
+          />
+          <input
+            type="password"
+            className="h-12 w-full rounded-2xl border border-[#0E5861] px-4 text-base focus:border-[#65CD99] focus:outline-none"
+            onChange={handlePassword}
+            placeholder="Password"
+          />
+          <div className="flex flex-col gap-2 text-center text-sm text-[#666666] sm:flex-row sm:items-center sm:justify-center lg:justify-start">
+            <p>Don't have an account?</p>
+            <button
+              className="font-bold text-[#5FC392] transition duration-300 ease-in-out hover:text-[#0E5861]"
+              onClick={() => navigate('/signup')}
+            >
+              Sign Up
+            </button>
+          </div>
+          <button
+            className="w-full rounded-2xl bg-[#65CD99] py-3 text-lg font-bold text-white transition duration-300 ease-in-out hover:bg-white hover:text-[#65CD99]"
+            onClick={handleLogIn}
+          >
+            Log In
+          </button>
         </div>
-        <button className="text-white font-bold bg-[#65CD99] border-none rounded-2xl text-[19px] w-40 h-12 mt-10 transition duration-300 ease-in-out hover:bg-white hover:text-[#65CD99]" onClick={handleLogIn}>Log In</button>
+        <div className="flex w-full items-center justify-center bg-[#D9D9D9] px-8 py-10 lg:w-1/2 lg:px-12">
+          <img className="w-full max-w-xs sm:max-w-sm" src={auth} alt="auth illustration" />
+        </div>
       </div>
-      <div className="bg-[#D9D9D9] flex flex-col justify-center items-center h-120 w-90 rounded-r-4xl">
-        <img className="w-90 h-120" src={auth} alt="auth image" />
-      </div>
-      <div className={`fixed bottom-4 left-1/2 transform -translate-x-1/2 p-4 rounded-3xl shadow-lg  transition-all duration-500 ${showPopup ? 'translate-y-0 opacity-100' : 'translate-y-full opacity-0'} ${popupMessage.includes("successful") ? 'bg-[#77e4ad] text-white' : 'bg-black shadow shadow-gray-700 text-white'}`}>
+      <div className={`fixed bottom-4 left-1/2 z-50 -translate-x-1/2 transform rounded-3xl p-4 shadow-lg transition-all duration-500 ${showPopup ? 'translate-y-0 opacity-100' : 'translate-y-full opacity-0'} ${popupMessage.includes("successful") ? 'bg-[#77e4ad] text-white' : 'bg-black shadow shadow-gray-700 text-white'}`}>
         <p className="text-sm font-semibold text-center">{popupMessage}</p>
         {popupMessage.includes("failed") && (
-          <button className="mt-2 px-3 py-1 w-50 h-8  text-red-600 font-bold border-2 bg-white border-red-700 rounded-2xl text-xs block mx-auto" onClick={closePopup}>Close</button>
+          <button className="mt-2 block w-full rounded-2xl border-2 border-red-700 bg-white px-3 py-1 text-xs font-bold text-red-600" onClick={closePopup}>Close</button>
         )}
       </div>
     </div>

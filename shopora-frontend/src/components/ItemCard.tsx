@@ -37,23 +37,34 @@ function ItemCard({image, name, namee, price, priceValue, description, ratings, 
   };
 
   return (
-    <div className="shadow-lg shadow-gray-500 flex flex-col justify-center items-center p-4">
-      <img className="w-40" src={image} alt="item image" />
-      <p className="absolute top-118 ml-22 font-bold">{price}</p>
-      <p className="text-2xl font-bold ml-[-30px] ">{name}</p>
-      <p className="text-2xl font-bold ml-13">{namee}</p>
-      <p className="text-gray-500">{description}</p>
-      <img className="w-30 ml-[-50px]" src={stars} alt="stars ratings" />
-      <p className="text-gray-400 absolute top-148 ml-30">{ratings}</p>
-      <p className="ml-55 text-gray-600 font-bold mt-[-13px]">{by}</p>
-      <div className="flex justify-center items-center gap-5 mt-7">
-        <button className="bg-[#5DBC8C] text-white font-bold w-40 h-10 rounded-2xl transition duration-300 ease-in-out hover:bg-white hover:text-black hover:border-2 hover:border-black" onClick={handleAddToCart}>Add to cart</button>
-        <button className="bg-white border-2 border-[#5DBC8C] text-[#5DBC8C] font-bold w-35 h-11 rounded-2xl transition duration-300 ease-in-out hover:bg-white hover:text-black hover:border-2 hover:border-black">Details</button>
+    <div className="flex h-full w-full flex-col gap-4 rounded-3xl border border-gray-100 bg-white p-6 text-left shadow-lg transition hover:-translate-y-1 hover:shadow-xl">
+      <img className="mx-auto w-32 sm:w-36" src={image} alt={`${name} ${namee}`} />
+      <div className="flex items-start justify-between gap-4">
+        <div>
+          <p className="text-xl font-bold text-[#333]">{name}</p>
+          <p className="text-lg font-semibold text-[#555]">{namee}</p>
+        </div>
+        <p className="text-xl font-bold text-[#5DBC8C]">{price}</p>
       </div>
-
-
-      
-
+      <p className="text-sm text-gray-500 sm:text-base">{description}</p>
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          <img className="w-20 sm:w-24" src={stars} alt="rating" />
+          <span className="text-sm text-gray-500">{ratings}</span>
+        </div>
+        <p className="text-sm font-semibold text-gray-600">{by}</p>
+      </div>
+      <div className="mt-4 flex flex-col gap-3 sm:flex-row">
+        <button
+          className="w-full rounded-2xl bg-[#5DBC8C] px-4 py-3 text-sm font-bold text-white transition duration-300 ease-in-out hover:bg-white hover:text-[#5DBC8C] hover:ring-2 hover:ring-[#5DBC8C]"
+          onClick={handleAddToCart}
+        >
+          Add to cart
+        </button>
+        <button className="w-full rounded-2xl border-2 border-[#5DBC8C] px-4 py-3 text-sm font-bold text-[#5DBC8C] transition duration-300 ease-in-out hover:bg-[#5DBC8C] hover:text-white">
+          Details
+        </button>
+      </div>
     </div>
   )
 }

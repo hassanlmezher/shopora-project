@@ -7,38 +7,57 @@ import heart from "../images/heart.png";
 import cartt from "../images/cartt.png";
 import create from "../images/create.png"
 
+const cards = [
+  {
+    image: heart,
+    title: "Favorites",
+    description: "View all of your favorited items!",
+  },
+  {
+    image: cartt,
+    title: "Cart history",
+    description: "Review previous orders and saved carts.",
+  },
+  {
+    image: create,
+    title: "Create lists",
+    description: "Organize items into custom wishlists.",
+  },
+];
+
 function Settings() {
   const navigate = useNavigate();
   const { isLoggedIn } = useAuthStore();
   return (
-    <div>
-      <Header/>
-      <div className="pl-15">
-        <img className="w-30" src={back} alt="back button" onClick={() => isLoggedIn? navigate('/DashboardLoggedIn') : navigate('/dashboard')}/>
+    <div className="min-h-screen bg-[#F4F7F6] pb-16">
+      <div className="px-4 pt-6">
+        <Header />
       </div>
-      <div className="h-130 flex justify-center items-center">
-        <img className="absolute w-35 top-30" src={profile} alt="profile pic" />
-        <p className="font-bold text-2xl absolute top-70 ml-3">Hassan Mezher</p>
-      </div>
-      <div className=" h-70 mt-[-300px] w-[1000px] ml-45 flex justify-around items-center">
-        <div className="bg-[#65CD99] flex flex-col justify-center items-center w-45 h-50 rounded-3xl">
-          <img className="w-25" src={heart} alt="heart icon" />
-          <p className="text-white font-bold">View all of your</p>
-          <p className="text-white font-bold">favorited items!</p>
+      <div className="mx-auto mt-6 flex w-full max-w-5xl flex-col gap-10 px-4">
+        <button
+          type="button"
+          onClick={() => isLoggedIn ? navigate('/DashboardLoggedIn') : navigate('/dashboard')}
+          className="flex w-fit items-center gap-3 rounded-full bg-white px-4 py-2 text-sm font-semibold text-[#388063] shadow-sm transition hover:bg-[#65CD99] hover:text-white"
+        >
+          <img className="w-6" src={back} alt="Go back" />
+          Back
+        </button>
+        <div className="flex flex-col items-center gap-4">
+          <img className="w-32 sm:w-36 md:w-40" src={profile} alt="profile" />
+          <p className="text-xl font-bold text-[#1F3B2F] sm:text-2xl">
+            Hassan Mezher
+          </p>
         </div>
-        <div className="bg-[#65CD99] flex flex-col justify-center items-center gap-2 w-45 h-50 rounded-3xl">
-          <img className="w-22" src={cartt} alt="heart icon" />
-          <div>
-            <p className="text-white font-bold">View all of your</p>
-            <p className="text-white font-bold">favorited items!</p>
-          </div>
-        </div>
-        <div className="bg-[#65CD99] flex flex-col justify-center items-center gap-2 w-45 h-50 rounded-3xl">
-          <img className="w-18" src={create} alt="heart icon" />
-          <div>
-          <p className="text-white font-bold">View all of your</p>
-          <p className="text-white font-bold">favorited items!</p>
-          </div>
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {cards.map(card => (
+            <div key={card.title} className="flex flex-col items-center gap-4 rounded-3xl bg-[#65CD99] px-6 py-8 text-center shadow-md transition hover:-translate-y-1 hover:shadow-lg">
+              <img className="w-16 sm:w-20" src={card.image} alt={card.title} />
+              <div className="space-y-1">
+                <p className="text-lg font-semibold text-white">{card.title}</p>
+                <p className="text-sm text-white/90">{card.description}</p>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
     </div>
@@ -46,4 +65,3 @@ function Settings() {
 }
 
 export default Settings
-

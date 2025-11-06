@@ -6,28 +6,41 @@ import StoreCard from "./StoreCard";
 import { useNavigate } from 'react-router-dom'
 import useAuthStore from '../store/useAuthStore';
 
+const stores = [
+    {
+        image: moustache,
+        name: "Moustache",
+    },
+    {
+        image: gucci,
+        name: "Gucci",
+    },
+    {
+        image: apple,
+        name: "Apple",
+    }
+];
+
 function Stores() {
     const navigate = useNavigate();
     const { isLoggedIn } = useAuthStore();
-    const stores = [
-        {
-            image: moustache,
-            name: "Moustache",
-        },
-        {
-            image: gucci,
-            name: "Gucci",
-        },
-        {
-            image: apple,
-            name: "Apple",
-        }
-    ];
+
   return (
-    <div>
-      <img className="w-30 mt-6 ml-6 cursor-pointer" src={back} alt="back button" onClick={() => isLoggedIn ? navigate('/DashboardLoggedIn') : navigate('/dashboard')} />
-      <div className="m-10 pl-10 pr-10 grid grid-cols-3 gap-15 pl-20">
-        {stores.map(store => <StoreCard image={store.image} name={store.name} />)}
+    <div className="min-h-screen bg-[#F4F7F6] pb-16">
+      <div className="mx-auto flex w-full max-w-5xl flex-col gap-8 px-4 pt-10">
+        <button
+          type="button"
+          onClick={() => isLoggedIn ? navigate('/DashboardLoggedIn') : navigate('/dashboard')}
+          className="flex w-fit items-center gap-3 rounded-full bg-white px-4 py-2 text-sm font-semibold text-[#388063] shadow-sm transition hover:bg-[#65CD99] hover:text-white"
+        >
+          <img className="w-6" src={back} alt="Go back" />
+          Back
+        </button>
+        <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+          {stores.map(store => (
+            <StoreCard key={store.name} image={store.image} name={store.name} />
+          ))}
+        </div>
       </div>
     </div>
   )
