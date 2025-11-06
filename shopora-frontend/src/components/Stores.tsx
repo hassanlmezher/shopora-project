@@ -4,9 +4,11 @@ import gucci from "../images/gucci.png"
 import apple from "../images/apple.png"
 import StoreCard from "./StoreCard";
 import { useNavigate } from 'react-router-dom'
+import useAuthStore from '../store/useAuthStore';
 
 function Stores() {
     const navigate = useNavigate();
+    const { isLoggedIn } = useAuthStore();
     const stores = [
         {
             image: moustache,
@@ -23,7 +25,7 @@ function Stores() {
     ];
   return (
     <div>
-      <img className="w-30 mt-6 ml-6 cursor-pointer" src={back} alt="back button" onClick={() => navigate('/DashboardLoggedIn')} />
+      <img className="w-30 mt-6 ml-6 cursor-pointer" src={back} alt="back button" onClick={() => isLoggedIn ? navigate('/DashboardLoggedIn') : navigate('/dashboard')} />
       <div className="m-10 pl-10 pr-10 grid grid-cols-3 gap-15 pl-20">
         {stores.map(store => <StoreCard image={store.image} name={store.name} />)}
       </div>
