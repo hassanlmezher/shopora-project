@@ -16,6 +16,7 @@ import logout from "../images/logout.png"
 import { useMemo, useRef, useState } from "react";
 import type { ChangeEvent, FocusEvent as ReactFocusEvent, KeyboardEvent as ReactKeyboardEvent } from "react";
 import useCartStore from "../store/useCartStore";
+import useDashboardLayout from "../hooks/useDashboardLayout";
 
 const catalogue = [
     {
@@ -76,6 +77,7 @@ function DashboardLoggedIn() {
     const priceContainerRef = useRef<HTMLDivElement | null>(null);
     const minPriceInputRef = useRef<HTMLInputElement | null>(null);
     const maxPriceInputRef = useRef<HTMLInputElement | null>(null);
+    const isDesktopLayout = useDashboardLayout();
     const totalCartItems = useCartStore(
         (state) => state.items.reduce((sum, item) => sum + item.quantity, 0)
     );
@@ -612,12 +614,7 @@ function DashboardLoggedIn() {
 
   return (
     <div className="min-h-screen bg-[#5AB688]">
-        <div className="xl:hidden">
-            <MobileLayout />
-        </div>
-        <div className="hidden xl:block">
-            <DesktopLayout />
-        </div>
+        {isDesktopLayout ? <DesktopLayout /> : <MobileLayout />}
     </div>
   )
 }

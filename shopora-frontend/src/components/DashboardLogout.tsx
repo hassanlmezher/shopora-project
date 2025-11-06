@@ -13,6 +13,7 @@ import login from "../images/login.png"
 import { useNavigate } from 'react-router-dom'
 import { useMemo, useRef, useState } from "react";
 import type { ChangeEvent, FocusEvent as ReactFocusEvent, KeyboardEvent as ReactKeyboardEvent } from "react";
+import useDashboardLayout from "../hooks/useDashboardLayout";
 
 const catalogue = [
     {
@@ -73,6 +74,7 @@ function DashboardLogout() {
     const priceContainerRef = useRef<HTMLDivElement | null>(null);
     const minPriceInputRef = useRef<HTMLInputElement | null>(null);
     const maxPriceInputRef = useRef<HTMLInputElement | null>(null);
+    const isDesktopLayout = useDashboardLayout();
 
     const filteredItems = useMemo(() => {
         const normalized = searchTerm.trim().toLowerCase();
@@ -563,12 +565,7 @@ function DashboardLogout() {
 
   return (
     <div className="min-h-screen bg-[#5AB688]">
-        <div className="xl:hidden">
-            <MobileLayout />
-        </div>
-        <div className="hidden xl:block">
-            <DesktopLayout />
-        </div>
+        {isDesktopLayout ? <DesktopLayout /> : <MobileLayout />}
     </div>
   )
 }
