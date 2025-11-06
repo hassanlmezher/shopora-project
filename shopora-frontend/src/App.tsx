@@ -6,6 +6,7 @@ import Login from "./components/Login";
 import Stores from "./components/Stores";
 import Signup from "./components/Signup";
 import Settings from './components/Settings';
+import Cart from './components/Cart';
 
 function App() {
   return (
@@ -19,7 +20,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/settings" element={<Settings />} />
         <Route path="/DashboardLoggedIn" element={<DashboardLoggedIn />} />
-        
+        <Route path="/cart" element={<Cart />} />
       </Routes>
     </Router>
   );

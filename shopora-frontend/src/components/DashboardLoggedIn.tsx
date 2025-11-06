@@ -269,7 +269,7 @@ function DashboardLogout() {
     <div className="bg-[#5AB688] h-230 pt-5 ">
         <div className="bg-white mr-5 rounded-2xl flex justify-between items-center pl-5 pr-10 h-19">
             <img className="w-30" src={logo} alt="logo" />
-            <img className="w-9 absolute right-40" src={cart} alt="cart icon" />
+            <img className="w-9 absolute right-40" onClick={() => navigate('/cart')} src={cart} alt="cart icon" />
             <img className="w-[40px] h-[40px]" src={lightMode} alt="" />
         </div>
         <div className="absolute bg-white w-290 h-fit pb-20 right-5 top-20 pl-20">
