@@ -60,6 +60,7 @@ function DashboardLogout() {
     const [searchTerm, setSearchTerm] = useState("");
     const [isSearchExpanded, setIsSearchExpanded] = useState(false);
     const [priceRange, setPriceRange] = useState({ min: priceBounds.min, max: priceBounds.max });
+    const [priceDraft, setPriceDraft] = useState({ min: priceBounds.min.toString(), max: priceBounds.max.toString() });
     const [isPriceExpanded, setIsPriceExpanded] = useState(false);
     const searchInputRef = useRef<HTMLInputElement | null>(null);
     const priceContainerRef = useRef<HTMLDivElement | null>(null);
@@ -148,47 +149,66 @@ function DashboardLogout() {
         if (nextFocus && priceContainerRef.current?.contains(nextFocus)) {
             return;
         }
+        commitMinPrice();
+        commitMaxPrice();
         setIsPriceExpanded(false);
     };
 
     const handlePriceInputKeyDown = (event: ReactKeyboardEvent<HTMLInputElement>) => {
         if (event.key === "Escape") {
             event.preventDefault();
+            commitMinPrice();
+            commitMaxPrice();
             setIsPriceExpanded(false);
-            setTimeout(() => {
-                priceContainerRef.current?.focus();
-            }, 0);
         }
     };
 
     const handleMinPriceChange = (event: ChangeEvent<HTMLInputElement>) => {
-        const nextValue = Number(event.target.value);
-        if (Number.isNaN(nextValue)) {
+        const nextValue = event.target.value;
+        setPriceDraft(prev => ({ ...prev, min: nextValue }));
+
+        if (nextValue === "") {
             return;
         }
 
-        setPriceRange(prev => {
-            const clamped = Math.max(priceBounds.min, Math.min(nextValue, prev.max));
-            if (clamped === prev.min) {
-                return prev;
-            }
-            return { ...prev, min: clamped };
-        });
+        const numeric = Number(nextValue);
+        if (Number.isNaN(numeric)) {
+            return;
+        }
+
+        if (numeric < priceBounds.min || numeric > priceRange.max) {
+            return;
+        }
+
+        setPriceRange(prev => ({ ...prev, min: numeric }));
     };
 
     const handleMaxPriceChange = (event: ChangeEvent<HTMLInputElement>) => {
-        const nextValue = Number(event.target.value);
-        if (Number.isNaN(nextValue)) {
+        const nextValue = event.target.value;
+        setPriceDraft(prev => ({ ...prev, max: nextValue }));
+
+        if (nextValue === "") {
             return;
         }
 
-        setPriceRange(prev => {
-            const clamped = Math.min(priceBounds.max, Math.max(nextValue, prev.min));
-            if (clamped === prev.max) {
-                return prev;
-            }
-            return { ...prev, max: clamped };
-        });
+        const numeric = Number(nextValue);
+        if (Number.isNaN(numeric)) {
+            return;
+        }
+
+        if (numeric > priceBounds.max || numeric < priceRange.min) {
+            return;
+        }
+
+        setPriceRange(prev => ({ ...prev, max: numeric }));
+    };
+
+    const handleMinPriceBlur = () => {
+        commitMinPrice();
+    };
+
+    const handleMaxPriceBlur = () => {
+        commitMaxPrice();
     };
   return (
     <div className="bg-[#5AB688] h-230 pt-5 ">
@@ -264,14 +284,15 @@ function DashboardLogout() {
                 {isPriceExpanded ? (
                     <div
                         className="flex w-full items-center gap-2"
-                        onClick={preventContainerClickPropagation}
+                        onClick={(event) => event.stopPropagation()}
                         role="group"
                         aria-label="Price range inputs"
                     >
                         <input
                             ref={minPriceInputRef}
-                            value={priceRange.min}
+                            value={priceDraft.min}
                             onChange={handleMinPriceChange}
+                            onBlur={handleMinPriceBlur}
                             onKeyDown={handlePriceInputKeyDown}
                             type="number"
                             min={priceBounds.min}
@@ -281,8 +302,9 @@ function DashboardLogout() {
                         <span className="text-[#5DBC8C] font-semibold">-</span>
                         <input
                             ref={maxPriceInputRef}
-                            value={priceRange.max}
+                            value={priceDraft.max}
                             onChange={handleMaxPriceChange}
+                            onBlur={handleMaxPriceBlur}
                             onKeyDown={handlePriceInputKeyDown}
                             type="number"
                             min={priceBounds.min}
