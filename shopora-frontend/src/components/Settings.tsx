@@ -1,5 +1,3 @@
-import Header from "./Header"
-import back from "../images/back.png"
 import { useNavigate } from "react-router-dom";
 import useAuthStore from '../store/useAuthStore';
 import profile from "../images/profile.png";

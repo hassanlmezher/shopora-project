@@ -1,6 +1,5 @@
 import { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import back from "../images/back.png";
 import CartCard from "./CartCard";
 import useCartStore from "../store/useCartStore";
 

@@ -272,7 +272,7 @@ function DashboardLogout() {
                 <img className="w-24" src={logo} alt="logo" />
                 <img className="h-10 w-10 rounded-full bg-white/20 p-2" src={lightMode} alt="toggle theme" />
             </header>
-            <section className="rounded-3xl bg-gradient-to-br from-[#5DBC8C] to-[#E3C59F] p-6 shadow-lg">
+            <section className="rounded-3xl bg-linear-to-br from-[#5DBC8C] to-[#E3C59F] p-6 shadow-lg">
                 <p className="text-3xl font-bold">Welcome to Shopora</p>
                 <p className="text-2xl font-semibold">Find products you love</p>
                 <button
@@ -383,14 +383,14 @@ function DashboardLogout() {
         <div className="bg-[#5AB688] h-230 pt-5 ">
             <div className="bg-white mr-5 rounded-2xl flex justify-between items-center pl-5 pr-10 h-19">
                 <img className="w-30" src={logo} alt="logo" />
-                <img className="w-[40px] h-[40px]" src={lightMode} alt="toggle theme" />
+                <img className="w-10 h-10" src={lightMode} alt="toggle theme" />
             </div>
             <div className="absolute bg-white w-290 h-fit pb-20 right-5 top-20 pl-20">
                 <div className="bg-linear-to-b from-[#5DBC8C] to-[#E3C59F] w-250 h-50 mt-10">
                     <img className="w-80 absolute top-[-11px] right-40" src={women} alt="women" />
                     <p className="text-white text-5xl font-bold absolute top-15 left-40">Check out</p>
                     <p className="text-white text-4xl font-bold absolute top-30 left-45">All available</p>
-                    <button className="bg-white text-[#DDC59E] text-2xl font-bold rounded-2xl w-35 h-12 absolute top-45 left-70 transition duration-300 ease-in-out hover:bg-[#DDC59E] hover:text-white hover:border-1 hover:border-amber-50" onClick={() => navigate('/stores')}>Stores</button>
+                    <button className="bg-white text-[#DDC59E] text-2xl font-bold rounded-2xl w-35 h-12 absolute top-45 left-70 transition duration-300 ease-in-out hover:bg-[#DDC59E] hover:text-white hover:border hover:border-amber-50" onClick={() => navigate('/stores')}>Stores</button>
                 </div>
                 <div className="grid grid-cols-3 gap-4 mt-13 ml-[-50px]">
                     {filteredItems.length > 0 ? (

@@ -1,4 +1,3 @@
-import back from "../images/back.png"
 import moustache from "../images/moustache.png"
 import gucci from "../images/gucci.png"
 import apple from "../images/apple.png"
