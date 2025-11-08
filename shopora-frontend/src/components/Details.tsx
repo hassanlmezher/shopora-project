@@ -22,19 +22,18 @@ function Details() {
   const [reviews, setReviews] = useState<Review[]>(productReviews || []);
 
   const totalReviews = reviews.length;
+  const storageKey = name && namee ? `reviews-${name}-${namee}` : null;
 
   useEffect(() => {
-    const savedReviews = localStorage.getItem(`reviews-${name}-${namee}`);
+    if (!storageKey) {
+      return;
+    }
+
+    const savedReviews = localStorage.getItem(storageKey);
     if (savedReviews) {
       setReviews(JSON.parse(savedReviews));
     }
-  }, [name, namee]);
-
-  useEffect(() => {
-    if (reviews.length > 0) {
-      localStorage.setItem(`reviews-${name}-${namee}`, JSON.stringify(reviews));
-    }
-  }, [reviews, name, namee]);
+  }, [storageKey]);
 
   const handleBack = () => {
     navigate(isLoggedIn ? "/DashboardLoggedIn" : "/dashboard");
@@ -51,7 +50,13 @@ function Details() {
       text: newReview.trim(),
     };
 
-    setReviews((prev) => [...prev, newReviewObj]);
+    setReviews((prev) => {
+      const updated = [...prev, newReviewObj];
+      if (storageKey) {
+        localStorage.setItem(storageKey, JSON.stringify(updated));
+      }
+      return updated;
+    });
     setNewReview("");
     setSelectedRating(5);
     setShowAddReview(false);

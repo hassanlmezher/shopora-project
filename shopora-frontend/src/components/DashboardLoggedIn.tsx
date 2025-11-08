@@ -409,7 +409,6 @@ function DashboardLoggedIn() {
                                 price={item.price}
                                 priceValue={item.priceValue}
                                 description={item.description}
-                                ratings={item.ratings}
                                 by={item.by}
                                 reviews={item.reviews}
                             />
@@ -488,7 +487,6 @@ function DashboardLoggedIn() {
                                 price={item.price}
                                 priceValue={item.priceValue}
                                 description={item.description}
-                                ratings={item.ratings}
                                 by={item.by}
                                 reviews={item.reviews}
                             />

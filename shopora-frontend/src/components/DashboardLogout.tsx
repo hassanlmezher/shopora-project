@@ -25,7 +25,12 @@ const catalogue = [
         description: "A perfect balance of high-fidelity audio",
         ratings: "(123)",
         by: "Ali's shop",
-        category: "Headphones"
+        category: "Headphones",
+        reviews: [
+            { reviewer: "Robin Hood", rating: 5, text: "I really liked the headphones" },
+            { reviewer: "Jane Doe", rating: 5, text: "A great headphones i strongly recommend it" },
+            { reviewer: "John Smith", rating: 4, text: "Good sound quality, but a bit pricey" }
+        ]
     },
     {
         image: tShirt,
@@ -36,7 +41,12 @@ const catalogue = [
         description: "A high quality clothes brand.",
         ratings: "(101)",
         by: "Hassan's shop",
-        category: "Shirts"
+        category: "Shirts",
+        reviews: [
+            { reviewer: "Alice", rating: 5, text: "Amazing quality and fit!" },
+            { reviewer: "Bob", rating: 4, text: "Love the design, but runs a bit small" },
+            { reviewer: "Charlie", rating: 5, text: "Best t-shirt I've ever owned" }
+        ]
     },
     {
         image: shoes,
@@ -47,7 +57,12 @@ const catalogue = [
         description: "Crafted for comfort. Designed for confidence.",
         ratings: "(211)",
         by: "Dani's shop",
-        category: "Shoes"
+        category: "Shoes",
+        reviews: [
+            { reviewer: "Diana", rating: 5, text: "Super comfortable and stylish" },
+            { reviewer: "Eve", rating: 4, text: "Great for running, but not for everyday wear" },
+            { reviewer: "Frank", rating: 5, text: "Excellent craftsmanship and support" }
+        ]
     }
 ];
 
@@ -349,8 +364,8 @@ function DashboardLogout() {
                                 price={item.price}
                                 priceValue={item.priceValue}
                                 description={item.description}
-                                ratings={item.ratings}
                                 by={item.by}
+                                reviews={item.reviews}
                             />
                         ))}
                     </div>
@@ -403,8 +418,8 @@ function DashboardLogout() {
                                 price={item.price}
                                 priceValue={item.priceValue}
                                 description={item.description}
-                                ratings={item.ratings}
                                 by={item.by}
+                                reviews={item.reviews}
                             />
                         ))
                     ) : (
