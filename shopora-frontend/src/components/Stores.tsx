@@ -31,9 +31,8 @@ function Stores() {
         <button
           type="button"
           onClick={() => isLoggedIn ? navigate('/DashboardLoggedIn') : navigate('/dashboard')}
-          className="flex w-fit items-center gap-3 rounded-full bg-white px-4 py-2 text-sm font-semibold text-[#388063] shadow-sm transition hover:bg-[#65CD99] hover:text-white"
+          className="border border-gray-300 flex w-fit items-center gap-3 rounded-full bg-white px-4 py-2 text-sm font-semibold text-[#388063] shadow-sm transition hover:bg-[#65CD99] hover:text-white"
         >
-          <img className="w-6" src={back} alt="Go back" />
           Back
         </button>
         <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">

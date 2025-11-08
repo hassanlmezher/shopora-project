@@ -56,12 +56,12 @@ function ItemCard({image, name, namee, price, priceValue, description, ratings, 
       </div>
       <div className="mt-4 flex flex-col gap-3 sm:flex-row">
         <button
-          className="w-full rounded-2xl bg-[#5DBC8C] px-4 py-3 text-sm font-bold text-white transition duration-300 ease-in-out hover:bg-white hover:text-[#5DBC8C] hover:ring-2 hover:ring-[#5DBC8C]"
+          className="w-full rounded-2xl bg-[#5DBC8C] px-4 py-3 text-sm font-bold text-white transition duration-300 ease-in-out hover:bg-white hover:text-black hover:ring-2 hover:ring-black"
           onClick={handleAddToCart}
         >
           Add to cart
         </button>
-        <button className="w-full rounded-2xl border-2 border-[#5DBC8C] px-4 py-3 text-sm font-bold text-[#5DBC8C] transition duration-300 ease-in-out hover:bg-[#5DBC8C] hover:text-white">
+        <button className="w-full rounded-2xl border-2 border-[#5DBC8C] px-4 py-3 text-sm font-bold text-[#5DBC8C] transition duration-300 ease-in-out hover:bg-white hover:text-black hover:border-black" onClick={() => navigate('/details')}>
           Details
         </button>
       </div>

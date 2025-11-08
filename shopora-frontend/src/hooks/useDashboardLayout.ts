@@ -11,12 +11,7 @@ const getInitialLayoutState = () => {
     return window.innerWidth >= DESKTOP_MIN_WIDTH;
 };
 
-/**
- * Keeps the desktop dashboard visible only while the window stays at the initial
- * (maximized) width. The moment the user starts shrinking the window, the layout
- * switches to the mobile variant. We still fall back to the mobile layout for
- * genuinely small screens (< DESKTOP_MIN_WIDTH) so phones and tablets behave as expected.
- */
+
 export default function useDashboardLayout() {
     const [isDesktopLayout, setIsDesktopLayout] = useState(getInitialLayoutState);
     const initialWidthRef = useRef<number | null>(null);

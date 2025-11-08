@@ -273,7 +273,7 @@ function DashboardLoggedIn() {
     };
 
     const renderMobileLayout = () => (
-        <div className="flex min-h-screen flex-col gap-6 bg-[#5AB688] px-4 pb-16 pt-6 text-white">
+        <div className="flex min-h-screen  flex-col gap-6 bg-[#5AB688] px-4 pb-16 pt-6 text-white">
             <header className="flex items-center justify-between">
                 <img className="w-24" src={logo} alt="logo" />
                 <div className="flex items-center gap-4">

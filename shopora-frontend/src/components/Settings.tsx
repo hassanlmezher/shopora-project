@@ -33,9 +33,8 @@ function Settings() {
         <button
           type="button"
           onClick={() => isLoggedIn ? navigate('/DashboardLoggedIn') : navigate('/dashboard')}
-          className="flex w-fit items-center gap-3 rounded-full bg-white px-4 py-2 text-sm font-semibold text-[#388063] shadow-sm transition hover:bg-[#65CD99] hover:text-white"
+          className="flex border border-gray-300 w-fit items-center gap-3 rounded-full bg-white px-4 py-2 text-sm font-semibold text-[#388063] shadow-sm transition hover:bg-[#65CD99] hover:text-white"
         >
-          <img className="w-6" src={back} alt="Go back" />
           Back
         </button>
         <div className="flex flex-col items-center gap-4">

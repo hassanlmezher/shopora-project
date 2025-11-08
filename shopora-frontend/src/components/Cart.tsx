@@ -39,9 +39,8 @@ function Cart() {
                     <button
                         type="button"
                         onClick={() => navigate("/DashboardLoggedIn")}
-                        className="flex items-center gap-3 rounded-full bg-black px-6 py-3 text-lg font-semibold text-white transition hover:bg-black/80"
+                        className=" flex items-center gap-3 rounded-full border-2 border-black bg-white text-black px-6 py-3 text-lg font-semibold transition hover:bg-black hover:text-white"
                     >
-                        <img className="w-6" src={back} alt="" />
                         Back
                     </button>
                 </div>
