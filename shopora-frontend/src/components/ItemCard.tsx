@@ -13,9 +13,10 @@ interface ProductItem {
   description: string;
   ratings: string;
   by: string;
+  reviews: { reviewer: string; rating: number; text: string }[];
 }
 
-function ItemCard({image, name, namee, price, priceValue, description, ratings, by}: ProductItem) {
+function ItemCard({image, name, namee, price, priceValue, description, ratings, by, reviews}: ProductItem) {
   const navigate = useNavigate();
   const isLoggedIn = useAuthStore(state => state.isLoggedIn);
   const addItem = useCartStore(state => state.addItem);
@@ -34,6 +35,10 @@ function ItemCard({image, name, namee, price, priceValue, description, ratings, 
       by,
       price: priceValue,
     });
+  };
+
+  const handleDetailsClick = () => {
+    navigate('/details', { state: { image, name, namee, reviews } });
   };
 
   return (
@@ -61,7 +66,7 @@ function ItemCard({image, name, namee, price, priceValue, description, ratings, 
         >
           Add to cart
         </button>
-        <button className="w-full rounded-2xl border-2 border-[#5DBC8C] px-4 py-3 text-sm font-bold text-[#5DBC8C] transition duration-300 ease-in-out hover:bg-white hover:text-black hover:border-black" onClick={() => navigate('/details')}>
+        <button className="w-full rounded-2xl border-2 border-[#5DBC8C] px-4 py-3 text-sm font-bold text-[#5DBC8C] transition duration-300 ease-in-out hover:bg-white hover:text-black hover:border-black" onClick={handleDetailsClick}>
           Details
         </button>
       </div>
