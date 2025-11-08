@@ -13,7 +13,7 @@ import price from "../images/price.png"
 import { useNavigate } from 'react-router-dom'
 import cart from "../images/cart.png"
 import logout from "../images/logout.png"
-import { useMemo, useRef, useState } from "react";
+import { useMemo, useRef, useState, useEffect } from "react";
 import type { ChangeEvent, FocusEvent as ReactFocusEvent, KeyboardEvent as ReactKeyboardEvent } from "react";
 import useCartStore from "../store/useCartStore";
 import useDashboardLayout from "../hooks/useDashboardLayout";
@@ -69,6 +69,17 @@ const catalogue = [
     }
 ];
 
+function getUpdatedCatalogue() {
+    return catalogue.map(item => {
+        const savedReviews = localStorage.getItem(`reviews-${item.name}-${item.namee}`);
+        if (savedReviews) {
+            const parsedReviews = JSON.parse(savedReviews);
+            return { ...item, reviews: parsedReviews };
+        }
+        return item;
+    });
+}
+
 const ALL_CATEGORIES = "All Categories";
 
 const categoryOptions = [ALL_CATEGORIES, "Shirts", "Headphones", "Shoes"] as const;
@@ -88,6 +99,7 @@ function DashboardLoggedIn() {
     const [priceRange, setPriceRange] = useState({ min: priceBounds.min, max: priceBounds.max });
     const [priceDraft, setPriceDraft] = useState({ min: priceBounds.min.toString(), max: priceBounds.max.toString() });
     const [isPriceExpanded, setIsPriceExpanded] = useState(false);
+    const [updatedCatalogue, setUpdatedCatalogue] = useState(getUpdatedCatalogue());
     const searchInputRef = useRef<HTMLInputElement | null>(null);
     const priceContainerRef = useRef<HTMLDivElement | null>(null);
     const minPriceInputRef = useRef<HTMLInputElement | null>(null);
@@ -97,16 +109,28 @@ function DashboardLoggedIn() {
         (state) => state.items.reduce((sum, item) => sum + item.quantity, 0)
     );
 
+    useEffect(() => {
+        const handleReviewsUpdate = () => {
+            setUpdatedCatalogue(getUpdatedCatalogue());
+        };
+
+        window.addEventListener('reviewsUpdated', handleReviewsUpdate);
+
+        return () => {
+            window.removeEventListener('reviewsUpdated', handleReviewsUpdate);
+        };
+    }, []);
+
     const filteredItems = useMemo(() => {
         const normalized = searchTerm.trim().toLowerCase();
-        return catalogue.filter(item => {
+        return updatedCatalogue.filter(item => {
             const haystack = `${item.name} ${item.namee} ${item.description} ${item.by} ${item.category}`.toLowerCase();
             const matchesSearch = !normalized || haystack.includes(normalized);
             const matchesPrice = item.priceValue >= priceRange.min && item.priceValue <= priceRange.max;
             const matchesCategory = selectedCategory === ALL_CATEGORIES || item.category === selectedCategory;
             return matchesSearch && matchesPrice && matchesCategory;
         });
-    }, [searchTerm, priceRange, selectedCategory]);
+    }, [searchTerm, priceRange, selectedCategory, updatedCatalogue]);
 
     const expandSearch = () => {
         if (isSearchExpanded) {

@@ -54,8 +54,14 @@ function ItemCard({image, name, namee, price, priceValue, description, ratings, 
       <p className="text-sm text-gray-500 sm:text-base">{description}</p>
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <img className="w-20 sm:w-24" src={stars} alt="rating" />
-          <span className="text-sm text-gray-500">{ratings}</span>
+          <div className="flex">
+            {[1, 2, 3, 4, 5].map((star) => (
+              <span key={star} className={`text-lg ${star <= (reviews?.length > 0 ? Math.round(reviews.reduce((sum, review) => sum + review.rating, 0) / reviews.length) : 0) ? 'text-yellow-400' : 'text-gray-300'}`}>
+                ★
+              </span>
+            ))}
+          </div>
+          <span className="text-sm text-gray-500">({reviews?.length || 0})</span>
         </div>
         <p className="text-sm font-semibold text-gray-600">{by}</p>
       </div>
