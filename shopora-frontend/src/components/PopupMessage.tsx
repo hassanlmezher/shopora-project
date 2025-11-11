@@ -11,7 +11,7 @@ const variantStyles: Record<NonNullable<PopupMessageProps["variant"]>, string> =
     info: "bg-white text-[#1f1f1f]",
 };
 
-export default function PopupMessage({ message, isVisible, variant = "info", icon }: PopupMessageProps) {
+export default function PopupMessage({ message, isVisible, variant = "info" }: PopupMessageProps) {
     if (!message) {
         return null;
     }

@@ -99,7 +99,7 @@ function ItemCard({ image, name, namee, price, priceValue, description, by, revi
 
   return (
     <>
-    <div className="relative flex h-full w-full max-w-[300px] flex-col gap-4 rounded-3xl border border-gray-100 bg-white p-6 text-left shadow-lg transition hover:-translate-y-1 hover:shadow-xl">
+    <div className="relative flex h-full w-[360px] max-w-[300px] flex-col gap-4 rounded-3xl border border-gray-100 bg-white p-6 text-left shadow-lg transition hover:-translate-y-1 hover:shadow-xl">
       <button
         type="button"
         onClick={handleToggleFavorite}
