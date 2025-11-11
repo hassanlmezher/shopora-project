@@ -4,6 +4,7 @@ import useCartStore, { type CartLineItem } from "../store/useCartStore";
 
 interface CartCardProps {
     item: CartLineItem;
+    onRemove?: (item: CartLineItem) => void;
 }
 
 const formatCurrency = (value: number) =>
@@ -12,7 +13,7 @@ const formatCurrency = (value: number) =>
         maximumFractionDigits: 2,
     })}`;
 
-function CartCard({ item }: CartCardProps) {
+function CartCard({ item, onRemove }: CartCardProps) {
     const increment = useCartStore((state) => state.incrementQuantity);
     const decrement = useCartStore((state) => state.decrementQuantity);
     const removeItem = useCartStore((state) => state.removeItem);
@@ -30,6 +31,7 @@ function CartCard({ item }: CartCardProps) {
 
     const handleRemove = () => {
         removeItem(item.id);
+        onRemove?.(item);
     };
 
     const displayName = `${item.name} ${item.namee}`.trim();

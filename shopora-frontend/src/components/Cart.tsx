@@ -1,7 +1,8 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import CartCard from "./CartCard";
 import useCartStore from "../store/useCartStore";
+import PopupMessage from "./PopupMessage";
 
 const formatCurrency = (value: number) =>
     `$${value.toLocaleString(undefined, {
@@ -15,6 +16,8 @@ function Cart() {
     const navigate = useNavigate();
     const items = useCartStore((state) => state.items);
     const [shippingOption, setShippingOption] = useState<ShippingOption>("pickup");
+    const [showPopup, setShowPopup] = useState(false);
+    const hideTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
     const subtotal = useMemo(
         () =>
@@ -27,6 +30,25 @@ function Cart() {
 
     const shippingCost = shippingOption === "pickup" ? 0 : 9.99;
     const total = subtotal + shippingCost;
+
+    useEffect(() => {
+        return () => {
+            if (hideTimerRef.current) {
+                clearTimeout(hideTimerRef.current);
+            }
+        };
+    }, []);
+
+    const triggerRemovedPopup = () => {
+        setShowPopup(true);
+        if (hideTimerRef.current) {
+            clearTimeout(hideTimerRef.current);
+        }
+        hideTimerRef.current = setTimeout(() => {
+            setShowPopup(false);
+            hideTimerRef.current = null;
+        }, 1000);
+    };
 
     return (
         <div className="min-h-screen bg-[#5AB688] pb-20">
@@ -46,7 +68,7 @@ function Cart() {
 
                 <div className="mt-12 space-y-6">
                     {items.length > 0 ? (
-                        items.map((item) => <CartCard key={item.id} item={item} />)
+                        items.map((item) => <CartCard key={item.id} item={item} onRemove={triggerRemovedPopup} />)
                     ) : (
                         <div className="rounded-3xl border-2 border-dashed border-white/60 bg-white/20 p-10 text-center text-lg font-semibold text-white shadow-inner">
                             Your cart is empty. Keep exploring and add products you love!
@@ -141,6 +163,7 @@ function Cart() {
                     </div>
                 )}
             </div>
+            <PopupMessage message="Item removed from cart!" isVisible={showPopup} variant="error" />
         </div>
     );
 }

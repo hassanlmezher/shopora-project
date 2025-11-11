@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import auth from "../images/auth.png"
 import { useNavigate } from 'react-router-dom'
 import useAuthStore from "../store/useAuthStore";
+import PopupMessage from "./PopupMessage";
 
 
 function Login() {
@@ -12,6 +13,8 @@ function Login() {
     const [ passwordd, setPassWordd ] = useState("");
     const [showPopup, setShowPopup] = useState(false);
     const [popupMessage, setPopupMessage] = useState("");
+    const [popupVariant, setPopupVariant] = useState<"success" | "error">("success");
+    const hideTimerRef = useRef<NodeJS.Timeout | null>(null);
     const { login, logout } = useAuthStore();
     
     const handleEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -20,23 +23,41 @@ function Login() {
     const handlePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
       setPassWordd(e.target.value)
     };
+    const scheduleHide = (callback?: () => void) => {
+      if (hideTimerRef.current) {
+        clearTimeout(hideTimerRef.current);
+      }
+      hideTimerRef.current = setTimeout(() => {
+        setShowPopup(false);
+        hideTimerRef.current = null;
+        callback?.();
+      }, 1000);
+    };
+
+    useEffect(() => {
+      return () => {
+        if (hideTimerRef.current) {
+          clearTimeout(hideTimerRef.current);
+        }
+      };
+    }, []);
+
     const handleLogIn = () => {
       if(email === emaill && password === passwordd) {
         setPopupMessage("Login successful!");
+        setPopupVariant("success");
         setShowPopup(true);
-        setTimeout(() => {
-          setShowPopup(false);
+        scheduleHide(() => {
           login();
           navigate('/DashboardLoggedIn');
-        }, 1000);
+        });
       } else {
         setPopupMessage("Login failed! Please check your credentials.");
+        setPopupVariant("error");
         logout();
         setShowPopup(true);
+        scheduleHide();
       }
-    };
-    const closePopup = () => {
-      setShowPopup(false);
     };
   return (
     <div className="flex min-h-screen items-center justify-center bg-linear-to-b from-[#66CE9A] to-[#388063] px-4 py-10">
@@ -75,12 +96,7 @@ function Login() {
           <img className="w-full max-w-xs sm:max-w-sm" src={auth} alt="auth illustration" />
         </div>
       </div>
-      <div className={`fixed bottom-4 left-1/2 z-50 -translate-x-1/2 transform rounded-3xl p-4 shadow-lg transition-all duration-500 ${showPopup ? 'translate-y-0 opacity-100' : 'translate-y-full opacity-0'} ${popupMessage.includes("successful") ? 'bg-[#77e4ad] text-white' : 'bg-black shadow shadow-gray-700 text-white'}`}>
-        <p className="text-sm font-semibold text-center">{popupMessage}</p>
-        {popupMessage.includes("failed") && (
-          <button className="mt-2 block w-full rounded-2xl border-2 border-red-700 bg-white px-3 py-1 text-xs font-bold text-red-600" onClick={closePopup}>Close</button>
-        )}
-      </div>
+      <PopupMessage message={popupMessage} isVisible={showPopup} variant={popupVariant} />
     </div>
   )
 }

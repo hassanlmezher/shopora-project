@@ -4,6 +4,8 @@ import DashboardLogout from "./components/DashboardLogout";
 import DashboardLoggedIn from "./components/DashboardLoggedIn"
 import Login from "./components/Login";
 import Stores from "./components/Stores";
+import StoreItems from "./components/StoreItems";
+import Favorites from "./components/Favorites";
 import Signup from "./components/Signup";
 import Settings from './components/Settings';
 import Cart from './components/Cart';
@@ -17,6 +19,8 @@ function App() {
         <Route path="/dashboard" element={<DashboardLogout />} />
         <Route path="/login" element={<Login />} />
         <Route path="/stores" element={<Stores />} />
+        <Route path="/stores/:shopId" element={<StoreItems />} />
+        <Route path="/favorites" element={<Favorites />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
         <Route path="/settings" element={<Settings />} />
