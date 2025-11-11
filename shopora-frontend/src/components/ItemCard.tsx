@@ -28,7 +28,8 @@ function ItemCard({ image, name, namee, price, priceValue, description, by, revi
   const addItem = useCartStore((state) => state.addItem);
   const toggleFavorite = useFavoritesStore((state) => state.toggleFavorite);
   const isFavorite = useFavoritesStore((state) => state.isFavorite(`${name}-${namee}`));
-  const [showPopup, setShowPopup] = useState(false);
+  const [toast, setToast] = useState<{ message: string; variant: "success" | "error" | "info" } | null>(null);
+  const [isToastVisible, setIsToastVisible] = useState(false);
   const hideTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const safeReviews = reviews ?? [];
@@ -46,6 +47,18 @@ function ItemCard({ image, name, namee, price, priceValue, description, by, revi
     };
   }, []);
 
+  const showToast = (message: string, variant: "success" | "error" | "info" = "info") => {
+    setToast({ message, variant });
+    setIsToastVisible(true);
+    if (hideTimerRef.current) {
+      clearTimeout(hideTimerRef.current);
+    }
+    hideTimerRef.current = setTimeout(() => {
+      setIsToastVisible(false);
+      hideTimerRef.current = null;
+    }, 1000);
+  };
+
   const handleAddToCart = () => {
     if (!isLoggedIn) {
       navigate("/login");
@@ -61,14 +74,7 @@ function ItemCard({ image, name, namee, price, priceValue, description, by, revi
       price: priceValue,
     });
 
-    setShowPopup(true);
-    if (hideTimerRef.current) {
-      clearTimeout(hideTimerRef.current);
-    }
-    hideTimerRef.current = setTimeout(() => {
-      setShowPopup(false);
-      hideTimerRef.current = null;
-    }, 1000);
+    showToast("Item added to cart!", "success");
   };
 
   const handleDetailsClick = () => {
@@ -76,6 +82,7 @@ function ItemCard({ image, name, namee, price, priceValue, description, by, revi
   };
 
   const handleToggleFavorite = () => {
+    const wasFavorite = isFavorite;
     toggleFavorite({
       id: `${name}-${namee}`,
       image,
@@ -87,6 +94,7 @@ function ItemCard({ image, name, namee, price, priceValue, description, by, revi
       reviews: reviews ?? [],
       by,
     });
+    showToast(wasFavorite ? "Item removed from favorites" : "Item added to favorites", wasFavorite ? "error" : "success");
   };
 
   return (
@@ -157,7 +165,7 @@ function ItemCard({ image, name, namee, price, priceValue, description, by, revi
         </button>
       </div>
     </div>
-    <PopupMessage message="Item added to cart!" isVisible={showPopup} variant="success" />
+    <PopupMessage message={toast?.message ?? ""} isVisible={isToastVisible && Boolean(toast)} variant={toast?.variant ?? "info"} />
     </>
   );
 }
