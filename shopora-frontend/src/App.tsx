@@ -32,9 +32,9 @@ function App() {
         <Route path="/cart" element={<Cart />} />
         <Route path="/details" element={<Details />} />
         <Route path="/welcome-create" element={<WelcomeCreate />} />
-        <Route path='shopForm' element={<ShopForm />}/>
-        <Route path='adminDashboard' element={<AdminDashboard />} />
-        <Route path='adminDetails' element={<AdminDetails />} />
+        <Route path="/shopForm" element={<ShopForm />} />
+        <Route path="/adminDashboard" element={<AdminDashboard />} />
+        <Route path="/admin/stores/:storeId" element={<AdminDetails />} />
       </Routes>
     </Router>
   );

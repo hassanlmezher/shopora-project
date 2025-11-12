@@ -2,15 +2,12 @@ import { useNavigate } from "react-router-dom";
 import logo from "../images/Logo.png";
 import lightMode from "../images/lightMode.png";
 import AdminShopCard from "./AdminShopCard";
-
-const adminStores = [
-  { id: "hassan", name: "Hassan's shop" },
-  { id: "dani", name: "Dani's shop" },
-  { id: "mhamad", name: "Mhamad's shop" },
-];
+import useAdminStores from "../store/useAdminStores";
 
 function AdminDashboard() {
   const navigate = useNavigate();
+  const stores = useAdminStores((state) => state.stores);
+  const totalStores = stores.length;
 
   return (
     <div className="min-h-screen bg-[#F4F7F6] pb-16">
@@ -38,18 +35,24 @@ function AdminDashboard() {
               <p className="text-2xl font-bold text-[#1F3B2F]">Manage storefronts</p>
             </div>
             <span className="rounded-full bg-white px-4 py-2 text-sm font-semibold text-[#388063] shadow-sm">
-              {adminStores.length} {adminStores.length === 1 ? "store" : "stores"}
+              {totalStores} {totalStores === 1 ? "store" : "stores"}
             </span>
           </div>
 
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            {adminStores.map((store) => (
-              <AdminShopCard
-                key={store.id}
-                storeName={store.name}
-                onDetails={() => navigate(`/stores/${store.id}`)}
-              />
-            ))}
+            {totalStores > 0 ? (
+              stores.map((store) => (
+                <AdminShopCard
+                  key={store.id}
+                  storeName={store.name}
+                  onDetails={() => navigate(`/admin/stores/${store.id}`)}
+                />
+              ))
+            ) : (
+              <div className="col-span-full rounded-3xl bg-white p-8 text-center text-[#388063] shadow-sm">
+                All storefronts have been banned for now.
+              </div>
+            )}
           </div>
         </section>
       </div>
