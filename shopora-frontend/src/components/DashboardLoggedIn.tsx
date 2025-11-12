@@ -299,6 +299,25 @@ function DashboardLoggedIn() {
                     </button>
                     <button
                         type="button"
+                        onClick={() => navigate('/notifications/user')}
+                        className="rounded-2xl bg-white/20 p-2"
+                        aria-label="View notifications"
+                    >
+                        <svg
+                            className="h-6 w-6 text-white"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="1.8"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                        >
+                            <path d="M6 9a6 6 0 1 1 12 0v4.2l1.2 2.8a1 1 0 0 1-.92 1.4H5.7a1 1 0 0 1-.92-1.4L6 13.2z" />
+                            <path d="M10 19a2 2 0 0 0 4 0" />
+                        </svg>
+                    </button>
+                    <button
+                        type="button"
                         className="h-11 w-11 rounded-2xl bg-white/20 p-2"
                         aria-label="Toggle theme"
                     >
@@ -647,6 +666,25 @@ function DashboardLoggedIn() {
                                     {totalCartItems}
                                 </span>
                             )}
+                        </button>
+                        <button
+                            type="button"
+                            onClick={() => navigate('/notifications/user')}
+                            className="rounded-full border border-[#5AB688]/30 bg-[#5AB688]/10 p-3 text-[#5AB688] transition hover:bg-[#5AB688]/20"
+                            aria-label="View notifications"
+                        >
+                            <svg
+                                className="h-6 w-6"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                strokeWidth="1.8"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                            >
+                                <path d="M6 9a6 6 0 1 1 12 0v4.2l1.2 2.8a1 1 0 0 1-.92 1.4H5.7a1 1 0 0 1-.92-1.4L6 13.2z" />
+                                <path d="M10 19a2 2 0 0 0 4 0" />
+                            </svg>
                         </button>
                         <img className="w-10 rounded-full border border-[#5AB688]/20 p-2" src={lightMode} alt="toggle theme" />
                     </div>
