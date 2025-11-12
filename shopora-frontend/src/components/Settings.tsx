@@ -23,8 +23,9 @@ function Settings() {
     },
     {
       image: create,
-      title: "Create lists",
-      description: "Organize items into custom wishlists.",
+      title: "Create your shop",
+      description: "Launch a storefront and start selling on Shopora.",
+      action: () => navigate("/welcome-create"),
     },
   ];
 
