@@ -13,6 +13,7 @@ import Details from './components/Details';
 import WelcomeCreate from "./components/WelcomeCreate";
 import ShopForm from './components/ShopForm';
 import AdminDashboard from './components/AdminDashboard';
+import AdminDetails from './components/AdminDetails';
 
 function App() {
   return (
@@ -31,8 +32,9 @@ function App() {
         <Route path="/cart" element={<Cart />} />
         <Route path="/details" element={<Details />} />
         <Route path="/welcome-create" element={<WelcomeCreate />} />
-        <Route path='shopForm' element={<ShopForm />}/>
-        <Route path='adminDashboard' element={<AdminDashboard />} />
+        <Route path="/shopForm" element={<ShopForm />} />
+        <Route path="/adminDashboard" element={<AdminDashboard />} />
+        <Route path="/admin/stores/:storeId" element={<AdminDetails />} />
       </Routes>
     </Router>
   );
