@@ -19,6 +19,7 @@ function Settings() {
       image: cartt,
       title: "Cart history",
       description: "Review previous orders and saved carts.",
+      action: () => navigate("/cart"),
     },
     {
       image: create,
