@@ -2,29 +2,52 @@ import { useNavigate } from "react-router-dom";
 import useAuthStore from "../store/useAuthStore";
 
 function WelcomeCreate() {
-    const navigate = useNavigate();
-      const { isLoggedIn } = useAuthStore();
+  const navigate = useNavigate();
+  const { isLoggedIn } = useAuthStore();
+
   return (
-    <div className="bg-[#65CD99] pt-10 h-screen px-10 flex flex-col gap-3">
-      <div className="  flex w-full max-w-5xl flex-col gap-10">
-      <button
-        type="button"
-        onClick={() => (isLoggedIn ? navigate("/DashboardLoggedIn") : navigate("/dashboard"))}
-        className="flex w-fit items-center gap-3 rounded-full border border-gray-300 bg-white px-4 py-2 text-sm font-semibold text-[#388063] shadow-sm transition hover:bg-[#65CD99] hover:text-white"
-      >
-        Back
-      </button>
-    </div>
-    <div className="bg-white h-[85%] rounded-3xl py-20">
-      <div className="px-40">
-        <p className="text-[#65CD99] font-bold text-6xl">Create</p>
-        <p className="text-[#65CD99] font-bold text-6xl ml-10 mt-2">Your own</p>
-        <p className="text-[#65CD99] font-bold text-7xl ml-20 mt-2">Shop!</p>
+    <div className="min-h-screen bg-[#65CD99] px-4 py-6 sm:px-8 lg:px-12">
+      <div className="mx-auto flex h-full max-w-5xl flex-col">
+        <button
+          type="button"
+          onClick={() => (isLoggedIn ? navigate("/DashboardLoggedIn") : navigate("/dashboard"))}
+          className="flex w-fit items-center gap-2 rounded-full bg-white px-5 py-2 text-base font-semibold text-[#1F3B2F] shadow-md transition hover:bg-[#f0fff7]"
+        >
+          <svg
+            aria-hidden="true"
+            viewBox="0 0 24 24"
+            className="h-5 w-5 text-[#1F3B2F]"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <path d="M15 18l-6-6 6-6" />
+          </svg>
+          Back
+        </button>
+
+        <div className="mt-6 flex flex-1 flex-col rounded-[2.5rem] bg-white px-6 py-20 text-center shadow-xl  sm:px-10 sm:py-12 md:px-16 md:py-16">
+          <div className="space-y-1">
+            <p className="text-4xl font-bold text-[#65CD99] sm:text-5xl md:text-6xl">Create</p>
+            <p className="text-4xl font-bold text-[#65CD99] sm:text-5xl md:text-6xl">Your own</p>
+            <p className="text-5xl font-bold text-[#65CD99] sm:text-6xl md:text-7xl">Shop!</p>
+          </div>
+
+          <div className="mt-10 flex w-full flex-col items-center gap-4">
+            <button
+              type="button"
+              onClick={() => navigate("/shopForm")}
+              className="w-full max-w-xs rounded-[999px] bg-[#65CD99] px-5 py-3 text-lg font-semibold text-white transition hover:bg-[#53b785] sm:text-xl"
+            >
+              Create
+            </button>
+          </div>
+        </div>
       </div>
-      <button  className="bg-[#65CD99] text-white font-bold text-5xl mt-20 rounded-r-2xl p-3 text-end pr-10 w-140 ">Create</button>
     </div>
-  </div>
-  )
+  );
 }
 
-export default WelcomeCreate
+export default WelcomeCreate;
