@@ -10,7 +10,7 @@ function WelcomeCreate() {
       <div className="mx-auto flex h-full max-w-5xl flex-col">
         <button
           type="button"
-          onClick={() => (isLoggedIn ? navigate("/DashboardLoggedIn") : navigate("/dashboard"))}
+          onClick={() => navigate("/settings")}
           className="flex w-fit items-center gap-2 rounded-full bg-white px-5 py-2 text-base font-semibold text-[#1F3B2F] shadow-md transition hover:bg-[#f0fff7]"
         >
           <svg
