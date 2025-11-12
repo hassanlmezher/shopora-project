@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { persist } from "zustand/middleware";
 
 export interface FavoriteItem {
   id: string;
@@ -19,18 +20,25 @@ interface FavoritesState {
   clearFavorites: () => void;
 }
 
-const useFavoritesStore = create<FavoritesState>((set, get) => ({
-  items: [],
-  toggleFavorite: (item) =>
-    set((state) => {
-      const exists = state.items.some((fav) => fav.id === item.id);
-      if (exists) {
-        return { items: state.items.filter((fav) => fav.id !== item.id) };
-      }
-      return { items: [...state.items, item] };
+const useFavoritesStore = create<FavoritesState>()(
+  persist(
+    (set, get) => ({
+      items: [],
+      toggleFavorite: (item) =>
+        set((state) => {
+          const exists = state.items.some((fav) => fav.id === item.id);
+          if (exists) {
+            return { items: state.items.filter((fav) => fav.id !== item.id) };
+          }
+          return { items: [...state.items, item] };
+        }),
+      isFavorite: (id) => get().items.some((fav) => fav.id === id),
+      clearFavorites: () => set({ items: [] }),
     }),
-  isFavorite: (id) => get().items.some((fav) => fav.id === id),
-  clearFavorites: () => set({ items: [] }),
-}));
+    {
+      name: "shopora-favorites",
+    }
+  )
+);
 
 export default useFavoritesStore;
