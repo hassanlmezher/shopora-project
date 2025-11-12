@@ -9,12 +9,14 @@ function Login() {
     const navigate = useNavigate();
     const email = "hassan@gmail.com";
     const password = "hassan123";
+    const adminEmail = "admin@gmail.com";
+    const adminPassword = "admin123";
     const [ emaill, setEmaill ] = useState("");
     const [ passwordd, setPassWordd ] = useState("");
     const [showPopup, setShowPopup] = useState(false);
     const [popupMessage, setPopupMessage] = useState("");
     const [popupVariant, setPopupVariant] = useState<"success" | "error">("success");
-    const hideTimerRef = useRef<NodeJS.Timeout | null>(null);
+    const hideTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
     const { login, logout } = useAuthStore();
     
     const handleEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -43,7 +45,16 @@ function Login() {
     }, []);
 
     const handleLogIn = () => {
-      if(email === emaill && password === passwordd) {
+      if(adminEmail === emaill && adminPassword === passwordd) {
+        setPopupMessage("Welcome back Admin!");
+        setPopupVariant("success");
+        setShowPopup(true);
+        scheduleHide(() => {
+          login();
+          navigate('/adminDashboard');
+        });
+      }
+      else if(email === emaill && password === passwordd) {
         setPopupMessage("Login successful!");
         setPopupVariant("success");
         setShowPopup(true);
