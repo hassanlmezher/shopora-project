@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { persist } from "zustand/middleware";
 
 export interface CartLineItem {
     id: string;
@@ -21,7 +22,9 @@ interface CartStore {
     clear: () => void;
 }
 
-const useCartStore = create<CartStore>((set) => ({
+const useCartStore = create<CartStore>()(
+    persist(
+        (set) => ({
     items: [],
     addItem: (item) =>
         set((state) => {
@@ -63,7 +66,12 @@ const useCartStore = create<CartStore>((set) => ({
         set((state) => ({
             items: state.items.filter((line) => line.id !== id),
         })),
-    clear: () => set({ items: [] }),
-}));
+            clear: () => set({ items: [] }),
+        }),
+        {
+            name: "shopora-cart",
+        }
+    )
+);
 
 export default useCartStore;
