@@ -21,7 +21,7 @@ function WelcomeCreate() {
         <p className="text-[#65CD99] font-bold text-6xl ml-10 mt-2">Your own</p>
         <p className="text-[#65CD99] font-bold text-7xl ml-20 mt-2">Shop!</p>
       </div>
-      <button onClick={() => navigate("/shopForm")} className="bg-[#65CD99] text-white font-bold text-5xl mt-20 rounded-r-2xl p-3 text-end pr-10 w-140 ">Create</button>
+      <button onClick={() => navigate("/shopForm")} className="bg-[#65CD99] text-white font-bold text-5xl mt-20 rounded-r-2xl p-3 text-end pr-10 w-140 transition hover:bg-white hover:text-[#65CD99] hover:border hover:border-[#65CD99]">Create</button>
     </div>
   </div>
   )
