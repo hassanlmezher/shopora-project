@@ -1,7 +1,28 @@
+import { type FormEvent, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import PopupMessage from "./PopupMessage";
 
 function ShopForm() {
   const navigate = useNavigate();
+  const [shopTitle, setShopTitle] = useState("");
+  const [shopDescription, setShopDescription] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [isSubmitted, setIsSubmitted] = useState(false);
+
+  useEffect(() => {
+    if (!isSubmitted) return undefined;
+    const timer = setTimeout(() => setIsSubmitted(false), 2000);
+    return () => clearTimeout(timer);
+  }, [isSubmitted]);
+
+  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setShopTitle("");
+    setShopDescription("");
+    setPhoneNumber("");
+    setIsSubmitted(true);
+  };
+
   return (
     <div className="flex min-h-screen flex-col bg-[#65CD99] px-4 pb-10 pt-6 sm:px-10 lg:px-20">
       <div className="mx-auto flex w-full max-w-5xl flex-1 flex-col">
@@ -13,29 +34,42 @@ function ShopForm() {
           Back
         </button>
         <div className="mt-6 flex flex-1 items-center justify-center">
-          <div className="flex w-full flex-col items-center gap-5 rounded-3xl bg-white px-6 py-10 text-center shadow-xl sm:px-10 lg:px-16">
+          <form
+            onSubmit={handleSubmit}
+            className="flex w-full flex-col items-center gap-5 rounded-3xl bg-white px-6 py-10 text-center shadow-xl sm:px-10 lg:px-16"
+          >
             <p className="text-2xl font-bold text-gray-400 sm:text-3xl">Ask the admin for a permission</p>
             <input
               type="text"
+              value={shopTitle}
+              onChange={(event) => setShopTitle(event.target.value)}
               className="w-full max-w-xl rounded-2xl bg-gray-300 px-4 py-3 text-gray-700 placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-[#65CD99]"
               placeholder="Shop title.."
             />
             <textarea
               className="w-full max-w-xl rounded-2xl bg-gray-300 px-4 py-3 text-gray-700 placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-[#65CD99]"
+              value={shopDescription}
+              onChange={(event) => setShopDescription(event.target.value)}
               placeholder="Shop description.."
               rows={5}
             />
             <input
               type="text"
+              value={phoneNumber}
+              onChange={(event) => setPhoneNumber(event.target.value)}
               className="w-full max-w-xl rounded-2xl bg-gray-300 px-4 py-3 text-gray-700 placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-[#65CD99]"
               placeholder="Phone number.."
             />
-            <button className="bg-[#65CD99] text-white font-bold py-3 px-10 rounded-2xl transition hover:bg-white hover:border-2 hover:border-[#65CD99] hover:text-[#65CD99]">
+            <button
+              type="submit"
+              className="rounded-2xl bg-[#65CD99] px-10 py-3 font-bold text-white transition hover:bg-white hover:border-2 hover:border-[#65CD99] hover:text-[#65CD99]"
+            >
               Submit
             </button>
-          </div>
+          </form>
         </div>
       </div>
+      <PopupMessage message="Form submitted successfully!" isVisible={isSubmitted} variant="success" />
     </div>
   );
 }
