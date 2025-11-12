@@ -10,6 +10,7 @@ import Signup from "./components/Signup";
 import Settings from './components/Settings';
 import Cart from './components/Cart';
 import Details from './components/Details';
+import WelcomeCreate from "./components/WelcomeCreate";
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
         <Route path="/DashboardLoggedIn" element={<DashboardLoggedIn />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/details" element={<Details />} />
+        <Route path="/welcome-create" element={<WelcomeCreate />} />
       </Routes>
     </Router>
   );
