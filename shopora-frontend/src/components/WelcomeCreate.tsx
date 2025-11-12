@@ -1,9 +1,7 @@
 import { useNavigate } from "react-router-dom";
-import useAuthStore from "../store/useAuthStore";
 
 function WelcomeCreate() {
   const navigate = useNavigate();
-  const { isLoggedIn } = useAuthStore();
 
   return (
     <div className="min-h-screen bg-[#65CD99] px-4 py-6 sm:px-8 lg:px-12">
