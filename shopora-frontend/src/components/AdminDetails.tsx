@@ -118,39 +118,7 @@ useEffect(() => {
           </button>
         </div>
 
-        <section className="space-y-3 rounded-3xl bg-white p-6 shadow-sm">
-          <div className="flex flex-wrap items-center justify-between gap-4">
-            <div>
-              <p className="text-sm font-semibold uppercase tracking-[0.2em] text-[#388063]/70">Store</p>
-              <p className="text-3xl font-bold text-[#1F3B2F]">{activeStore.name}</p>
-            </div>
-            <span className="rounded-full bg-[#F4F7F6] px-4 py-2 text-sm font-semibold text-[#388063]">
-              {itemCount} {itemCount === 1 ? "item" : "items"}
-            </span>
-          </div>
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            <div className="rounded-2xl bg-[#F4F7F6] p-4">
-              <p className="text-xs uppercase tracking-wide text-[#6A857C]">Owner</p>
-              <p className="text-lg font-semibold text-[#1F3B2F]">{activeStore.owner}</p>
-            </div>
-            <div className="rounded-2xl bg-[#F4F7F6] p-4">
-              <p className="text-xs uppercase tracking-wide text-[#6A857C]">Category</p>
-              <p className="text-lg font-semibold text-[#1F3B2F]">{activeStore.category}</p>
-            </div>
-            <div className="rounded-2xl bg-[#F4F7F6] p-4">
-              <p className="text-xs uppercase tracking-wide text-[#6A857C]">Joined</p>
-              <p className="text-lg font-semibold text-[#1F3B2F]">{activeStore.joined}</p>
-            </div>
-            <div className="rounded-2xl bg-[#F4F7F6] p-4">
-              <p className="text-xs uppercase tracking-wide text-[#6A857C]">Status</p>
-              <p className="text-lg font-semibold capitalize text-[#1F3B2F]">{activeStore.status}</p>
-            </div>
-          </div>
-          <p className="text-sm text-[#4B5B56]">{activeStore.description}</p>
-          <div className="rounded-2xl border border-dashed border-[#D8E5DF] p-4 text-sm text-[#4B5B56]">
-            Contact: <span className="font-semibold text-[#1F3B2F]">{activeStore.email}</span>
-          </div>
-        </section>
+        
 
         <section className="space-y-4">
           <div className="flex flex-wrap items-center justify-between gap-2">
