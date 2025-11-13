@@ -31,6 +31,7 @@ function ShopForm() {
       shopTitle: shopTitle.trim(),
       description: shopDescription.trim(),
       phone: phoneNumber.trim(),
+      items: [],
     });
 
     setShopTitle("");
