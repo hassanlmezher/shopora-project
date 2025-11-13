@@ -58,7 +58,9 @@ function AdminNotifications() {
                   <div className="mt-4 flex flex-wrap gap-2">
                     <button
                       type="button"
-                      onClick={() => navigate(`/admin/requests/${request.id}`)}
+                      onClick={() =>
+                        navigate(`/admin/requests/${request.id}`, { state: { fromNotifications: true } })
+                      }
                       className="rounded-2xl border border-[#65CD99] px-4 py-2 text-sm font-semibold text-[#388063] transition hover:bg-[#65CD99] hover:text-white"
                     >
                       View details

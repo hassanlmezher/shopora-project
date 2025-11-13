@@ -1,15 +1,24 @@
 import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import PopupMessage from "./PopupMessage";
 import useNotificationStore from "../store/useNotificationStore";
 import type { ShopRequestStatus } from "../store/useNotificationStore";
 
 function RequestConfirmation() {
   const navigate = useNavigate();
+  const location = useLocation();
   const { requestId } = useParams<{ requestId: string }>();
   const request = useNotificationStore((state) => state.requests.find((item) => item.id === requestId));
   const updateRequestStatus = useNotificationStore((state) => state.updateRequestStatus);
   const [popup, setPopup] = useState<{ message: string; variant: "success" | "error" } | null>(null);
+  const locationState = location.state as { fromNotifications?: boolean } | null;
+  const handleBack = () => {
+    if (locationState?.fromNotifications) {
+      navigate(-1);
+      return;
+    }
+    navigate("/notifications/admin");
+  };
 
   useEffect(() => {
     if (!popup) {
@@ -39,7 +48,7 @@ function RequestConfirmation() {
           <p className="mt-2 text-sm text-[#4B5B56]">This request may have been handled already.</p>
           <button
             type="button"
-            onClick={() => navigate("/notifications/admin")}
+            onClick={handleBack}
             className="mt-6 rounded-2xl border border-[#65CD99] px-6 py-2 text-sm font-semibold text-[#388063] transition hover:bg-[#65CD99] hover:text-white"
           >
             Back to notifications
@@ -56,7 +65,7 @@ function RequestConfirmation() {
       <div className="mx-auto flex max-w-4xl flex-col gap-6">
         <button
           type="button"
-          onClick={() => navigate("/notifications/admin")}
+          onClick={handleBack}
           className="flex w-fit items-center gap-3 rounded-full border border-gray-300 bg-white px-4 py-2 text-sm font-semibold text-[#388063] shadow-sm transition hover:bg-[#65CD99] hover:text-white"
         >
           Back
