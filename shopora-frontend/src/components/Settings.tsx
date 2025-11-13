@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import useAuthStore from "../store/useAuthStore";
+import useNotificationStore from "../store/useNotificationStore";
 import profile from "../images/profile.png";
 import heart from "../images/heart.png";
 import cartt from "../images/cartt.png";
@@ -8,6 +9,8 @@ import create from "../images/create.png";
 function Settings() {
   const navigate = useNavigate();
   const { isLoggedIn } = useAuthStore();
+  const requests = useNotificationStore((state) => state.requests);
+  const acceptedRequest = requests.find((request) => request.status === "accepted");
   const cards = [
     {
       image: heart,
@@ -21,12 +24,19 @@ function Settings() {
       description: "Review previous orders and saved carts.",
       action: () => navigate("/cart"),
     },
-    {
-      image: create,
-      title: "Create your shop",
-      description: "Launch a storefront and start selling on Shopora.",
-      action: () => navigate("/welcome-create"),
-    },
+    acceptedRequest
+      ? {
+          image: create,
+          title: "Your shop",
+          description: `Manage "${acceptedRequest.shopTitle}" items, pricing, and stock.`,
+          action: () => navigate("/my-shop"),
+        }
+      : {
+          image: create,
+          title: "Create your shop",
+          description: "Launch a storefront and start selling on Shopora.",
+          action: () => navigate("/welcome-create"),
+        },
   ];
 
   return (
