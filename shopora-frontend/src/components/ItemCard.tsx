@@ -121,36 +121,39 @@ function ItemCard({ image, name, namee, price, priceValue, description, by, revi
         </svg>
       </button>
       <img className="mx-auto w-32 sm:w-36" src={image} alt={`${name} ${namee}`} />
-      <div className="flex items-start justify-between gap-4">
-        <div>
-          <p className="text-xl font-bold text-[#333]">{name}</p>
-          <p className="text-lg font-semibold text-[#555]">{namee}</p>
+      <div className="flex flex-1 flex-col gap-4">
+        <div className="flex items-start justify-between gap-4">
+          <div>
+            <p className="text-xl font-bold text-[#333]">{name}</p>
+            <p className="text-lg font-semibold text-[#555]">{namee}</p>
+          </div>
+          <p className="text-xl font-bold text-[#5DBC8C]">{price}</p>
         </div>
-        <p className="text-xl font-bold text-[#5DBC8C]">{price}</p>
-      </div>
-      <p className="text-sm text-gray-500 sm:text-base">{description}</p>
-      <div className="flex items-center justify-between gap-4">
-        <div className="flex items-center gap-3">
-          <div className="flex" aria-label={`Average rating ${averageRatingLabel} out of 5`}>
-            {[1, 2, 3, 4, 5].map((star) => (
-              <span key={star} className={`text-lg ${star <= roundedRating ? "text-yellow-400" : "text-gray-300"}`}>
-                {"\u2605"}
+        <p className="text-sm text-gray-500 sm:text-base">{description}</p>
+        <div className="flex items-center justify-between gap-4">
+          <div className="flex items-center gap-3">
+            <div className="flex" aria-label={`Average rating ${averageRatingLabel} out of 5`}>
+              {[1, 2, 3, 4, 5].map((star) => (
+                <span key={star} className={`text-lg ${star <= roundedRating ? "text-yellow-400" : "text-gray-300"}`}>
+                  {"\u2605"}
+                </span>
+              ))}
+            </div>
+            <div className="flex flex-col leading-none">
+              <span className="text-base font-semibold text-gray-900">
+                {averageRatingLabel}
+                <span className="text-xs font-normal text-gray-500"> / 5</span>
               </span>
-            ))}
+              <span className="text-xs text-gray-500">
+                {reviewCount} review{reviewCount === 1 ? "" : "s"}
+              </span>
+            </div>
           </div>
-          <div className="flex flex-col leading-none">
-            <span className="text-base font-semibold text-gray-900">
-              {averageRatingLabel}
-              <span className="text-xs font-normal text-gray-500"> / 5</span>
-            </span>
-            <span className="text-xs text-gray-500">
-              {reviewCount} review{reviewCount === 1 ? "" : "s"}
-            </span>
-          </div>
+          <p className="whitespace-nowrap text-sm font-semibold text-gray-600">{by}</p>
         </div>
-        <p className="whitespace-nowrap text-sm font-semibold text-gray-600">{by}</p>
       </div>
-      <div className="mt-4 flex flex-col gap-3 sm:flex-row">
+      {/* keep action buttons pinned to the card bottom for consistent alignment */}
+      <div className="mt-auto flex flex-col gap-3 sm:flex-row">
         <button
           className="w-full rounded-2xl bg-[#5DBC8C] self-end px-4 py-3 text-sm font-bold text-white transition duration-300 ease-in-out hover:bg-white hover:text-black hover:ring-2 hover:ring-black"
           onClick={handleAddToCart}

@@ -69,7 +69,8 @@ useEffect(() => {
   };
 
   const handleViewItemDetails = (item: AdminStoreItem) => {
-    navigate("/details", { state: item });
+    const returnPath = storeId ? `/admin/stores/${storeId}` : "/adminDashboard";
+    navigate("/details", { state: { ...item, returnPath } });
   };
 
   const handleDeleteItem = (item: AdminStoreItem) => {

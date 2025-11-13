@@ -14,7 +14,17 @@ function Details() {
   const location = useLocation();
   const { isLoggedIn } = useAuthStore();
 
-  const { image, name, namee, reviews: productReviews } = location.state || {};
+  const locationState = location.state as
+    | {
+        image?: string;
+        name?: string;
+        namee?: string;
+        reviews?: Review[];
+        returnPath?: string;
+      }
+    | null;
+
+  const { image, name, namee, reviews: productReviews, returnPath } = locationState ?? {};
 
   const [newReview, setNewReview] = useState("");
   const [selectedRating, setSelectedRating] = useState(5);
@@ -36,6 +46,10 @@ function Details() {
   }, [storageKey]);
 
   const handleBack = () => {
+    if (returnPath) {
+      navigate(returnPath);
+      return;
+    }
     navigate(isLoggedIn ? "/DashboardLoggedIn" : "/dashboard");
   };
 

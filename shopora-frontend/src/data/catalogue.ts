@@ -1,6 +1,19 @@
 import headphones from "../images/headphones.png";
 import tShirt from "../images/t-shirt.png";
 import shoes from "../images/shoes.png";
+import tShirtTwo from "../images/t-shirt2.png";
+import tShirtThree from "../images/t-shirt3.png";
+import tShirtFour from "../images/t-shirt4.png";
+import tShirtFive from "../images/t-shirt5.png";
+import headphonesTwo from "../images/headphones2.png";
+import headphonesThree from "../images/headphones3.png";
+import headphonesFour from "../images/headphones4.png";
+import headphonesFive from "../images/headphones5.png";
+import shoesTwo from "../images/shoes2.png";
+import shoesThree from "../images/shoes3.png";
+import shoesFour from "../images/shoes4.png";
+import shoesFive from "../images/shoes5.png";
+
 
 export interface CatalogueReview {
     reviewer: string;
@@ -39,7 +52,7 @@ export const catalogue: CatalogueItem[] = [
         ]
     },
     {
-        image: headphones,
+        image: headphonesTwo,
         name: "Echo",
         namee: "Noise Cancelling",
         price: "$229",
@@ -54,7 +67,7 @@ export const catalogue: CatalogueItem[] = [
         ]
     },
     {
-        image: headphones,
+        image: headphonesThree,
         name: "Pulse",
         namee: "Studio Pods",
         price: "$259",
@@ -68,7 +81,7 @@ export const catalogue: CatalogueItem[] = [
         ]
     },
     {
-        image: headphones,
+        image: headphonesFour,
         name: "Drift",
         namee: "Travel Earbuds",
         price: "$149",
@@ -82,7 +95,7 @@ export const catalogue: CatalogueItem[] = [
         ]
     },
     {
-        image: headphones,
+        image: headphonesFive,
         name: "Nova",
         namee: "Gaming Headset",
         price: "$189",
@@ -112,7 +125,7 @@ export const catalogue: CatalogueItem[] = [
         ]
     },
     {
-        image: tShirt,
+        image: tShirtTwo,
         name: "Cedar",
         namee: "Oversized Tee",
         price: "$249",
@@ -126,7 +139,7 @@ export const catalogue: CatalogueItem[] = [
         ]
     },
     {
-        image: tShirt,
+        image: tShirtThree,
         name: "Sprint",
         namee: "Performance Tee",
         price: "$199",
@@ -140,7 +153,7 @@ export const catalogue: CatalogueItem[] = [
         ]
     },
     {
-        image: tShirt,
+        image: tShirtFour,
         name: "Muse",
         namee: "Graphic Tee",
         price: "$179",
@@ -154,7 +167,7 @@ export const catalogue: CatalogueItem[] = [
         ]
     },
     {
-        image: tShirt,
+        image: tShirtFive,
         name: "Solstice",
         namee: "Ribbed Tee",
         price: "$209",
@@ -184,7 +197,7 @@ export const catalogue: CatalogueItem[] = [
         ]
     },
     {
-        image: shoes,
+        image: shoesTwo,
         name: "Orbit",
         namee: "Trail Runner",
         price: "$359",
@@ -198,7 +211,7 @@ export const catalogue: CatalogueItem[] = [
         ]
     },
     {
-        image: shoes,
+        image: shoesThree,
         name: "Prime",
         namee: "Court Sneaker",
         price: "$279",
@@ -212,7 +225,7 @@ export const catalogue: CatalogueItem[] = [
         ]
     },
     {
-        image: shoes,
+        image: shoesFour,
         name: "Comet",
         namee: "Daily Trainer",
         price: "$219",
@@ -226,7 +239,7 @@ export const catalogue: CatalogueItem[] = [
         ]
     },
     {
-        image: shoes,
+        image: shoesFive,
         name: "Volt",
         namee: "High-top",
         price: "$329",
