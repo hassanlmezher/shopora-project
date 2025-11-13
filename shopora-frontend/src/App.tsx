@@ -14,6 +14,8 @@ import WelcomeCreate from "./components/WelcomeCreate";
 import ShopForm from './components/ShopForm';
 import AdminDashboard from './components/AdminDashboard';
 import AdminDetails from './components/AdminDetails';
+import AdminNotifications from './components/AdminNotifications';
+import UserNotifications from './components/UserNotifications';
 
 function App() {
   return (
@@ -35,6 +37,8 @@ function App() {
         <Route path="/shopForm" element={<ShopForm />} />
         <Route path="/adminDashboard" element={<AdminDashboard />} />
         <Route path="/admin/stores/:storeId" element={<AdminDetails />} />
+        <Route path="/notifications/user" element={<UserNotifications />} />
+        <Route path="/notifications/admin" element={<AdminNotifications />} />
       </Routes>
     </Router>
   );

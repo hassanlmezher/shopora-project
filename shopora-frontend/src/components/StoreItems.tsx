@@ -1,32 +1,14 @@
-import { useMemo } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import ItemCard from "./ItemCard";
-import { catalogue } from "../data/catalogue";
-
-const STORE_META = {
-  hassan: "Hassan's shop",
-  dani: "Dani's shop",
-  mhamad: "Mhamad's shop",
-} as const;
-
-type StoreSlug = keyof typeof STORE_META;
+import useAdminStores from "../store/useAdminStores";
 
 function StoreItems() {
   const { shopId } = useParams<{ shopId?: string }>();
-  const slug = shopId && (Object.keys(STORE_META) as StoreSlug[]).includes(shopId as StoreSlug)
-    ? (shopId as StoreSlug)
-    : undefined;
-  const storeName = slug ? STORE_META[slug] : undefined;
   const navigate = useNavigate();
+  const store = useAdminStores((state) => (shopId ? state.stores.find((entry) => entry.id === shopId) : undefined));
+  const items = useAdminStores((state) => (shopId ? state.itemsByStore[shopId] ?? [] : []));
 
-  const items = useMemo(() => {
-    if (!storeName) {
-      return [];
-    }
-    return catalogue.filter((item) => item.by === storeName);
-  }, [storeName]);
-
-  if (!storeName) {
+  if (!store) {
     return (
       <div className="flex min-h-screen flex-col items-center justify-center bg-[#F4F7F6] px-4">
         <p className="text-xl font-semibold text-[#388063]">We couldn't find that shop.</p>
@@ -52,13 +34,19 @@ function StoreItems() {
           >
             Back
           </button>
-          <p className="text-2xl font-bold text-[#388063]">{storeName}</p>
+          <p className="text-2xl font-bold text-[#388063]">{store.name}</p>
         </div>
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {items.map((item) => (
-            <ItemCard key={`${item.name}-${item.namee}`} {...item} />
-          ))}
-        </div>
+        {items.length > 0 ? (
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {items.map((item) => (
+              <ItemCard key={item.itemId} {...item} />
+            ))}
+          </div>
+        ) : (
+          <div className="rounded-3xl bg-white p-10 text-center text-[#6A857C] shadow-sm">
+            All items were removed from this store.
+          </div>
+        )}
       </div>
     </div>
   );

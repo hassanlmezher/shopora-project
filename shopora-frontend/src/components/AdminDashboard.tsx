@@ -18,6 +18,25 @@ function AdminDashboard() {
             <img className="h-10 w-10" src={lightMode} alt="toggle theme" />
             <button
               type="button"
+            onClick={() => navigate("/notifications/admin")}
+              className="rounded-full border border-[#65CD99]/30 bg-[#65CD99]/10 p-3 text-[#388063] transition hover:bg-[#65CD99]/20"
+              aria-label="View notifications"
+            >
+              <svg
+                className="h-6 w-6"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.8"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M6 9a6 6 0 1 1 12 0v4.2l1.2 2.8a1 1 0 0 1-.92 1.4H5.7a1 1 0 0 1-.92-1.4L6 13.2z" />
+                <path d="M10 19a2 2 0 0 0 4 0" />
+              </svg>
+            </button>
+            <button
+              type="button"
               onClick={() => navigate("/login")}
               className="rounded-2xl border border-transparent bg-[#65CD99] px-5 py-2 font-bold text-white transition hover:border-[#65CD99] hover:bg-white hover:text-[#65CD99]"
             >

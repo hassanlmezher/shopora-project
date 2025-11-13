@@ -1,31 +1,27 @@
 import moustache from "../images/moustache.png";
 import gucci from "../images/gucci.png";
 import apple from "../images/apple.png";
+import profileImage from "../images/profile.png";
 import StoreCard from "./StoreCard";
 import { useNavigate } from "react-router-dom";
 import useAuthStore from "../store/useAuthStore";
+import useAdminStores from "../store/useAdminStores";
 
-const stores = [
-  {
-    image: moustache,
-    name: "Hassan's shop",
-    id: "hassan",
-  },
-  {
-    image: gucci,
-    name: "Dani's shop",
-    id: "dani",
-  },
-  {
-    image: apple,
-    name: "Mhamad's shop",
-    id: "mhamad",
-  },
-];
+const storeImages: Record<string, string> = {
+  hassan: moustache,
+  dani: gucci,
+  mhamad: apple,
+};
 
 function Stores() {
   const navigate = useNavigate();
   const { isLoggedIn } = useAuthStore();
+  const stores = useAdminStores((state) => state.stores);
+  const storefronts = stores.map((store) => ({
+    ...store,
+    image: storeImages[store.id] ?? profileImage,
+  }));
+  const hasStores = storefronts.length > 0;
 
   return (
     <div className="min-h-screen bg-[#F4F7F6] pb-16">
@@ -37,16 +33,22 @@ function Stores() {
         >
           Back
         </button>
-        <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-          {stores.map((store) => (
-            <StoreCard
-              key={store.id}
-              image={store.image}
-              name={store.name}
-              onExplore={() => navigate(`/stores/${store.id}`)}
-            />
-          ))}
-        </div>
+        {hasStores ? (
+          <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+            {storefronts.map((store) => (
+              <StoreCard
+                key={store.id}
+                image={store.image}
+                name={store.name}
+                onExplore={() => navigate(`/stores/${store.id}`)}
+              />
+            ))}
+          </div>
+        ) : (
+          <div className="rounded-3xl bg-white p-10 text-center text-lg font-semibold text-[#388063] shadow-sm">
+            All storefronts have been banned for now.
+          </div>
+        )}
       </div>
     </div>
   )
