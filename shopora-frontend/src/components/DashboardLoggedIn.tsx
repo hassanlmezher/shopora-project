@@ -15,6 +15,7 @@ import { useMemo, useRef, useState, useEffect } from "react";
 import type { ChangeEvent, FocusEvent as ReactFocusEvent, KeyboardEvent as ReactKeyboardEvent } from "react";
 import useCartStore from "../store/useCartStore";
 import useDashboardLayout from "../hooks/useDashboardLayout";
+import useNotificationStore from "../store/useNotificationStore";
 
 function getUpdatedCatalogue() {
     return catalogue.map(item => {
@@ -56,6 +57,7 @@ function DashboardLoggedIn() {
     const totalCartItems = useCartStore(
         (state) => state.items.reduce((sum, item) => sum + item.quantity, 0)
     );
+    const notificationCount = useNotificationStore((state) => state.requests.length);
 
     const closeMobileMenu = () => setIsMobileMenuOpen(false);
     const handleMobileNavigate = (path: string) => {
@@ -300,7 +302,7 @@ function DashboardLoggedIn() {
                     <button
                         type="button"
                         onClick={() => navigate('/notifications/user')}
-                        className="rounded-2xl bg-white/20 p-2"
+                        className="relative rounded-2xl bg-white/20 p-2"
                         aria-label="View notifications"
                     >
                         <svg
@@ -315,6 +317,11 @@ function DashboardLoggedIn() {
                             <path d="M6 9a6 6 0 1 1 12 0v4.2l1.2 2.8a1 1 0 0 1-.92 1.4H5.7a1 1 0 0 1-.92-1.4L6 13.2z" />
                             <path d="M10 19a2 2 0 0 0 4 0" />
                         </svg>
+                        {notificationCount > 0 && (
+                            <span className="absolute -top-1 -right-0.5 flex h-5 min-w-[18px] items-center justify-center rounded-full bg-[#FF6B6B] px-1 text-[11px] font-bold text-white">
+                                {notificationCount}
+                            </span>
+                        )}
                     </button>
                     <button
                         type="button"
@@ -670,7 +677,7 @@ function DashboardLoggedIn() {
                         <button
                             type="button"
                             onClick={() => navigate('/notifications/user')}
-                            className="rounded-full border border-[#5AB688]/30 bg-[#5AB688]/10 p-3 text-[#5AB688] transition hover:bg-[#5AB688]/20"
+                            className="relative rounded-full border border-[#5AB688]/30 bg-[#5AB688]/10 p-3 text-[#5AB688] transition hover:bg-[#5AB688]/20"
                             aria-label="View notifications"
                         >
                             <svg
@@ -685,6 +692,11 @@ function DashboardLoggedIn() {
                                 <path d="M6 9a6 6 0 1 1 12 0v4.2l1.2 2.8a1 1 0 0 1-.92 1.4H5.7a1 1 0 0 1-.92-1.4L6 13.2z" />
                                 <path d="M10 19a2 2 0 0 0 4 0" />
                             </svg>
+                            {notificationCount > 0 && (
+                                <span className="absolute -top-1 -right-1 flex h-5 min-w-[18px] items-center justify-center rounded-full bg-[#FF6B6B] px-1 text-[11px] font-bold text-white">
+                                    {notificationCount}
+                                </span>
+                            )}
                         </button>
                         <img className="w-10 rounded-full border border-[#5AB688]/20 p-2" src={lightMode} alt="toggle theme" />
                     </div>
