@@ -3,11 +3,15 @@ import logo from "../images/Logo.png";
 import lightMode from "../images/lightMode.png";
 import AdminShopCard from "./AdminShopCard";
 import useAdminStores from "../store/useAdminStores";
+import useNotificationStore from "../store/useNotificationStore";
 
 function AdminDashboard() {
   const navigate = useNavigate();
   const stores = useAdminStores((state) => state.stores);
   const totalStores = stores.length;
+  const pendingRequestCount = useNotificationStore((state) =>
+    state.requests.filter((request) => request.status === "pending").length
+  );
 
   return (
     <div className="min-h-screen bg-[#F4F7F6] pb-16">
@@ -18,8 +22,8 @@ function AdminDashboard() {
             <img className="h-10 w-10" src={lightMode} alt="toggle theme" />
             <button
               type="button"
-            onClick={() => navigate("/notifications/admin")}
-              className="rounded-full border border-[#65CD99]/30 bg-[#65CD99]/10 p-3 text-[#388063] transition hover:bg-[#65CD99]/20"
+              onClick={() => navigate("/notifications/admin")}
+              className="relative rounded-full border border-[#65CD99]/30 bg-[#65CD99]/10 p-3 text-[#388063] transition hover:bg-[#65CD99]/20"
               aria-label="View notifications"
             >
               <svg
@@ -34,6 +38,11 @@ function AdminDashboard() {
                 <path d="M6 9a6 6 0 1 1 12 0v4.2l1.2 2.8a1 1 0 0 1-.92 1.4H5.7a1 1 0 0 1-.92-1.4L6 13.2z" />
                 <path d="M10 19a2 2 0 0 0 4 0" />
               </svg>
+              {pendingRequestCount > 0 && (
+                <span className="absolute -top-1 -right-1 flex h-5 min-w-[18px] items-center justify-center rounded-full bg-[#FF6B6B] px-1 text-[11px] font-bold text-white">
+                  {pendingRequestCount}
+                </span>
+              )}
             </button>
             <button
               type="button"
