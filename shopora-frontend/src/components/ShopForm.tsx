@@ -1,26 +1,42 @@
 import { type FormEvent, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import PopupMessage from "./PopupMessage";
+import useNotificationStore from "../store/useNotificationStore";
 
 function ShopForm() {
   const navigate = useNavigate();
   const [shopTitle, setShopTitle] = useState("");
   const [shopDescription, setShopDescription] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
-  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [popupContent, setPopupContent] = useState<{
+    message: string;
+    variant: "success" | "error";
+  } | null>(null);
+  const submitShopRequest = useNotificationStore((state) => state.submitShopRequest);
 
   useEffect(() => {
-    if (!isSubmitted) return undefined;
-    const timer = setTimeout(() => setIsSubmitted(false), 2000);
+    if (!popupContent) return undefined;
+    const timer = setTimeout(() => setPopupContent(null), 2500);
     return () => clearTimeout(timer);
-  }, [isSubmitted]);
+  }, [popupContent]);
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    if (!shopTitle.trim() || !shopDescription.trim() || !phoneNumber.trim()) {
+      setPopupContent({ message: "Please complete all the fields before submitting.", variant: "error" });
+      return;
+    }
+    
+    submitShopRequest({
+      shopTitle: shopTitle.trim(),
+      description: shopDescription.trim(),
+      phone: phoneNumber.trim(),
+    });
+
     setShopTitle("");
     setShopDescription("");
     setPhoneNumber("");
-    setIsSubmitted(true);
+    setPopupContent({ message: "Your shop request is pending review.", variant: "success" });
   };
 
   return (
@@ -69,7 +85,11 @@ function ShopForm() {
           </form>
         </div>
       </div>
-      <PopupMessage message="Form submitted successfully!" isVisible={isSubmitted} variant="success" />
+      <PopupMessage 
+        message={popupContent?.message ?? ""}
+        isVisible={Boolean(popupContent)}
+        variant={popupContent?.variant ?? "success"}
+      />
     </div>
   );
 }
