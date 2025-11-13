@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
-import useNotificationStore, { ShopRequestStatus } from "../store/useNotificationStore";
+import useNotificationStore from "../store/useNotificationStore";
+import type { ShopRequestStatus } from "../store/useNotificationStore";
 
 const statusStyles: Record<ShopRequestStatus, string> = {
   pending: "text-[#D69E2E]",
