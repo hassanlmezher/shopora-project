@@ -17,6 +17,7 @@ import AdminDetails from './components/AdminDetails';
 import AdminNotifications from './components/AdminNotifications';
 import UserNotifications from './components/UserNotifications';
 import RequestConfirmation from './components/RequestConfirmation';
+import UserShop from './components/UserShop';
 
 function App() {
   return (
@@ -41,6 +42,7 @@ function App() {
         <Route path="/notifications/user" element={<UserNotifications />} />
         <Route path="/notifications/admin" element={<AdminNotifications />} />
         <Route path="/admin/requests/:requestId" element={<RequestConfirmation />} />
+        <Route path="/my-shop" element={<UserShop />} />
       </Routes>
     </Router>
   );
