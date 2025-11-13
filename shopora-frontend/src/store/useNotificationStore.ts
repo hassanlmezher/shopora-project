@@ -20,7 +20,9 @@ export interface ShopRequestNotification {
   items: UserShopItem[];
 }
 
-type ShopRequestPayload = Omit<ShopRequestNotification, "id" | "status" | "submittedAt">;
+type ShopRequestPayload = Omit<ShopRequestNotification, "id" | "status" | "submittedAt"> & {
+  items?: UserShopItem[];
+};
 
 interface NotificationStore {
   requests: ShopRequestNotification[];
@@ -34,16 +36,17 @@ interface NotificationStore {
 
 const useNotificationStore = create<NotificationStore>()(
   persist(
-    (set, get) => ({
+    (set) => ({
       requests: [],
       submitShopRequest: (payload) =>
         set((state) => {
+          const { items = [], ...rest } = payload;
           const newRequest: ShopRequestNotification = {
             id: `${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
             status: "pending",
             submittedAt: Date.now(),
-            items: [],
-            ...payload,
+            items,
+            ...rest,
           };
           return { requests: [...state.requests, newRequest] };
         }),
