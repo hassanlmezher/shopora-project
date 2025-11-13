@@ -12,7 +12,7 @@ function ShopForm() {
     message: string;
     variant: "success" | "error";
   } | null>(null);
-  const submittedShopRequest = useNotificationStore((state) => state.submitShopRequest);
+  const submitShopRequest = useNotificationStore((state) => state.submitShopRequest);
 
   useEffect(() => {
     if (!popupContent) return undefined;
@@ -22,12 +22,12 @@ function ShopForm() {
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if(!shopTitle.trim() || !shopDescription.trim() || !phoneNumber.trim()) {
+    if (!shopTitle.trim() || !shopDescription.trim() || !phoneNumber.trim()) {
       setPopupContent({ message: "Please complete all the fields before submitting.", variant: "error" });
       return;
     }
     
-    submittedShopRequest({
+    submitShopRequest({
       shopTitle: shopTitle.trim(),
       description: shopDescription.trim(),
       phone: phoneNumber.trim(),
@@ -36,7 +36,7 @@ function ShopForm() {
     setShopTitle("");
     setShopDescription("");
     setPhoneNumber("");
-    setPopupContent({ message: "Your shop request is pending review.", variant: "sucess" });
+    setPopupContent({ message: "Your shop request is pending review.", variant: "success" });
   };
 
   return (
