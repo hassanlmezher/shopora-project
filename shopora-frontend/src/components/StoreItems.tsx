@@ -11,11 +11,11 @@ function StoreItems() {
   if (!store) {
     return (
       <div className="flex min-h-screen flex-col items-center justify-center bg-[#F4F7F6] px-4">
-        <p className="text-xl font-semibold text-[#388063]">We couldn't find that shop.</p>
+        <p className="text-xl font-semibold text-[#1E3B86]">We couldn't find that shop.</p>
         <button
           type="button"
           onClick={() => navigate("/stores")}
-          className="mt-6 rounded-full border border-[#388063] px-5 py-2 text-sm font-bold text-[#388063] transition hover:bg-[#388063] hover:text-white"
+          className="mt-6 rounded-full border border-[#1E3B86] px-5 py-2 text-sm font-bold text-[#1E3B86] transition hover:bg-[#1E3B86] hover:text-white"
         >
           Back to stores
         </button>
@@ -30,11 +30,11 @@ function StoreItems() {
           <button
             type="button"
             onClick={() => navigate("/stores")}
-            className="border border-gray-300 flex w-fit items-center gap-3 rounded-full bg-white px-4 py-2 text-sm font-semibold text-[#388063] shadow-sm transition hover:bg-[#65CD99] hover:text-white"
+            className="border border-gray-300 flex w-fit items-center gap-3 rounded-full bg-white px-4 py-2 text-sm font-semibold text-[#1E3B86] shadow-sm transition hover:bg-[#8DB9FF] hover:text-white"
           >
             Back
           </button>
-          <p className="text-2xl font-bold text-[#388063]">{store.name}</p>
+          <p className="text-2xl font-bold text-[#1E3B86]">{store.name}</p>
         </div>
         {items.length > 0 ? (
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">

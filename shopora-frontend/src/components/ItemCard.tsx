@@ -82,6 +82,11 @@ function ItemCard({ image, name, namee, price, priceValue, description, by, revi
   };
 
   const handleToggleFavorite = () => {
+    if (!isLoggedIn) {
+      navigate("/login");
+      return;
+    }
+
     const wasFavorite = isFavorite;
     toggleFavorite({
       id: `${name}-${namee}`,
@@ -127,7 +132,7 @@ function ItemCard({ image, name, namee, price, priceValue, description, by, revi
             <p className="text-xl font-bold text-[#333]">{name}</p>
             <p className="text-lg font-semibold text-[#555]">{namee}</p>
           </div>
-          <p className="text-xl font-bold text-[#5DBC8C]">{price}</p>
+          <p className="text-xl font-bold text-[#7CA6FF]">{price}</p>
         </div>
         <p className="text-sm text-gray-500 sm:text-base">{description}</p>
         <div className="flex items-center justify-between gap-4">
@@ -155,13 +160,13 @@ function ItemCard({ image, name, namee, price, priceValue, description, by, revi
       {/* keep action buttons pinned to the card bottom for consistent alignment */}
       <div className="mt-auto flex flex-col gap-3 sm:flex-row">
         <button
-          className="w-full rounded-2xl bg-[#5DBC8C] self-end px-4 py-3 text-sm font-bold text-white transition duration-300 ease-in-out hover:bg-white hover:text-black hover:ring-2 hover:ring-black"
+          className="w-full rounded-2xl bg-[#7CA6FF] self-end px-4 py-3 text-sm font-bold text-white transition duration-300 ease-in-out hover:bg-white hover:text-black hover:ring-2 hover:ring-black"
           onClick={handleAddToCart}
         >
           Add to cart
         </button>
         <button
-          className="w-full rounded-2xl border-2 self-end border-[#5DBC8C] px-4 py-3 text-sm font-bold text-[#5DBC8C] transition duration-300 ease-in-out hover:bg-white hover:text-black hover:border-black"
+          className="w-full rounded-2xl border-2 self-end border-[#7CA6FF] px-4 py-3 text-sm font-bold text-[#7CA6FF] transition duration-300 ease-in-out hover:bg-white hover:text-black hover:border-black"
           onClick={handleDetailsClick}
         >
           Details

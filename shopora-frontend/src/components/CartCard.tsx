@@ -38,31 +38,31 @@ function CartCard({ item, onRemove }: CartCardProps) {
     const lineTotal = item.price * item.quantity;
 
     return (
-        <div className="flex flex-col gap-6 rounded-2xl border-2 border-[#6D6D6D]/60 bg-white px-8 py-6 shadow-sm md:flex-row md:items-center md:justify-between">
-            <div className="flex items-center gap-6">
+        <div className="flex flex-col gap-4 rounded-2xl border-2 border-[#6D6D6D]/60 bg-white px-6 py-5 shadow-sm md:flex-row md:items-center md:justify-between">
+            <div className="flex items-center gap-4">
                 <img
-                    className="w-24 rounded-xl object-cover"
+                    className="w-20 rounded-xl object-cover"
                     src={item.image}
                     alt={displayName}
                 />
                 <div className="space-y-1">
-                    <p className="font-bold text-2xl text-[#6D6D6D]">
+                    <p className="font-bold text-xl text-[#6D6D6D]">
                         {displayName}
                     </p>
-                    <p className="text-lg font-semibold text-[#6D6D6D]">
+                    <p className="text-base font-semibold text-[#6D6D6D]">
                         {formatCurrency(item.price)}
                     </p>
-                    <p className="text-sm text-[#6D6D6D]">{item.by}</p>
+                    <p className="text-xs text-[#6D6D6D]">{item.by}</p>
                     <button
                         type="button"
-                        className="text-sm font-semibold text-[#FF6B6B] transition hover:text-[#c84a4a]"
+                        className="text-xs font-semibold text-[#FF6B6B] transition hover:text-[#c84a4a]"
                         onClick={handleRemove}
                     >
                         Remove
                     </button>
                 </div>
             </div>
-            <div className="flex flex-1 items-center justify-end gap-10">
+            <div className="flex flex-1 items-center justify-end gap-6">
                 <div className="flex items-center gap-4">
                     <button
                         type="button"
@@ -73,7 +73,7 @@ function CartCard({ item, onRemove }: CartCardProps) {
                     >
                         <img className="w-4" src={minus} alt="" />
                     </button>
-                    <p className="text-3xl font-bold text-[#333]">
+                    <p className="text-2xl font-bold text-[#333]">
                         {item.quantity}
                     </p>
                     <button
@@ -85,7 +85,7 @@ function CartCard({ item, onRemove }: CartCardProps) {
                         <img className="w-4" src={plus} alt="" />
                     </button>
                 </div>
-                <p className="text-3xl font-bold text-[#65CD99]">
+                <p className="text-2xl font-bold text-[#8DB9FF]">
                     {formatCurrency(lineTotal)}
                 </p>
             </div>

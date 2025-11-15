@@ -9,7 +9,7 @@ function Welcome() {
   };
 
   return (
-    <div className="relative flex min-h-screen flex-col mt-[-100px] overflow-hidden bg-[#65CD99] text-white">
+    <div className="relative flex min-h-screen flex-col mt-[-100px] overflow-hidden bg-[#8DB9FF] text-white">
       <div className="pointer-events-none absolute left-1/2 top-[10%] -translate-x-1/2 rounded-full bg-white/10 blur-3xl md:w-[600px] md:h-[600px]" />
       <div className="relative z-10 flex flex-1 flex-col items-center gap-10 px-6 py-16 md:px-12 lg:flex-row lg:items-center lg:justify-between lg:px-20">
         <div className="flex flex-1 flex-col items-center gap-8 text-center lg:items-start lg:text-left">
@@ -28,13 +28,13 @@ function Welcome() {
           <div className="flex w-full flex-col items-center gap-4 sm:flex-row sm:justify-center lg:justify-start">
             <button
               onClick={handleGetStarted}
-              className="w-full max-w-[220px] rounded-3xl bg-white py-4 text-lg font-bold text-[#65CD99] transition duration-300 ease-in-out hover:bg-black hover:text-white sm:text-xl"
+              className="w-full max-w-[220px] rounded-3xl bg-white py-4 text-lg font-bold text-[#8DB9FF] transition duration-300 ease-in-out hover:bg-black hover:text-white sm:text-xl"
             >
               Get started
             </button>
             <button
               onClick={() => navigate('/login')}
-              className="w-full max-w-[220px] rounded-3xl border-2 border-white py-4 text-lg font-bold text-white transition duration-300 ease-in-out hover:bg-white hover:text-[#65CD99] sm:text-xl"
+              className="w-full max-w-[220px] rounded-3xl border-2 border-white py-4 text-lg font-bold text-white transition duration-300 ease-in-out hover:bg-white hover:text-[#8DB9FF] sm:text-xl"
             >
               Sign in
             </button>

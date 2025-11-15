@@ -19,12 +19,12 @@ function AdminNotifications() {
         <button
           type="button"
           onClick={() => navigate(-1)}
-          className="flex w-fit items-center gap-3 rounded-full border border-gray-300 bg-white px-4 py-2 text-sm font-semibold text-[#388063] shadow-sm transition hover:bg-[#65CD99] hover:text-white"
+          className="flex w-fit items-center gap-3 rounded-full border border-gray-300 bg-white px-4 py-2 text-sm font-semibold text-[#1E3B86] shadow-sm transition hover:bg-[#8DB9FF] hover:text-white"
         >
           Back
         </button>
         <section className="rounded-3xl bg-white px-6 py-6 shadow-sm">
-          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#388063]/70">Admin notifications</p>
+          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#1E3B86]/70">Admin notifications</p>
           {sortedRequests.length === 0 ? (
             <>
               <p className="mt-3 text-3xl font-bold text-[#1F3B2F]">No alerts yet</p>
@@ -61,7 +61,7 @@ function AdminNotifications() {
                       onClick={() =>
                         navigate(`/admin/requests/${request.id}`, { state: { fromNotifications: true } })
                       }
-                      className="rounded-2xl border border-[#65CD99] px-4 py-2 text-sm font-semibold text-[#388063] transition hover:bg-[#65CD99] hover:text-white"
+                      className="rounded-2xl border border-[#8DB9FF] px-4 py-2 text-sm font-semibold text-[#1E3B86] transition hover:bg-[#8DB9FF] hover:text-white"
                     >
                       View details
                     </button>

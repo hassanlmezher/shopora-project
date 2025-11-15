@@ -36,7 +36,7 @@ function Stores() {
         <button
           type="button"
           onClick={() => (isLoggedIn ? navigate("/DashboardLoggedIn") : navigate("/dashboard"))}
-          className="border border-gray-300 flex w-fit items-center gap-3 rounded-full bg-white px-4 py-2 text-sm font-semibold text-[#388063] shadow-sm transition hover:bg-[#65CD99] hover:text-white"
+          className="border border-gray-300 flex w-fit items-center gap-3 rounded-full bg-white px-4 py-2 text-sm font-semibold text-[#1E3B86] shadow-sm transition hover:bg-[#8DB9FF] hover:text-white"
         >
           Back
         </button>
@@ -60,7 +60,7 @@ function Stores() {
             )}
           </div>
         ) : (
-          <div className="rounded-3xl bg-white p-10 text-center text-lg font-semibold text-[#388063] shadow-sm">
+          <div className="rounded-3xl bg-white p-10 text-center text-lg font-semibold text-[#1E3B86] shadow-sm">
             All storefronts have been banned for now.
           </div>
         )}

@@ -41,12 +41,12 @@ function ShopForm() {
   };
 
   return (
-    <div className="flex min-h-screen flex-col bg-[#65CD99] px-4 pb-10 pt-6 sm:px-10 lg:px-20">
+    <div className="flex min-h-screen flex-col bg-[#8DB9FF] px-4 pb-10 pt-6 sm:px-10 lg:px-20">
       <div className="mx-auto flex w-full max-w-5xl flex-1 flex-col">
         <button
           type="button"
           onClick={() => navigate("/welcome-create")}
-          className="flex w-fit items-center gap-3 rounded-full border border-gray-300 bg-white px-4 py-2 text-sm font-semibold text-[#388063] shadow-sm transition hover:bg-[#65CD99] hover:text-white"
+          className="flex w-fit items-center gap-3 rounded-full border border-gray-300 bg-white px-4 py-2 text-sm font-semibold text-[#1E3B86] shadow-sm transition hover:bg-[#8DB9FF] hover:text-white"
         >
           Back
         </button>
@@ -60,11 +60,11 @@ function ShopForm() {
               type="text"
               value={shopTitle}
               onChange={(event) => setShopTitle(event.target.value)}
-              className="w-full max-w-xl rounded-2xl bg-gray-300 px-4 py-3 text-gray-700 placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-[#65CD99]"
+              className="w-full max-w-xl rounded-2xl bg-gray-300 px-4 py-3 text-gray-700 placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-[#8DB9FF]"
               placeholder="Shop title.."
             />
             <textarea
-              className="w-full max-w-xl rounded-2xl bg-gray-300 px-4 py-3 text-gray-700 placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-[#65CD99]"
+              className="w-full max-w-xl rounded-2xl bg-gray-300 px-4 py-3 text-gray-700 placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-[#8DB9FF]"
               value={shopDescription}
               onChange={(event) => setShopDescription(event.target.value)}
               placeholder="Shop description.."
@@ -74,12 +74,12 @@ function ShopForm() {
               type="text"
               value={phoneNumber}
               onChange={(event) => setPhoneNumber(event.target.value)}
-              className="w-full max-w-xl rounded-2xl bg-gray-300 px-4 py-3 text-gray-700 placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-[#65CD99]"
+              className="w-full max-w-xl rounded-2xl bg-gray-300 px-4 py-3 text-gray-700 placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-[#8DB9FF]"
               placeholder="Phone number.."
             />
             <button
               type="submit"
-              className="rounded-2xl bg-[#65CD99] px-10 py-3 font-bold text-white transition hover:bg-white hover:border-2 hover:border-[#65CD99] hover:text-[#65CD99]"
+              className="rounded-2xl bg-[#8DB9FF] px-10 py-3 font-bold text-white transition hover:bg-white hover:border-2 hover:border-[#8DB9FF] hover:text-[#8DB9FF]"
             >
               Submit
             </button>

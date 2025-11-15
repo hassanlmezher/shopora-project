@@ -19,12 +19,12 @@ function UserNotifications() {
         <button
           type="button"
           onClick={() => navigate(-1)}
-          className="flex w-fit items-center gap-3 rounded-full border border-gray-300 bg-white px-4 py-2 text-sm font-semibold text-[#388063] shadow-sm transition hover:bg-[#65CD99] hover:text-white"
+          className="flex w-fit items-center gap-3 rounded-full border border-gray-300 bg-white px-4 py-2 text-sm font-semibold text-[#1E3B86] shadow-sm transition hover:bg-[#8DB9FF] hover:text-white"
         >
           Back
         </button>
         <section className="rounded-3xl bg-white px-6 py-6 shadow-sm">
-          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#388063]/70">User notifications</p>
+          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#1E3B86]/70">User notifications</p>
           {sortedRequests.length === 0 ? (
             <>
               <p className="mt-3 text-3xl font-bold text-[#1F3B2F]">Nothing new right now</p>
