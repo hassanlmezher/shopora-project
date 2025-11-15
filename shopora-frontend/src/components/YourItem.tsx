@@ -16,25 +16,24 @@ function YourItem({ item, onRemove }: YourItemProps) {
   };
 
   return (
-    <div className="shadow-lg h-[420px] rounded-3xl shadow-gray-300 w-[22%] min-w-[220px] flex flex-col justify-center items-center bg-white p-6">
-      <img className="w-36 object-contain" src={item.image || shirt} alt={`${item.name} ${item.namee}`} />
-      <p className="font-bold mt-2 text-xl text-[#5DBC8C]">{item.price}</p>
-      <div className="text-center">
-        <p className="font-bold text-[1.3rem]">{item.name}</p>
-        <p className="font-semibold text-[1.3rem] text-gray-600">{item.namee}</p>
+    <div className="flex w-full max-w-[360px] flex-col justify-between rounded-3xl border border-[#E4ECE7] bg-white p-6 text-center shadow-sm transition hover:-translate-y-1 hover:shadow-lg">
+      <div className="flex flex-col gap-4">
+        <img className="mx-auto h-48 w-full object-contain" src={item.image || shirt} alt={`${item.name} ${item.namee}`} />
+        <div className="space-y-1">
+          <p className="text-xl font-bold text-[#1F3B2F]">{item.name}</p>
+          <p className="text-lg font-semibold text-[#5AB688]">{item.namee}</p>
+        </div>
       </div>
-      <p className="mt-2 text-sm text-center px-4 text-[#4B5B56]">
-        {item.description || "No description provided yet."}
-      </p>
-      <div className="flex justify-center items-center gap-3 mt-2">
-        <img className="w-24" src={stars} alt="rating stars" />
-        <p className="text-sm mb-2 text-gray-600">{item.ratings}</p>
+      <p className="mt-2 min-h-[40px] text-sm text-[#4B5B56]">{item.description || "No description provided yet."}</p>
+      <div className="mt-2 flex items-center justify-center gap-2">
+        <img className="h-6 w-24 object-contain" src={stars} alt="rating stars" />
+        <p className="text-sm text-gray-600">{item.ratings}</p>
       </div>
-      <div className="flex justify-center items-center gap-4 mt-auto">
+      <div className="mt-4 flex flex-col gap-3 sm:flex-row">
         <button
           type="button"
           onClick={handleDetails}
-          className="bg-[#5AB688] text-white cursor-pointer h-10 w-28 rounded-2xl hover:bg-white hover:border-2 hover:border-[#5AB688] hover:text-[#5AB688] transition"
+          className="flex-1 rounded-2xl border border-[#5AB688] bg-[#5AB688] px-4 py-2 text-sm font-semibold text-white transition hover:bg-white hover:text-[#5AB688]"
         >
           Details
         </button>
@@ -42,7 +41,7 @@ function YourItem({ item, onRemove }: YourItemProps) {
           <button
             type="button"
             onClick={onRemove}
-            className="bg-white border-2 border-black text-black cursor-pointer h-10 w-28 rounded-2xl hover:bg-black hover:text-white transition"
+            className="flex-1 rounded-2xl border border-[#1F1F1F] bg-white px-4 py-2 text-sm font-semibold text-[#1F1F1F] transition hover:bg-[#1F1F1F] hover:text-white"
           >
             Remove
           </button>

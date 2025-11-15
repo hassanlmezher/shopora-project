@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import useAdminStores, { type AdminStoreItem } from "../store/useAdminStores";
 import PopupMessage from "./PopupMessage";
@@ -17,7 +17,7 @@ function AdminDetails() {
   const { stores, itemsByStore, removeStore, removeItem } = useAdminStores();
 
   const store = storeId ? stores.find((entry) => entry.id === storeId) : undefined;
-  const items = storeId ? itemsByStore[storeId] ?? [] : [];
+  const items = useMemo(() => (storeId ? itemsByStore[storeId] ?? [] : []), [storeId, itemsByStore]);
 
   const [storeSnapshot, setStoreSnapshot] = useState(store);
   const [itemsSnapshot, setItemsSnapshot] = useState(items);
@@ -179,4 +179,3 @@ useEffect(() => {
 }
 
 export default AdminDetails;
-

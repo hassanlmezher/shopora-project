@@ -14,8 +14,7 @@ function ItemForm() {
   const [name, setName] = useState("");
   const [namee, setNamee] = useState("");
   const [priceLabel, setPriceLabel] = useState("");
-  const [priceValue, setPriceValue] = useState("");
-  const [category, setCategory] = useState(categories[0]);
+  const [category, setCategory] = useState<(typeof categories)[number]>(categories[0]);
   const [description, setDescription] = useState("");
   const [image, setImage] = useState("");
   const [ratings, setRatings] = useState("(0)");
@@ -35,7 +34,8 @@ function ItemForm() {
     if (!priceLabel.trim()) {
       return "";
     }
-    return priceLabel.trim().startsWith("$") ? priceLabel.trim() : `$${priceLabel.trim()}`;
+    const trimmed = priceLabel.trim();
+    return trimmed.startsWith("$") ? trimmed : `$${trimmed}`;
   }, [priceLabel]);
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
@@ -45,12 +45,12 @@ function ItemForm() {
       return;
     }
 
-    if (!name.trim() || !priceValue.trim()) {
+    if (!name.trim() || !priceLabel.trim()) {
       setPopup({ message: "Please give the item a name and price.", variant: "error" });
       return;
     }
 
-    const numericPrice = Number(priceValue);
+    const numericPrice = Number(priceLabel.replace(/[^0-9.]+/g, ""));
     if (Number.isNaN(numericPrice) || numericPrice <= 0) {
       setPopup({ message: "Provide a valid numeric price value.", variant: "error" });
       return;
@@ -72,7 +72,6 @@ function ItemForm() {
     setName("");
     setNamee("");
     setPriceLabel("");
-    setPriceValue("");
     setDescription("");
     setImage("");
     setRatings("(0)");
@@ -107,24 +106,9 @@ function ItemForm() {
             />
             <input
               type="text"
-              value={namee}
-              onChange={(event) => setNamee(event.target.value)}
-              placeholder="Second line (e.g., T-shirt, Headphones)"
-              className="rounded-2xl border border-[#E0E3E1] px-4 py-3 text-sm text-[#1F3B2F] focus:outline-none focus:ring-2 focus:ring-[#65CD99]"
-            />
-            <input
-              type="text"
               value={priceLabel}
               onChange={(event) => setPriceLabel(event.target.value)}
               placeholder="Price label (e.g., $199)"
-              className="rounded-2xl border border-[#E0E3E1] px-4 py-3 text-sm text-[#1F3B2F] focus:outline-none focus:ring-2 focus:ring-[#65CD99]"
-            />
-            <input
-              type="number"
-              min="1"
-              value={priceValue}
-              onChange={(event) => setPriceValue(event.target.value)}
-              placeholder="Numeric price (e.g., 199)"
               className="rounded-2xl border border-[#E0E3E1] px-4 py-3 text-sm text-[#1F3B2F] focus:outline-none focus:ring-2 focus:ring-[#65CD99]"
             />
             <select
@@ -140,17 +124,11 @@ function ItemForm() {
             </select>
             <input
               type="text"
-              value={ratings}
-              onChange={(event) => setRatings(event.target.value)}
-              placeholder="Ratings label (e.g., (123))"
-              className="rounded-2xl border border-[#E0E3E1] px-4 py-3 text-sm text-[#1F3B2F] focus:outline-none focus:ring-2 focus:ring-[#65CD99]"
-            />
-            <input
-              type="text"
               value={image}
               onChange={(event) => setImage(event.target.value)}
-              placeholder="Image URL (optional)"
+              placeholder="Image URL"
               className="rounded-2xl border border-[#E0E3E1] px-4 py-3 text-sm text-[#1F3B2F] focus:outline-none focus:ring-2 focus:ring-[#65CD99]"
+              required
             />
             <textarea
               value={description}
