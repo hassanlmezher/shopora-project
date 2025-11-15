@@ -5,10 +5,19 @@ export type ShopRequestStatus = "pending" | "accepted" | "declined";
 
 export interface UserShopItem {
   id: string;
+  image: string;
   name: string;
+  namee: string;
+  price: string;
+  priceValue: number;
   description: string;
-  price: number;
+  by: string;
+  category: string;
+  ratings: string;
+  reviews: Array<{ reviewer: string; rating: number; text: string }>;
 }
+
+export type UserShopItemPayload = Omit<UserShopItem, "id">;
 
 export interface ShopRequestNotification {
   id: string;
@@ -28,7 +37,7 @@ interface NotificationStore {
   requests: ShopRequestNotification[];
   submitShopRequest: (payload: ShopRequestPayload) => void;
   updateRequestStatus: (id: string, status: ShopRequestStatus) => void;
-  addUserShopItem: (requestId: string, item: Omit<UserShopItem, "id">) => void;
+  addUserShopItem: (requestId: string, item: UserShopItemPayload) => void;
   updateUserShopItem: (requestId: string, item: UserShopItem) => void;
   deleteUserShopItem: (requestId: string, itemId: string) => void;
   clearRequests: () => void;
