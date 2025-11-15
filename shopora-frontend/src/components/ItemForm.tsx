@@ -107,24 +107,9 @@ function ItemForm() {
             />
             <input
               type="text"
-              value={namee}
-              onChange={(event) => setNamee(event.target.value)}
-              placeholder="Second line (e.g., T-shirt, Headphones)"
-              className="rounded-2xl border border-[#E0E3E1] px-4 py-3 text-sm text-[#1F3B2F] focus:outline-none focus:ring-2 focus:ring-[#65CD99]"
-            />
-            <input
-              type="text"
               value={priceLabel}
               onChange={(event) => setPriceLabel(event.target.value)}
               placeholder="Price label (e.g., $199)"
-              className="rounded-2xl border border-[#E0E3E1] px-4 py-3 text-sm text-[#1F3B2F] focus:outline-none focus:ring-2 focus:ring-[#65CD99]"
-            />
-            <input
-              type="number"
-              min="1"
-              value={priceValue}
-              onChange={(event) => setPriceValue(event.target.value)}
-              placeholder="Numeric price (e.g., 199)"
               className="rounded-2xl border border-[#E0E3E1] px-4 py-3 text-sm text-[#1F3B2F] focus:outline-none focus:ring-2 focus:ring-[#65CD99]"
             />
             <select
@@ -140,17 +125,11 @@ function ItemForm() {
             </select>
             <input
               type="text"
-              value={ratings}
-              onChange={(event) => setRatings(event.target.value)}
-              placeholder="Ratings label (e.g., (123))"
-              className="rounded-2xl border border-[#E0E3E1] px-4 py-3 text-sm text-[#1F3B2F] focus:outline-none focus:ring-2 focus:ring-[#65CD99]"
-            />
-            <input
-              type="text"
               value={image}
               onChange={(event) => setImage(event.target.value)}
-              placeholder="Image URL (optional)"
+              placeholder="Image URL"
               className="rounded-2xl border border-[#E0E3E1] px-4 py-3 text-sm text-[#1F3B2F] focus:outline-none focus:ring-2 focus:ring-[#65CD99]"
+              required
             />
             <textarea
               value={description}

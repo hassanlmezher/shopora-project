@@ -1,6 +1,7 @@
 import logo from "../images/Logo.png";
 import lightMode from "../images/lightMode.png";
 import women from "../images/women.png";
+import shirt from "../images/shirt.png";
 import ItemCard from "./ItemCard";
 import { catalogue } from "../data/catalogue";
 import home from "../images/home.png";
@@ -58,6 +59,9 @@ function DashboardLoggedIn() {
         (state) => state.items.reduce((sum, item) => sum + item.quantity, 0)
     );
     const notificationCount = useNotificationStore((state) => state.requests.length);
+    const acceptedRequestItems = useNotificationStore((state) =>
+        state.requests.find((request) => request.status === "accepted")?.items ?? []
+    );
 
     const closeMobileMenu = () => setIsMobileMenuOpen(false);
     const handleMobileNavigate = (path: string) => {
@@ -77,9 +81,28 @@ function DashboardLoggedIn() {
         };
     }, []);
 
+    const catalogueWithUserItems = useMemo(() => {
+        if (!acceptedRequestItems.length) {
+            return updatedCatalogue;
+        }
+        const creatorItems = acceptedRequestItems.map((item) => ({
+            image: item.image || shirt,
+            name: item.name,
+            namee: item.namee,
+            price: item.price,
+            priceValue: item.priceValue,
+            description: item.description,
+            ratings: item.ratings || "(0)",
+            by: item.by,
+            category: item.category || "Creator",
+            reviews: item.reviews ?? [],
+        }));
+        return [...updatedCatalogue, ...creatorItems];
+    }, [updatedCatalogue, acceptedRequestItems]);
+
     const filteredItems = useMemo(() => {
         const normalized = searchTerm.trim().toLowerCase();
-        return updatedCatalogue.filter(item => {
+        return catalogueWithUserItems.filter(item => {
             const haystack = `${item.name} ${item.namee} ${item.description} ${item.by} ${item.category}`.toLowerCase();
             const matchesSearch = !normalized || haystack.includes(normalized);
             const matchesPrice = item.priceValue >= priceRange.min && item.priceValue <= priceRange.max;
