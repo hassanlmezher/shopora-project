@@ -10,6 +10,8 @@ import settings from "../images/settings.png";
 import categories from "../images/categories.png";
 import price from "../images/price.png";
 import heart from "../images/heart.png";
+import profile from "../images/profile.png";
+import create from "../images/create.png";
 import { useNavigate } from "react-router-dom";
 import cart from "../images/cart.png";
 import logout from "../images/logout.png";
@@ -62,15 +64,23 @@ function DashboardLoggedIn() {
         (state) => state.items.reduce((sum, item) => sum + item.quantity, 0)
     );
     const notificationCount = useNotificationStore((state) => state.requests.length);
+    const acceptedRequest = useNotificationStore((state) =>
+        state.requests.find((request) => request.status === "accepted")
+    );
     const acceptedRequestItems = useNotificationStore((state) =>
         state.requests.find((request) => request.status === "accepted")?.items ?? []
     );
     const favoriteItems = useFavoritesStore((state) => state.items ?? []);
     const favoriteIds = useMemo(() => favoriteItems.map((item) => item.id), [favoriteItems]);
+    const [isSettingsDrawerOpen, setIsSettingsDrawerOpen] = useState(false);
 
     const closeMobileMenu = () => setIsMobileMenuOpen(false);
     const handleMobileNavigate = (path: string) => {
         closeMobileMenu();
+        if (path === "/settings") {
+            setIsSettingsDrawerOpen(true);
+            return;
+        }
         navigate(path);
     };
 
@@ -279,6 +289,28 @@ function DashboardLoggedIn() {
         }
     };
 
+    const settingsDrawerItems = [
+        {
+            icon: profile,
+            title: "Profile page",
+            description: "Update your name, avatar, and account preferences.",
+            action: () => navigate("/profile"),
+        },
+        {
+            icon: create,
+            title: acceptedRequest ? "Your shop" : "Create shop",
+            description: acceptedRequest
+                ? `Manage "${acceptedRequest.shopTitle}" items, pricing, and stock.`
+                : "Launch a storefront and start selling on Shopora.",
+            action: () => navigate(acceptedRequest ? "/my-shop" : "/welcome-create"),
+        },
+    ];
+
+    const handleSettingsDrawerItemClick = (action?: () => void) => {
+        action?.();
+        setIsSettingsDrawerOpen(false);
+    };
+
     const handleMinPriceChange = (event: ChangeEvent<HTMLInputElement>) => {
         const nextValue = event.target.value;
         setPriceDraft(prev => ({ ...prev, min: nextValue }));
@@ -446,6 +478,16 @@ function DashboardLoggedIn() {
                     Stores
                 </button>
             </section>
+            <div className="mt-4">
+                <button
+                    type="button"
+                    onClick={() => setIsSettingsDrawerOpen(true)}
+                    className="flex w-full items-center justify-center gap-3 rounded-2xl border border-white/40 bg-white/10 px-4 py-3 text-sm font-semibold text-white transition hover:border-white hover:bg-white/20"
+                >
+                    <img className="w-5" src={settings} alt="settings logo" />
+                    Settings
+                </button>
+            </div>
             <section className="space-y-4 rounded-3xl border border-white/30 bg-white/10 p-4 backdrop-blur-sm">
                 <div>
                     <label className="text-sm font-semibold text-white/80">Search</label>
@@ -549,7 +591,7 @@ function DashboardLoggedIn() {
                 </button>
                 <button
                     className="flex items-center justify-center gap-2 rounded-2xl bg-white px-4 py-3 text-sm font-bold text-[#E6C79A] transition duration-300 ease-in-out hover:bg-[#E6C79A] hover:text-white"
-                    onClick={() => navigate('/settings')}
+                    onClick={() => setIsSettingsDrawerOpen(true)}
                 >
                     <img className="w-5" src={settings} alt="settings" />
                     Settings
@@ -732,7 +774,7 @@ function DashboardLoggedIn() {
                     </div>
                     <button
                         className="flex w-full items-center gap-3 rounded-2xl border border-white/30 px-4 py-3 text-left text-sm font-semibold text-white transition hover:bg-white hover:text-[#7CA6FF]"
-                        onClick={() => navigate('/settings')}
+                        onClick={() => setIsSettingsDrawerOpen(true)}
                     >
                         <img className="w-6" src={settings} alt="settings logo" />
                         Settings
@@ -850,6 +892,49 @@ function DashboardLoggedIn() {
   return (
     <div className="min-h-screen bg-[#3B7CFF]">
         {isDesktopLayout ? renderDesktopLayout() : renderMobileLayout()}
+        {isSettingsDrawerOpen && (
+            <div className="fixed inset-0 z-50 flex">
+                <div
+                    className="absolute inset-0 bg-slate-900/40 backdrop-blur-sm"
+                    onClick={() => setIsSettingsDrawerOpen(false)}
+                />
+                <div className="relative ml-auto h-full w-full max-w-xs bg-white p-6 shadow-2xl">
+                    <div className="flex items-center justify-between">
+                        <div>
+                            <p className="text-lg font-semibold text-slate-900">Quick settings</p>
+                            <p className="text-xs text-slate-500">Jump to key pages</p>
+                        </div>
+                        <button
+                            type="button"
+                            onClick={() => setIsSettingsDrawerOpen(false)}
+                            className="rounded-full border border-slate-200 px-2 py-1 text-xs font-semibold text-slate-600 transition hover:border-slate-300"
+                        >
+                            Close
+                        </button>
+                    </div>
+                    <div className="mt-6 space-y-3">
+                        {settingsDrawerItems.map((item) => (
+                            <button
+                                key={item.title}
+                                type="button"
+                                onClick={() => handleSettingsDrawerItemClick(item.action)}
+                                className="flex items-start gap-3 rounded-2xl border border-slate-100 bg-slate-50/80 px-4 py-3 text-left transition hover:border-slate-200 hover:bg-white"
+                            >
+                                <img
+                                    src={item.icon}
+                                    alt={`${item.title} icon`}
+                                    className="h-10 w-10 rounded-2xl bg-white p-1 shadow-sm"
+                                />
+                                <div className="flex-1">
+                                    <p className="text-sm font-semibold text-slate-900">{item.title}</p>
+                                    <p className="text-xs text-slate-500">{item.description}</p>
+                                </div>
+                            </button>
+                        ))}
+                    </div>
+                </div>
+            </div>
+        )}
     </div>
   )
 }

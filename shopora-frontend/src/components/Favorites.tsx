@@ -12,10 +12,10 @@ function Favorites() {
         <div className="flex flex-wrap items-center justify-between gap-4">
           <button
             type="button"
-            onClick={() => navigate('/settings')}
+            onClick={() => navigate("/DashboardLoggedIn")}
             className="border border-gray-300 flex w-fit items-center gap-3 rounded-full bg-white px-4 py-2 text-sm font-semibold text-[#1E3B86] shadow-sm transition hover:bg-[#8DB9FF] hover:text-white"
           >
-            Back to settings
+            Back to dashboard
           </button>
           <div>
             <p className="text-3xl font-bold text-[#1F3B2F]">My Favorites</p>

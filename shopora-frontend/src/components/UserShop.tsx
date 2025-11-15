@@ -12,13 +12,13 @@ function UserShop() {
   const items = acceptedRequest?.items ?? [];
   const canAddItems = Boolean(acceptedRequest);
 
-  const handleAddItem = () => {
-    if (canAddItems) {
-      navigate("/itemform");
-      return;
-    }
-    navigate("/settings");
-  };
+    const handleAddItem = () => {
+        if (canAddItems) {
+            navigate("/itemform");
+            return;
+        }
+        navigate("/DashboardLoggedIn");
+    };
 
   const backPath = isLoggedIn ? "/DashboardLoggedIn" : "/dashboard";
 
@@ -73,7 +73,9 @@ function UserShop() {
             </button>
             <p className="text-[#3B7CFF] font-bold text-2xl">Add an item</p>
             {!canAddItems && (
-              <p className="text-xs text-[#4B5B56]">Get your shop approved first in settings.</p>
+              <p className="text-xs text-[#4B5B56]">
+                Get your shop approved first through the settings drawer on the dashboard.
+              </p>
             )}
           </div>
         </section>

@@ -96,8 +96,8 @@ function Details() {
   };
 
   return (
-    <div className="min-h-screen bg-[#8DB9FF] px-4 py-6 sm:px-6 md:px-10 lg:py-10">
-      <div className="mx-auto flex max-w-6xl flex-col gap-6">
+    <div className="min-h-screen bg-slate-50 px-4 py-6 sm:px-6 md:px-10 lg:py-10">
+      <div className="mx-auto flex w-full max-w-5xl flex-col gap-5 rounded-[32px] border border-gray-200 bg-white p-5 shadow-xl">
         <button
           type="button"
           onClick={handleBack}
@@ -106,41 +106,48 @@ function Details() {
           Back
         </button>
 
-        <div className="grid items-start gap-8 lg:grid-cols-[minmax(0,1.4fr)_minmax(0,0.8fr)]">
-          <div className="flex flex-col items-center gap-6 rounded-3xl bg-white/10 p-6 text-center backdrop-blur-sm lg:items-start lg:text-left">
-            <div className="w-full max-w-[520px]">
+        <div className="grid items-start gap-6 lg:grid-cols-[minmax(0,1.3fr)_minmax(0,0.7fr)]">
+          <div className="flex flex-col items-center gap-4 rounded-3xl bg-gradient-to-b from-white via-slate-50 to-white p-6 text-center shadow-inner lg:items-start lg:text-left">
+            <div className="w-full max-w-[360px] sm:max-w-[420px]">
               <img
                 src={image}
                 alt={`${name ?? ""} ${namee ?? ""} pic`}
-                className="w-full rounded-3xl object-contain shadow-2xl"
+                className="w-70 rounded-3xl object-contain shadow-2xl"
               />
             </div>
             <div className="space-y-1">
-              <p className="text-3xl font-bold text-white sm:text-4xl">{name}</p>
-              <p className="text-xl font-semibold text-white/90 sm:text-2xl">{namee}</p>
+              <p className="text-3xl font-bold text-slate-900 sm:text-4xl">{name}</p>
+              <p className="text-xl font-semibold text-slate-500 sm:text-2xl">{namee}</p>
             </div>
           </div>
 
           <div className="w-full rounded-3xl bg-white p-5 shadow-xl sm:p-6">
             <div className="flex flex-col gap-4">
-              <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+              <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
                 <div className="flex items-center gap-4">
-                  <img src={reviewss} alt="reviews icon" className="w-16 sm:w-20 lg:w-24" />
-                  <p className="text-2xl font-bold text-[#8DB9FF] sm:text-3xl">{totalReviews} Reviews</p>
+                  <img src={reviewss} alt="reviews icon" className="w-12 sm:w-16" />
+                  <div>
+                    <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">Reviews</p>
+                    <p className="text-3xl font-bold text-slate-900">{totalReviews}</p>
+                  </div>
                 </div>
                 <button
                   type="button"
                   onClick={() => setShowAddReview((prev) => !prev)}
                   disabled={!hasOrdered || hasReviewed}
-                  className={`w-full rounded-xl bg-[#8DB9FF] px-4 py-2 text-sm font-semibold text-white transition hover:bg-[#2D54E0] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1E3B86] sm:w-auto ${
+                  className={`flex w-full items-center justify-center gap-2 rounded-xl bg-[#8DB9FF] px-4 py-2 text-sm font-semibold text-white transition hover:bg-[#2D54E0] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1E3B86] sm:w-auto ${
                     !hasOrdered || hasReviewed ? "cursor-not-allowed opacity-60" : ""
                   }`}
                 >
-                  {hasReviewed ? "Review submitted" : showAddReview ? "Close" : "Add Review"}
+                  {hasReviewed
+                    ? "Review submitted"
+                    : showAddReview
+                    ? "Close Review Form"
+                    : "Add Review"}
                 </button>
               </div>
               {(!hasOrdered || hasReviewed) && (
-                <div className="space-y-1 text-xs text-gray-500 sm:text-sm">
+                <div className="space-y-1 text-sm text-slate-500">
                   {!hasOrdered && <p>Purchase this item before leaving a review.</p>}
                   {hasReviewed && <p>You already reviewed this item.</p>}
                 </div>
@@ -148,7 +155,7 @@ function Details() {
             </div>
 
             {showAddReview && (
-              <div className="mt-5 space-y-4 rounded-2xl border border-dashed border-[#8DB9FF]/40 bg-gray-50 p-4 sm:p-5">
+              <div className="mt-5 space-y-4 rounded-2xl border border-slate-100 bg-slate-50 p-5">
                 <div>
                   <label className="mb-2 block text-sm font-medium text-gray-700">Rating</label>
                   <div className="flex flex-wrap gap-2">
@@ -197,7 +204,7 @@ function Details() {
                 reviews.map((review, index) => (
                   <div
                     key={`${review.reviewer}-${index}`}
-                    className="rounded-2xl border border-gray-100 bg-gray-50 p-4 shadow-sm"
+                    className="rounded-2xl bg-white p-5 shadow-sm ring-1 ring-slate-100"
                   >
                     <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
                       <p className="font-semibold text-gray-900">{review.reviewer}</p>
@@ -205,18 +212,18 @@ function Details() {
                         {[1, 2, 3, 4, 5].map((star) => (
                           <span
                             key={star}
-                            className={`text-lg ${star <= review.rating ? "text-yellow-400" : "text-gray-300"}`}
+                            className={`text-lg ${star <= review.rating ? "text-yellow-400" : "text-slate-200"}`}
                           >
                             {"\u2605"}
                           </span>
                         ))}
                       </div>
                     </div>
-                    <p className="mt-3 text-sm leading-relaxed text-gray-600">{review.text}</p>
+                    <p className="mt-3 text-sm leading-relaxed text-slate-600">{review.text}</p>
                   </div>
                 ))
               ) : (
-                <p className="text-center text-sm text-gray-500">No reviews yet. Be the first to add one.</p>
+                <p className="text-center text-sm text-slate-500">No reviews yet. Be the first to add one.</p>
               )}
             </div>
           </div>

@@ -7,7 +7,7 @@ import Stores from "./components/Stores";
 import StoreItems from "./components/StoreItems";
 import Favorites from "./components/Favorites";
 import Signup from "./components/Signup";
-import Settings from './components/Settings';
+import ProfilePage from './components/ProfilePage';
 import Cart from './components/Cart';
 import Details from './components/Details';
 import WelcomeCreate from "./components/WelcomeCreate";
@@ -32,7 +32,7 @@ function App() {
         <Route path="/favorites" element={<Favorites />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/settings" element={<Settings />} />
+        <Route path="/profile" element={<ProfilePage />} />
         <Route path="/DashboardLoggedIn" element={<DashboardLoggedIn />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/details" element={<Details />} />

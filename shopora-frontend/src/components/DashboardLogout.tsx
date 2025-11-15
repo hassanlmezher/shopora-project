@@ -369,10 +369,10 @@ function DashboardLogout() {
                             </button>
                             <button
                                 type="button"
-                                onClick={() => handleMobileNavigate('/settings')}
+                                onClick={() => handleMobileNavigate('/DashboardLoggedIn')}
                                 className="rounded-2xl bg-[#F4FFFA] px-4 py-3 text-left text-lg font-semibold text-[#3B7CFF]"
                             >
-                                Settings
+                                Dashboard
                             </button>
                             <button
                                 type="button"
