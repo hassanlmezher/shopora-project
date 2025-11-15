@@ -1,6 +1,7 @@
 import logo from "../images/Logo.png";
 import lightMode from "../images/lightMode.png";
 import women from "../images/women.png";
+import shirt from "../images/shirt.png";
 import ItemCard from "./ItemCard";
 import { catalogue } from "../data/catalogue";
 import home from "../images/home.png";
@@ -12,6 +13,7 @@ import { useNavigate } from "react-router-dom";
 import { useMemo, useRef, useState, useEffect } from "react";
 import type { ChangeEvent, FocusEvent as ReactFocusEvent, KeyboardEvent as ReactKeyboardEvent } from "react";
 import useDashboardLayout from "../hooks/useDashboardLayout";
+import useNotificationStore from "../store/useNotificationStore";
 
 function getUpdatedCatalogue() {
     return catalogue.map(item => {
@@ -50,6 +52,9 @@ function DashboardLogout() {
     const minPriceInputRef = useRef<HTMLInputElement | null>(null);
     const maxPriceInputRef = useRef<HTMLInputElement | null>(null);
     const isDesktopLayout = useDashboardLayout();
+    const acceptedRequestItems = useNotificationStore((state) =>
+        state.requests.find((request) => request.status === "accepted")?.items ?? []
+    );
 
     const closeMobileMenu = () => setIsMobileMenuOpen(false);
     const handleMobileNavigate = (path: string) => {
@@ -69,16 +74,35 @@ function DashboardLogout() {
         };
     }, []);
 
+    const catalogueWithCreatorItems = useMemo(() => {
+        if (!acceptedRequestItems.length) {
+            return updatedCatalogue;
+        }
+        const creatorItems = acceptedRequestItems.map((item) => ({
+            image: item.image || shirt,
+            name: item.name,
+            namee: item.namee,
+            price: item.price,
+            priceValue: item.priceValue,
+            description: item.description,
+            ratings: item.ratings || "(0)",
+            by: item.by,
+            category: item.category || "Creator",
+            reviews: item.reviews ?? [],
+        }));
+        return [...updatedCatalogue, ...creatorItems];
+    }, [updatedCatalogue, acceptedRequestItems]);
+
     const filteredItems = useMemo(() => {
         const normalized = searchTerm.trim().toLowerCase();
-        return updatedCatalogue.filter(item => {
+        return catalogueWithCreatorItems.filter(item => {
             const haystack = `${item.name} ${item.namee} ${item.description} ${item.by} ${item.category}`.toLowerCase();
             const matchesSearch = !normalized || haystack.includes(normalized);
             const matchesPrice = item.priceValue >= priceRange.min && item.priceValue <= priceRange.max;
             const matchesCategory = selectedCategory === ALL_CATEGORIES || item.category === selectedCategory;
             return matchesSearch && matchesPrice && matchesCategory;
         });
-    }, [searchTerm, priceRange, selectedCategory, updatedCatalogue]);
+    }, [searchTerm, priceRange, selectedCategory, catalogueWithCreatorItems]);
 
     const expandSearch = () => {
         if (isSearchExpanded) {

@@ -6,6 +6,7 @@ import StoreCard from "./StoreCard";
 import { useNavigate } from "react-router-dom";
 import useAuthStore from "../store/useAuthStore";
 import useAdminStores from "../store/useAdminStores";
+import useNotificationStore from "../store/useNotificationStore";
 
 const storeImages: Record<string, string> = {
   hassan: moustache,
@@ -21,7 +22,13 @@ function Stores() {
     ...store,
     image: storeImages[store.id] ?? profileImage,
   }));
+  const acceptedRequest = useNotificationStore((state) =>
+    state.requests.find((request) => request.status === "accepted")
+  );
+  const creatorShopImage = acceptedRequest?.items[0]?.image ?? profileImage;
   const hasStores = storefronts.length > 0;
+  const hasCreatorShop = Boolean(acceptedRequest);
+  const shouldShowGrid = hasStores || hasCreatorShop;
 
   return (
     <div className="min-h-screen bg-[#F4F7F6] pb-16">
@@ -33,7 +40,7 @@ function Stores() {
         >
           Back
         </button>
-        {hasStores ? (
+        {shouldShowGrid ? (
           <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
             {storefronts.map((store) => (
               <StoreCard
@@ -43,6 +50,14 @@ function Stores() {
                 onExplore={() => navigate(`/stores/${store.id}`)}
               />
             ))}
+            {acceptedRequest && (
+              <StoreCard
+                key="creator-shop"
+                image={creatorShopImage}
+                name={acceptedRequest.shopTitle}
+                onExplore={() => navigate("/my-shop")}
+              />
+            )}
           </div>
         ) : (
           <div className="rounded-3xl bg-white p-10 text-center text-lg font-semibold text-[#388063] shadow-sm">
