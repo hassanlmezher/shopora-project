@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import CartCard from "./CartCard";
 import useCartStore from "../store/useCartStore";
+import useOrderStore from "../store/useOrderStore";
 import PopupMessage from "./PopupMessage";
 
 const formatCurrency = (value: number) =>
@@ -15,8 +16,10 @@ type ShippingOption = "pickup" | "delivery";
 function Cart() {
     const navigate = useNavigate();
     const items = useCartStore((state) => state.items);
+    const clearCart = useCartStore((state) => state.clear);
+    const addOrders = useOrderStore((state) => state.addOrders);
     const [shippingOption, setShippingOption] = useState<ShippingOption>("pickup");
-    const [showPopup, setShowPopup] = useState(false);
+    const [toast, setToast] = useState<{ message: string; variant: "success" | "error" } | null>(null);
     const hideTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
     const subtotal = useMemo(
@@ -39,15 +42,28 @@ function Cart() {
         };
     }, []);
 
-    const triggerRemovedPopup = () => {
-        setShowPopup(true);
+    const showToast = (message: string, variant: "success" | "error") => {
+        setToast({ message, variant });
         if (hideTimerRef.current) {
             clearTimeout(hideTimerRef.current);
         }
         hideTimerRef.current = setTimeout(() => {
-            setShowPopup(false);
+            setToast(null);
             hideTimerRef.current = null;
-        }, 1000);
+        }, 1500);
+    };
+
+    const triggerRemovedPopup = () => {
+        showToast("Item removed from cart!", "error");
+    };
+
+    const handleCheckout = () => {
+        if (!items.length) {
+            return;
+        }
+        addOrders(items);
+        clearCart();
+        showToast("Order confirmed! Review once you receive it.", "success");
     };
 
     return (
@@ -155,6 +171,7 @@ function Cart() {
                             </div>
                             <button
                                 type="button"
+                                onClick={handleCheckout}
                                 className="mt-8 w-full rounded-full bg-[#FF6B6B] py-4 text-xl font-semibold text-white transition hover:bg-[#e35959]"
                             >
                                 Checkout
@@ -163,7 +180,7 @@ function Cart() {
                     </div>
                 )}
             </div>
-            <PopupMessage message="Item removed from cart!" isVisible={showPopup} variant="error" />
+            <PopupMessage message={toast?.message ?? ""} isVisible={Boolean(toast)} variant={toast?.variant ?? "success"} />
         </div>
     );
 }

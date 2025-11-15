@@ -1,6 +1,7 @@
 import { useNavigate, useLocation } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import useAuthStore from "../store/useAuthStore";
+import useOrderStore, { normalizeItemId } from "../store/useOrderStore";
 import reviewss from "../images/reviews.png";
 
 type Review = {
@@ -33,6 +34,12 @@ function Details() {
 
   const totalReviews = reviews.length;
   const storageKey = name && namee ? `reviews-${name}-${namee}` : null;
+  const itemKey = name && namee ? normalizeItemId(name, namee) : null;
+
+  const hasOrdered = useOrderStore((state) => (itemKey ? state.hasOrdered(itemKey) : false));
+  const hasReviewed = useOrderStore((state) => (itemKey ? state.hasReviewed(itemKey) : false));
+  const markReviewed = useOrderStore((state) => state.markReviewed);
+  const canReview = hasOrdered && !hasReviewed;
 
   useEffect(() => {
     if (!storageKey) {
@@ -45,6 +52,12 @@ function Details() {
     }
   }, [storageKey]);
 
+  useEffect(() => {
+    if (!canReview) {
+      setShowAddReview(false);
+    }
+  }, [canReview]);
+
   const handleBack = () => {
     if (returnPath) {
       navigate(returnPath);
@@ -55,6 +68,10 @@ function Details() {
 
   const handleReviewSubmit = () => {
     if (!newReview.trim()) {
+      return;
+    }
+
+    if (!itemKey || !canReview) {
       return;
     }
 
@@ -71,6 +88,7 @@ function Details() {
       }
       return updated;
     });
+    markReviewed(itemKey);
     setNewReview("");
     setSelectedRating(5);
     setShowAddReview(false);
@@ -102,19 +120,29 @@ function Details() {
           </div>
 
           <div className="w-full rounded-3xl bg-white p-5 shadow-xl sm:p-6">
-            <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-              <div className="flex items-center gap-4">
-                <img src={reviewss} alt="reviews icon" className="w-16 sm:w-20 lg:w-24" />
-                <p className="text-2xl font-bold text-[#65CD99] sm:text-3xl">{totalReviews} Reviews</p>
+            <div className="flex flex-col gap-4">
+              <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                <div className="flex items-center gap-4">
+                  <img src={reviewss} alt="reviews icon" className="w-16 sm:w-20 lg:w-24" />
+                  <p className="text-2xl font-bold text-[#65CD99] sm:text-3xl">{totalReviews} Reviews</p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setShowAddReview((prev) => !prev)}
+                  disabled={!hasOrdered || hasReviewed}
+                  className={`w-full rounded-xl bg-[#65CD99] px-4 py-2 text-sm font-semibold text-white transition hover:bg-[#4CAF50] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#388063] sm:w-auto ${
+                    !hasOrdered || hasReviewed ? "cursor-not-allowed opacity-60" : ""
+                  }`}
+                >
+                  {hasReviewed ? "Review submitted" : showAddReview ? "Close" : "Add Review"}
+                </button>
               </div>
-
-              <button
-                type="button"
-                onClick={() => setShowAddReview((prev) => !prev)}
-                className="w-full rounded-xl bg-[#65CD99] px-4 py-2 text-sm font-semibold text-white transition hover:bg-[#4CAF50] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#388063] sm:w-auto"
-              >
-                {showAddReview ? "Close" : "Add Review"}
-              </button>
+              {(!hasOrdered || hasReviewed) && (
+                <div className="space-y-1 text-xs text-gray-500 sm:text-sm">
+                  {!hasOrdered && <p>Purchase this item before leaving a review.</p>}
+                  {hasReviewed && <p>You already reviewed this item.</p>}
+                </div>
+              )}
             </div>
 
             {showAddReview && (
