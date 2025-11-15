@@ -82,6 +82,11 @@ function ItemCard({ image, name, namee, price, priceValue, description, by, revi
   };
 
   const handleToggleFavorite = () => {
+    if (!isLoggedIn) {
+      navigate("/login");
+      return;
+    }
+
     const wasFavorite = isFavorite;
     toggleFavorite({
       id: `${name}-${namee}`,
