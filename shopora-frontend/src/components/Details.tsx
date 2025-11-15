@@ -1,6 +1,7 @@
 import { useNavigate, useLocation } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import useAuthStore from "../store/useAuthStore";
+import useOrderStore, { normalizeItemId } from "../store/useOrderStore";
 import reviewss from "../images/reviews.png";
 
 type Review = {
@@ -33,6 +34,12 @@ function Details() {
 
   const totalReviews = reviews.length;
   const storageKey = name && namee ? `reviews-${name}-${namee}` : null;
+  const itemKey = name && namee ? normalizeItemId(name, namee) : null;
+
+  const hasOrdered = useOrderStore((state) => (itemKey ? state.hasOrdered(itemKey) : false));
+  const hasReviewed = useOrderStore((state) => (itemKey ? state.hasReviewed(itemKey) : false));
+  const markReviewed = useOrderStore((state) => state.markReviewed);
+  const canReview = hasOrdered && !hasReviewed;
 
   useEffect(() => {
     if (!storageKey) {
@@ -45,6 +52,12 @@ function Details() {
     }
   }, [storageKey]);
 
+  useEffect(() => {
+    if (!canReview) {
+      setShowAddReview(false);
+    }
+  }, [canReview]);
+
   const handleBack = () => {
     if (returnPath) {
       navigate(returnPath);
@@ -55,6 +68,10 @@ function Details() {
 
   const handleReviewSubmit = () => {
     if (!newReview.trim()) {
+      return;
+    }
+
+    if (!itemKey || !canReview) {
       return;
     }
 
@@ -71,6 +88,7 @@ function Details() {
       }
       return updated;
     });
+    markReviewed(itemKey);
     setNewReview("");
     setSelectedRating(5);
     setShowAddReview(false);
@@ -111,10 +129,19 @@ function Details() {
               <button
                 type="button"
                 onClick={() => setShowAddReview((prev) => !prev)}
-                className="w-full rounded-xl bg-[#65CD99] px-4 py-2 text-sm font-semibold text-white transition hover:bg-[#4CAF50] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#388063] sm:w-auto"
+                disabled={!hasOrdered || hasReviewed}
+                className={`w-full rounded-xl bg-[#65CD99] px-4 py-2 text-sm font-semibold text-white transition hover:bg-[#4CAF50] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#388063] sm:w-auto ${
+                  !hasOrdered || hasReviewed ? "cursor-not-allowed opacity-60" : ""
+                }`}
               >
-                {showAddReview ? "Close" : "Add Review"}
+                {hasReviewed ? "Review submitted" : showAddReview ? "Close" : "Add Review"}
               </button>
+              {!hasOrdered && (
+                <p className="mt-2 text-xs text-gray-500">Purchase this item before leaving a review.</p>
+              )}
+              {hasReviewed && (
+                <p className="mt-2 text-xs text-gray-500">You already reviewed this item.</p>
+              )}
             </div>
 
             {showAddReview && (
