@@ -10,8 +10,6 @@ import settings from "../images/settings.png";
 import categories from "../images/categories.png";
 import price from "../images/price.png";
 import heart from "../images/heart.png";
-import profile from "../images/profile.png";
-import create from "../images/create.png";
 import { useNavigate } from "react-router-dom";
 import cart from "../images/cart.png";
 import logout from "../images/logout.png";
@@ -291,13 +289,11 @@ function DashboardLoggedIn() {
 
     const settingsDrawerItems = [
         {
-            icon: profile,
             title: "Profile page",
             description: "Update your name, avatar, and account preferences.",
             action: () => navigate("/profile"),
         },
         {
-            icon: create,
             title: acceptedRequest ? "Your shop" : "Create shop",
             description: acceptedRequest
                 ? `Manage "${acceptedRequest.shopTitle}" items, pricing, and stock.`
@@ -914,25 +910,18 @@ function DashboardLoggedIn() {
                     </div>
                     <div className="mt-6 space-y-3">
                         {settingsDrawerItems.map((item) => (
-                            <button
-                                key={item.title}
-                                type="button"
-                                onClick={() => handleSettingsDrawerItemClick(item.action)}
-                                className="flex items-start gap-3 rounded-2xl border border-slate-100 bg-slate-50/80 px-4 py-3 text-left transition hover:border-slate-200 hover:bg-white"
-                            >
-                                <img
-                                    src={item.icon}
-                                    alt={`${item.title} icon`}
-                                    className="h-10 w-10 rounded-2xl bg-white p-1 shadow-sm"
-                                />
-                                <div className="flex-1">
-                                    <p className="text-sm font-semibold text-slate-900">{item.title}</p>
-                                    <p className="text-xs text-slate-500">{item.description}</p>
-                                </div>
-                            </button>
-                        ))}
-                    </div>
-                </div>
+                    <button
+                        key={item.title}
+                        type="button"
+                        onClick={() => handleSettingsDrawerItemClick(item.action)}
+                        className="flex w-full flex-col rounded-2xl border border-slate-100 bg-slate-50/80 px-4 py-4 text-left transition hover:border-slate-200 hover:bg-white"
+                    >
+                        <p className="text-xl font-semibold text-slate-900">{item.title}</p>
+                        <p className="mt-1 text-xs text-slate-500">{item.description}</p>
+                    </button>
+                ))}
+            </div>
+        </div>
             </div>
         )}
     </div>
