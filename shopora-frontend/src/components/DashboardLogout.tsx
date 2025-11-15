@@ -93,6 +93,30 @@ function DashboardLogout() {
         return [...updatedCatalogue, ...creatorItems];
     }, [updatedCatalogue, acceptedRequestItems]);
 
+    const dynamicPriceBounds = useMemo(() => {
+        const allPrices = catalogueWithCreatorItems.map((item) => item.priceValue);
+        if (!allPrices.length) {
+            return priceBounds;
+        }
+        return {
+            min: Math.min(...allPrices),
+            max: Math.max(...allPrices),
+        };
+    }, [catalogueWithCreatorItems]);
+
+    useEffect(() => {
+        setPriceRange((prev) => {
+            const updated = {
+                min: Math.min(prev.min, dynamicPriceBounds.min),
+                max: Math.max(prev.max, dynamicPriceBounds.max),
+            };
+            if (updated.min === prev.min && updated.max === prev.max) {
+                return prev;
+            }
+            return updated;
+        });
+    }, [dynamicPriceBounds]);
+
     const filteredItems = useMemo(() => {
         const normalized = searchTerm.trim().toLowerCase();
         return catalogueWithCreatorItems.filter(item => {
@@ -203,7 +227,7 @@ function DashboardLogout() {
     const commitMinPrice = () => {
         const numeric = Number(priceDraft.min);
         const base = Number.isNaN(numeric) ? priceRange.min : numeric;
-        const clamped = Math.min(Math.max(base, priceBounds.min), priceRange.max);
+        const clamped = Math.min(Math.max(base, dynamicPriceBounds.min), priceRange.max);
         setPriceRange(prev => (prev.min === clamped ? prev : { ...prev, min: clamped }));
         setPriceDraft(prev => (prev.min === clamped.toString() ? prev : { ...prev, min: clamped.toString() }));
     };
@@ -211,7 +235,7 @@ function DashboardLogout() {
     const commitMaxPrice = () => {
         const numeric = Number(priceDraft.max);
         const base = Number.isNaN(numeric) ? priceRange.max : numeric;
-        const clamped = Math.max(Math.min(base, priceBounds.max), priceRange.min);
+        const clamped = Math.max(Math.min(base, dynamicPriceBounds.max), priceRange.min);
         setPriceRange(prev => (prev.max === clamped ? prev : { ...prev, max: clamped }));
         setPriceDraft(prev => (prev.max === clamped.toString() ? prev : { ...prev, max: clamped.toString() }));
     };
@@ -248,7 +272,7 @@ function DashboardLogout() {
             return;
         }
 
-        if (numeric < priceBounds.min || numeric > priceRange.max) {
+        if (numeric < dynamicPriceBounds.min || numeric > priceRange.max) {
             return;
         }
 
@@ -268,7 +292,7 @@ function DashboardLogout() {
             return;
         }
 
-        if (numeric > priceBounds.max || numeric < priceRange.min) {
+        if (numeric > dynamicPriceBounds.max || numeric < priceRange.min) {
             return;
         }
 
@@ -408,8 +432,8 @@ function DashboardLogout() {
                             onChange={handleMinPriceChange}
                             onBlur={handleMinPriceBlur}
                             type="number"
-                            min={priceBounds.min}
-                            max={priceBounds.max}
+                            min={dynamicPriceBounds.min}
+                            max={dynamicPriceBounds.max}
                             className="mt-2 rounded-2xl border border-white/60 bg-white px-4 py-3 text-sm font-semibold text-[#5DBC8C] focus:outline-none focus:ring-2 focus:ring-white"
                         />
                     </div>
@@ -420,8 +444,8 @@ function DashboardLogout() {
                             onChange={handleMaxPriceChange}
                             onBlur={handleMaxPriceBlur}
                             type="number"
-                            min={priceBounds.min}
-                            max={priceBounds.max}
+                            min={dynamicPriceBounds.min}
+                            max={dynamicPriceBounds.max}
                             className="mt-2 rounded-2xl border border-white/60 bg-white px-4 py-3 text-sm font-semibold text-[#5DBC8C] focus:outline-none focus:ring-2 focus:ring-white"
                         />
                     </div>
@@ -599,8 +623,8 @@ function DashboardLogout() {
                                     onBlur={handleMinPriceBlur}
                                     onKeyDown={handlePriceInputKeyDown}
                                     type="number"
-                                    min={priceBounds.min}
-                                    max={priceBounds.max}
+                                    min={dynamicPriceBounds.min}
+                                    max={dynamicPriceBounds.max}
                                     className="w-24 rounded-xl border border-[#CDE6D6] bg-white px-3 py-1 text-sm font-semibold text-[#5DBC8C] focus:border-transparent focus:outline-none focus:ring-2 focus:ring-[#5DBC8C]"
                                 />
                                 <span className="text-[#5DBC8C] font-semibold">-</span>
@@ -611,8 +635,8 @@ function DashboardLogout() {
                                     onBlur={handleMaxPriceBlur}
                                     onKeyDown={handlePriceInputKeyDown}
                                     type="number"
-                                    min={priceBounds.min}
-                                    max={priceBounds.max}
+                                    min={dynamicPriceBounds.min}
+                                    max={dynamicPriceBounds.max}
                                     className="w-24 rounded-xl border border-[#CDE6D6] bg-white px-3 py-1 text-sm font-semibold text-[#5DBC8C] focus:border-transparent focus:outline-none focus:ring-2 focus:ring-[#5DBC8C]"
                                 />
                             </div>
