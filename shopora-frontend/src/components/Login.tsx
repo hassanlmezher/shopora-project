@@ -71,19 +71,19 @@ function Login() {
       }
     };
   return (
-    <div className="flex min-h-screen items-center justify-center bg-linear-to-b from-[#66CE9A] to-[#388063] px-4 py-10">
+    <div className="flex min-h-screen items-center justify-center bg-linear-to-b from-[#6E98FF] to-[#1E3B86] px-4 py-10">
       <div className="flex w-full max-w-5xl flex-col overflow-hidden rounded-3xl bg-[#D9D9D9] shadow-xl lg:flex-row">
         <div className="flex w-full flex-col justify-center gap-6 px-8 py-10 lg:w-1/2 lg:px-12">
           <p className="text-center text-4xl font-bold text-[#4EA67D] sm:text-5xl lg:text-left">Log In</p>
           <input
             type="text"
-            className="h-12 w-full rounded-2xl border border-[#0E5861] px-4 text-base focus:border-[#65CD99] focus:outline-none"
+            className="h-12 w-full rounded-2xl border border-[#0E5861] px-4 text-base focus:border-[#8DB9FF] focus:outline-none"
             onChange={handleEmail}
             placeholder="Email address"
           />
           <input
             type="password"
-            className="h-12 w-full rounded-2xl border border-[#0E5861] px-4 text-base focus:border-[#65CD99] focus:outline-none"
+            className="h-12 w-full rounded-2xl border border-[#0E5861] px-4 text-base focus:border-[#8DB9FF] focus:outline-none"
             onChange={handlePassword}
             placeholder="Password"
           />
@@ -97,7 +97,7 @@ function Login() {
             </button>
           </div>
           <button
-            className="w-full rounded-2xl bg-[#65CD99] py-3 text-lg font-bold text-white transition duration-300 ease-in-out hover:bg-white hover:text-[#65CD99]"
+            className="w-full rounded-2xl bg-[#8DB9FF] py-3 text-lg font-bold text-white transition duration-300 ease-in-out hover:bg-white hover:text-[#8DB9FF]"
             onClick={handleLogIn}
           >
             Log In

@@ -67,7 +67,7 @@ function Cart() {
     };
 
     return (
-        <div className="min-h-screen bg-[#5AB688] pb-20">
+        <div className="min-h-screen bg-[#3B7CFF] pb-20">
             <div className="mx-auto max-w-6xl px-6 pt-10">
                 <div className="flex items-center justify-between">
                     <p className="text-4xl font-bold text-white md:text-5xl">
@@ -99,19 +99,19 @@ function Cart() {
                                 Choose shipping mode:
                             </h2>
                             <div className="mt-6 space-y-4">
-                                <label className="flex cursor-pointer items-center gap-4 rounded-2xl border border-[#E5E5E5] px-6 py-4 transition hover:border-[#65CD99]">
+                                <label className="flex cursor-pointer items-center gap-4 rounded-2xl border border-[#E5E5E5] px-6 py-4 transition hover:border-[#8DB9FF]">
                                     <input
                                         type="radio"
                                         name="shipping"
                                         value="pickup"
                                         checked={shippingOption === "pickup"}
                                         onChange={() => setShippingOption("pickup")}
-                                        className="h-5 w-5 accent-[#65CD99]"
+                                        className="h-5 w-5 accent-[#8DB9FF]"
                                     />
                                     <div>
                                         <p className="text-lg font-semibold text-[#3D3D3D]">
                                             Store pickup
-                                            <span className="ml-3 text-base font-normal text-[#65CD99]">
+                                            <span className="ml-3 text-base font-normal text-[#8DB9FF]">
                                                 (Free)
                                             </span>
                                         </p>
@@ -120,14 +120,14 @@ function Cart() {
                                         </p>
                                     </div>
                                 </label>
-                                <label className="flex cursor-pointer items-center gap-4 rounded-2xl border border-[#E5E5E5] px-6 py-4 transition hover:border-[#65CD99]">
+                                <label className="flex cursor-pointer items-center gap-4 rounded-2xl border border-[#E5E5E5] px-6 py-4 transition hover:border-[#8DB9FF]">
                                     <input
                                         type="radio"
                                         name="shipping"
                                         value="delivery"
                                         checked={shippingOption === "delivery"}
                                         onChange={() => setShippingOption("delivery")}
-                                        className="h-5 w-5 accent-[#65CD99]"
+                                        className="h-5 w-5 accent-[#8DB9FF]"
                                     />
                                     <div>
                                         <p className="text-lg font-semibold text-[#3D3D3D]">
@@ -150,13 +150,13 @@ function Cart() {
                                     <span className="text-[#7A7A7A]">
                                         Cart total price:
                                     </span>
-                                    <span className="font-semibold text-[#65CD99]">
+                                    <span className="font-semibold text-[#8DB9FF]">
                                         {formatCurrency(subtotal)}
                                     </span>
                                 </div>
                                 <div className="flex justify-between">
                                     <span className="text-[#7A7A7A]">Shipping:</span>
-                                    <span className="font-semibold text-[#65CD99]">
+                                    <span className="font-semibold text-[#8DB9FF]">
                                         {shippingCost === 0
                                             ? "Free"
                                             : formatCurrency(shippingCost)}
@@ -164,7 +164,7 @@ function Cart() {
                                 </div>
                                 <div className="flex justify-between border-t border-[#E5E5E5] pt-4 text-xl font-bold text-[#3D3D3D]">
                                     <span>Total:</span>
-                                    <span className="text-[#65CD99]">
+                                    <span className="text-[#8DB9FF]">
                                         {formatCurrency(total)}
                                     </span>
                                 </div>

@@ -23,7 +23,7 @@ function AdminDashboard() {
             <button
               type="button"
               onClick={() => navigate("/notifications/admin")}
-              className="relative rounded-full border border-[#65CD99]/30 bg-[#65CD99]/10 p-3 text-[#388063] transition hover:bg-[#65CD99]/20"
+              className="relative rounded-full border border-[#8DB9FF]/30 bg-[#8DB9FF]/10 p-3 text-[#1E3B86] transition hover:bg-[#8DB9FF]/20"
               aria-label="View notifications"
             >
               <svg
@@ -47,7 +47,7 @@ function AdminDashboard() {
             <button
               type="button"
               onClick={() => navigate("/login")}
-              className="rounded-2xl border border-transparent bg-[#65CD99] px-5 py-2 font-bold text-white transition hover:border-[#65CD99] hover:bg-white hover:text-[#65CD99]"
+              className="rounded-2xl border border-transparent bg-[#8DB9FF] px-5 py-2 font-bold text-white transition hover:border-[#8DB9FF] hover:bg-white hover:text-[#8DB9FF]"
             >
               Logout
             </button>
@@ -57,12 +57,12 @@ function AdminDashboard() {
         <section className="space-y-4">
           <div className="flex flex-wrap items-center justify-between gap-4">
             <div>
-              <p className="text-sm font-semibold uppercase tracking-[0.2em] text-[#388063]/70">
+              <p className="text-sm font-semibold uppercase tracking-[0.2em] text-[#1E3B86]/70">
                 Stores overview
               </p>
               <p className="text-2xl font-bold text-[#1F3B2F]">Manage storefronts</p>
             </div>
-            <span className="rounded-full bg-white px-4 py-2 text-sm font-semibold text-[#388063] shadow-sm">
+            <span className="rounded-full bg-white px-4 py-2 text-sm font-semibold text-[#1E3B86] shadow-sm">
               {totalStores} {totalStores === 1 ? "store" : "stores"}
             </span>
           </div>
@@ -77,7 +77,7 @@ function AdminDashboard() {
                 />
               ))
             ) : (
-              <div className="col-span-full rounded-3xl bg-white p-8 text-center text-[#388063] shadow-sm">
+              <div className="col-span-full rounded-3xl bg-white p-8 text-center text-[#1E3B86] shadow-sm">
                 All storefronts have been banned for now.
               </div>
             )}

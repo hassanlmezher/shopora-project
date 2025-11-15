@@ -13,7 +13,7 @@ function Favorites() {
           <button
             type="button"
             onClick={() => navigate('/settings')}
-            className="border border-gray-300 flex w-fit items-center gap-3 rounded-full bg-white px-4 py-2 text-sm font-semibold text-[#388063] shadow-sm transition hover:bg-[#65CD99] hover:text-white"
+            className="border border-gray-300 flex w-fit items-center gap-3 rounded-full bg-white px-4 py-2 text-sm font-semibold text-[#1E3B86] shadow-sm transition hover:bg-[#8DB9FF] hover:text-white"
           >
             Back to settings
           </button>
@@ -23,7 +23,7 @@ function Favorites() {
           </div>
         </div>
         {items.length === 0 ? (
-          <div className="rounded-3xl border-2 border-dashed border-[#388063]/30 bg-white p-10 text-center text-lg font-semibold text-[#388063]">
+          <div className="rounded-3xl border-2 border-dashed border-[#1E3B86]/30 bg-white p-10 text-center text-lg font-semibold text-[#1E3B86]">
             You haven't favorited anything yet. Tap the heart on a product to save it here.
           </div>
         ) : (

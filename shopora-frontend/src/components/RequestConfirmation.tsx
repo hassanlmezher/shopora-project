@@ -49,7 +49,7 @@ function RequestConfirmation() {
           <button
             type="button"
             onClick={handleBack}
-            className="mt-6 rounded-2xl border border-[#65CD99] px-6 py-2 text-sm font-semibold text-[#388063] transition hover:bg-[#65CD99] hover:text-white"
+            className="mt-6 rounded-2xl border border-[#8DB9FF] px-6 py-2 text-sm font-semibold text-[#1E3B86] transition hover:bg-[#8DB9FF] hover:text-white"
           >
             Back to notifications
           </button>
@@ -66,7 +66,7 @@ function RequestConfirmation() {
         <button
           type="button"
           onClick={handleBack}
-          className="flex w-fit items-center gap-3 rounded-full border border-gray-300 bg-white px-4 py-2 text-sm font-semibold text-[#388063] shadow-sm transition hover:bg-[#65CD99] hover:text-white"
+          className="flex w-fit items-center gap-3 rounded-full border border-gray-300 bg-white px-4 py-2 text-sm font-semibold text-[#1E3B86] shadow-sm transition hover:bg-[#8DB9FF] hover:text-white"
         >
           Back
         </button>
@@ -86,21 +86,21 @@ function RequestConfirmation() {
 
           <div className="mt-6 space-y-4">
             <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.3em] text-[#388063]/80">Shop title</p>
+              <p className="text-xs font-semibold uppercase tracking-[0.3em] text-[#1E3B86]/80">Shop title</p>
               <p className="text-lg font-semibold text-[#1F3B2F]">{request.shopTitle}</p>
             </div>
             <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.3em] text-[#388063]/80">
+              <p className="text-xs font-semibold uppercase tracking-[0.3em] text-[#1E3B86]/80">
                 Description
               </p>
               <p className="text-sm text-[#4B5B56]">{request.description}</p>
             </div>
             <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.3em] text-[#388063]/80">Phone</p>
+              <p className="text-xs font-semibold uppercase tracking-[0.3em] text-[#1E3B86]/80">Phone</p>
               <p className="text-sm text-[#4B5B56]">{request.phone}</p>
             </div>
             <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.3em] text-[#388063]/80">Submitted</p>
+              <p className="text-xs font-semibold uppercase tracking-[0.3em] text-[#1E3B86]/80">Submitted</p>
               <p className="text-sm text-[#4B5B56]">
                 {new Date(request.submittedAt).toLocaleString()}
               </p>

@@ -29,7 +29,7 @@ function UserShop() {
         <button
           type="button"
           onClick={() => navigate(backPath)}
-          className="flex w-fit items-center gap-3 rounded-full border border-gray-300 bg-white px-4 py-2 text-sm font-semibold text-[#388063] shadow-sm transition hover:bg-[#65CD99] hover:text-white"
+          className="flex w-fit items-center gap-3 rounded-full border border-gray-300 bg-white px-4 py-2 text-sm font-semibold text-[#1E3B86] shadow-sm transition hover:bg-[#8DB9FF] hover:text-white"
         >
           Back
         </button>
@@ -56,22 +56,22 @@ function UserShop() {
               />
             ))
           ) : (
-            <div className="lg:col-span-2 xl:col-span-3 mx-auto flex w-full max-w-2xl flex-col justify-center gap-4 rounded-3xl border border-dashed border-[#5AB688]/40 bg-white px-8 py-12 text-[#5AB688] shadow-sm">
+            <div className="lg:col-span-2 xl:col-span-3 mx-auto flex w-full max-w-2xl flex-col justify-center gap-4 rounded-3xl border border-dashed border-[#3B7CFF]/40 bg-white px-8 py-12 text-[#3B7CFF] shadow-sm">
               <p className="text-xl font-semibold">No items in your shop yet.</p>
               <p className="mt-2 text-sm text-[#4B5B56]">
                 Add your first product so everyone can discover what you are selling.
               </p>
             </div>
           )}
-          <div className="flex min-h-[220px] flex-col items-center justify-center gap-4 rounded-3xl border-2 border-dashed border-[#5AB688]/40 bg-white px-6 py-10 text-center shadow-sm">
+          <div className="flex min-h-[220px] flex-col items-center justify-center gap-4 rounded-3xl border-2 border-dashed border-[#3B7CFF]/40 bg-white px-6 py-10 text-center shadow-sm">
             <button
               type="button"
               onClick={handleAddItem}
-              className="bg-[#5AB688] flex h-[10rem] w-[10rem] items-center justify-center rounded-2xl text-7xl font-bold text-white transition hover:bg-[#479270]"
+              className="bg-[#3B7CFF] flex h-[10rem] w-[10rem] items-center justify-center rounded-2xl text-7xl font-bold text-white transition hover:bg-[#1A4ADC]"
             >
               +
             </button>
-            <p className="text-[#5AB688] font-bold text-2xl">Add an item</p>
+            <p className="text-[#3B7CFF] font-bold text-2xl">Add an item</p>
             {!canAddItems && (
               <p className="text-xs text-[#4B5B56]">Get your shop approved first in settings.</p>
             )}

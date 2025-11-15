@@ -308,7 +308,7 @@ function DashboardLogout() {
     };
 
     const renderMobileLayout = () => (
-        <div className={`relative flex min-h-screen flex-col gap-6 bg-[#5AB688] px-4 pb-16 pt-6 text-white ${isMobileMenuOpen ? "overflow-hidden" : ""}`}>
+        <div className={`relative flex min-h-screen flex-col gap-6 bg-[#3B7CFF] px-4 pb-16 pt-6 text-white ${isMobileMenuOpen ? "overflow-hidden" : ""}`}>
             <header className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
                     <button
@@ -363,21 +363,21 @@ function DashboardLogout() {
                             <button
                                 type="button"
                                 onClick={() => handleMobileNavigate('/stores')}
-                                className="rounded-2xl bg-[#F4FFFA] px-4 py-3 text-left text-lg font-semibold text-[#5AB688]"
+                                className="rounded-2xl bg-[#F4FFFA] px-4 py-3 text-left text-lg font-semibold text-[#3B7CFF]"
                             >
                                 Stores
                             </button>
                             <button
                                 type="button"
                                 onClick={() => handleMobileNavigate('/settings')}
-                                className="rounded-2xl bg-[#F4FFFA] px-4 py-3 text-left text-lg font-semibold text-[#5AB688]"
+                                className="rounded-2xl bg-[#F4FFFA] px-4 py-3 text-left text-lg font-semibold text-[#3B7CFF]"
                             >
                                 Settings
                             </button>
                             <button
                                 type="button"
                                 onClick={() => handleMobileNavigate('/login')}
-                                className="rounded-2xl bg-[#5AB688] px-4 py-3 text-left text-lg font-semibold text-white"
+                                className="rounded-2xl bg-[#3B7CFF] px-4 py-3 text-left text-lg font-semibold text-white"
                             >
                                 Log Out
                             </button>
@@ -386,7 +386,7 @@ function DashboardLogout() {
                 </div>
             )}
 
-            <section className="rounded-3xl bg-linear-to-br from-[#5DBC8C] to-[#E3C59F] p-6 shadow-lg">
+            <section className="rounded-3xl bg-linear-to-br from-[#7CA6FF] to-[#E3C59F] p-6 shadow-lg">
                 <p className="text-3xl font-bold">Welcome to Shopora</p>
                 <p className="text-2xl font-semibold">Find products you love</p>
                 <button
@@ -406,7 +406,7 @@ function DashboardLogout() {
                             onChange={(event) => setSearchTerm(event.target.value)}
                             type="search"
                             placeholder="Type to search..."
-                            className="flex-1 bg-transparent text-sm font-semibold text-[#5DBC8C] placeholder-[#9DB7AA] focus:outline-none"
+                            className="flex-1 bg-transparent text-sm font-semibold text-[#7CA6FF] placeholder-[#9DB7AA] focus:outline-none"
                         />
                     </div>
                 </div>
@@ -415,7 +415,7 @@ function DashboardLogout() {
                     <select
                         value={selectedCategory}
                         onChange={(event) => handleCategorySelect(event.target.value as (typeof categoryOptions)[number])}
-                        className="mt-2 w-full rounded-2xl border border-white/60 bg-white px-4 py-3 text-sm font-semibold text-[#5DBC8C] focus:outline-none focus:ring-2 focus:ring-white"
+                        className="mt-2 w-full rounded-2xl border border-white/60 bg-white px-4 py-3 text-sm font-semibold text-[#7CA6FF] focus:outline-none focus:ring-2 focus:ring-white"
                     >
                         {categoryOptions.map(option => (
                             <option key={option} value={option}>
@@ -434,7 +434,7 @@ function DashboardLogout() {
                             type="number"
                             min={dynamicPriceBounds.min}
                             max={dynamicPriceBounds.max}
-                            className="mt-2 rounded-2xl border border-white/60 bg-white px-4 py-3 text-sm font-semibold text-[#5DBC8C] focus:outline-none focus:ring-2 focus:ring-white"
+                            className="mt-2 rounded-2xl border border-white/60 bg-white px-4 py-3 text-sm font-semibold text-[#7CA6FF] focus:outline-none focus:ring-2 focus:ring-white"
                         />
                     </div>
                     <div className="flex flex-col">
@@ -446,7 +446,7 @@ function DashboardLogout() {
                             type="number"
                             min={dynamicPriceBounds.min}
                             max={dynamicPriceBounds.max}
-                            className="mt-2 rounded-2xl border border-white/60 bg-white px-4 py-3 text-sm font-semibold text-[#5DBC8C] focus:outline-none focus:ring-2 focus:ring-white"
+                            className="mt-2 rounded-2xl border border-white/60 bg-white px-4 py-3 text-sm font-semibold text-[#7CA6FF] focus:outline-none focus:ring-2 focus:ring-white"
                         />
                     </div>
                 </div>
@@ -483,7 +483,7 @@ function DashboardLogout() {
                     Home
                 </button>
                 <button
-                    className="flex items-center justify-center gap-2 rounded-2xl border-2 border-white bg-transparent px-4 py-3 text-sm font-bold text-white transition duration-300 ease-in-out hover:bg-white hover:text-[#65CD99]"
+                    className="flex items-center justify-center gap-2 rounded-2xl border-2 border-white bg-transparent px-4 py-3 text-sm font-bold text-white transition duration-300 ease-in-out hover:bg-white hover:text-[#8DB9FF]"
                     onClick={() => navigate('/login')}
                 >
                     <img className="w-5" src={login} alt="login" />
@@ -509,7 +509,7 @@ function DashboardLogout() {
                         Home
                     </button>
                     <div
-                        className={`flex w-full items-center gap-3 rounded-2xl px-4 py-3 text-sm font-semibold transition focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 ${isSearchExpanded ? "bg-white text-[#5DBC8C] shadow-lg cursor-text" : "bg-white/10 text-white hover:bg-white/20 cursor-pointer"}`}
+                        className={`flex w-full items-center gap-3 rounded-2xl px-4 py-3 text-sm font-semibold transition focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 ${isSearchExpanded ? "bg-white text-[#7CA6FF] shadow-lg cursor-text" : "bg-white/10 text-white hover:bg-white/20 cursor-pointer"}`}
                         onClick={expandSearch}
                         onFocus={expandSearch}
                         onKeyDown={handleSearchContainerKeyDown}
@@ -528,14 +528,14 @@ function DashboardLogout() {
                                 onClick={(event) => event.stopPropagation()}
                                 type="search"
                                 placeholder="Type to search..."
-                                className="flex-1 bg-transparent text-base font-semibold text-[#5DBC8C] placeholder-[#9DB7AA] focus:outline-none"
+                                className="flex-1 bg-transparent text-base font-semibold text-[#7CA6FF] placeholder-[#9DB7AA] focus:outline-none"
                             />
                         ) : (
                             <span className="font-bold text-base">Search</span>
                         )}
                     </div>
                     <div
-                        className={`relative flex w-full items-center gap-3 rounded-2xl px-4 py-3 transition focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 ${isCategoriesExpanded ? "bg-white text-[#5DBC8C] shadow-lg" : "bg-white/10 text-white hover:bg-white/20 cursor-pointer"}`}
+                        className={`relative flex w-full items-center gap-3 rounded-2xl px-4 py-3 transition focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 ${isCategoriesExpanded ? "bg-white text-[#7CA6FF] shadow-lg" : "bg-white/10 text-white hover:bg-white/20 cursor-pointer"}`}
                         onClick={(event) => {
                             event.currentTarget.focus();
                             toggleCategories();
@@ -571,7 +571,7 @@ function DashboardLogout() {
                         </div>
                         {isCategoriesExpanded && (
                             <ul
-                                className="absolute left-0 top-full z-10 mt-2 w-full overflow-hidden rounded-2xl bg-white py-1 text-[#5DBC8C] shadow-xl ring-1 ring-[#CDE6D6]"
+                                className="absolute left-0 top-full z-10 mt-2 w-full overflow-hidden rounded-2xl bg-white py-1 text-[#7CA6FF] shadow-xl ring-1 ring-[#CDE6D6]"
                                 role="listbox"
                             >
                                 {categoryOptions.map(option => {
@@ -580,7 +580,7 @@ function DashboardLogout() {
                                         <li key={option}>
                                             <button
                                                 type="button"
-                                                className={`w-full px-4 py-2 text-left text-sm font-semibold transition-colors duration-150 ${isActive ? "bg-[#5DBC8C] text-white" : "hover:bg-[#F3FBF6]"}`}
+                                                className={`w-full px-4 py-2 text-left text-sm font-semibold transition-colors duration-150 ${isActive ? "bg-[#7CA6FF] text-white" : "hover:bg-[#F3FBF6]"}`}
                                                 onClick={(event) => {
                                                     event.stopPropagation();
                                                     handleCategorySelect(option);
@@ -598,7 +598,7 @@ function DashboardLogout() {
                     </div>
                     <div
                         ref={priceContainerRef}
-                        className={`flex w-full items-center gap-3 rounded-2xl px-4 py-3 transition focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 ${isPriceExpanded ? "bg-white text-[#5DBC8C] shadow-lg cursor-text" : "bg-white/10 text-white hover:bg-white/20 cursor-pointer"}`}
+                        className={`flex w-full items-center gap-3 rounded-2xl px-4 py-3 transition focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 ${isPriceExpanded ? "bg-white text-[#7CA6FF] shadow-lg cursor-text" : "bg-white/10 text-white hover:bg-white/20 cursor-pointer"}`}
                         onClick={handlePriceContainerClick}
                         onFocus={expandPrice}
                         onBlur={handlePriceBlur}
@@ -625,9 +625,9 @@ function DashboardLogout() {
                                     type="number"
                                     min={dynamicPriceBounds.min}
                                     max={dynamicPriceBounds.max}
-                                    className="w-24 rounded-xl border border-[#CDE6D6] bg-white px-3 py-1 text-sm font-semibold text-[#5DBC8C] focus:border-transparent focus:outline-none focus:ring-2 focus:ring-[#5DBC8C]"
+                                    className="w-24 rounded-xl border border-[#CDE6D6] bg-white px-3 py-1 text-sm font-semibold text-[#7CA6FF] focus:border-transparent focus:outline-none focus:ring-2 focus:ring-[#7CA6FF]"
                                 />
-                                <span className="text-[#5DBC8C] font-semibold">-</span>
+                                <span className="text-[#7CA6FF] font-semibold">-</span>
                                 <input
                                     ref={maxPriceInputRef}
                                     value={priceDraft.max}
@@ -637,7 +637,7 @@ function DashboardLogout() {
                                     type="number"
                                     min={dynamicPriceBounds.min}
                                     max={dynamicPriceBounds.max}
-                                    className="w-24 rounded-xl border border-[#CDE6D6] bg-white px-3 py-1 text-sm font-semibold text-[#5DBC8C] focus:border-transparent focus:outline-none focus:ring-2 focus:ring-[#5DBC8C]"
+                                    className="w-24 rounded-xl border border-[#CDE6D6] bg-white px-3 py-1 text-sm font-semibold text-[#7CA6FF] focus:border-transparent focus:outline-none focus:ring-2 focus:ring-[#7CA6FF]"
                                 />
                             </div>
                         ) : (
@@ -656,10 +656,10 @@ function DashboardLogout() {
             <div className="flex flex-1 flex-col gap-6">
                 <header className="flex items-center justify-between rounded-3xl bg-white px-8 py-5 shadow-lg">
                     <img className="w-32" src={logo} alt="logo" />
-                    <img className="w-10 rounded-full border border-[#5AB688]/20 p-2" src={lightMode} alt="toggle theme" />
+                    <img className="w-10 rounded-full border border-[#3B7CFF]/20 p-2" src={lightMode} alt="toggle theme" />
                 </header>
                 <section className="rounded-3xl bg-white p-8 shadow-lg">
-                    <div className="relative overflow-hidden rounded-3xl bg-linear-to-br from-[#5DBC8C] to-[#E3C59F] px-6 py-8 text-white shadow-inner">
+                    <div className="relative overflow-hidden rounded-3xl bg-linear-to-br from-[#7CA6FF] to-[#E3C59F] px-6 py-8 text-white shadow-inner">
                         <div className="pointer-events-none absolute -right-10 bottom-0 hidden h-48 w-48 rounded-full bg-white/20 blur-3xl lg:block" aria-hidden="true" />
                         <div className="flex flex-col items-start gap-8 md:flex-row md:items-end">
                             <div className="relative z-10 flex-1 space-y-3">
@@ -695,7 +695,7 @@ function DashboardLogout() {
                                 ))}
                             </div>
                         ) : (
-                            <p className="rounded-2xl bg-[#F3FBF6] py-12 text-center text-[#5DBC8C]">
+                            <p className="rounded-2xl bg-[#F3FBF6] py-12 text-center text-[#7CA6FF]">
                                 No items match your filters right now.
                             </p>
                         )}
@@ -706,7 +706,7 @@ function DashboardLogout() {
     );
 
   return (
-    <div className="min-h-screen bg-[#5AB688]">
+    <div className="min-h-screen bg-[#3B7CFF]">
         {isDesktopLayout ? renderDesktopLayout() : renderMobileLayout()}
     </div>
   )

@@ -9,6 +9,7 @@ import search from "../images/search.png";
 import settings from "../images/settings.png";
 import categories from "../images/categories.png";
 import price from "../images/price.png";
+import heart from "../images/heart.png";
 import { useNavigate } from "react-router-dom";
 import cart from "../images/cart.png";
 import logout from "../images/logout.png";
@@ -17,6 +18,7 @@ import type { ChangeEvent, FocusEvent as ReactFocusEvent, KeyboardEvent as React
 import useCartStore from "../store/useCartStore";
 import useDashboardLayout from "../hooks/useDashboardLayout";
 import useNotificationStore from "../store/useNotificationStore";
+import useFavoritesStore from "../store/useFavoritesStore";
 
 function getUpdatedCatalogue() {
     return catalogue.map(item => {
@@ -50,6 +52,7 @@ function DashboardLoggedIn() {
     const [isPriceExpanded, setIsPriceExpanded] = useState(false);
     const [updatedCatalogue, setUpdatedCatalogue] = useState(getUpdatedCatalogue());
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+    const [showFavoritesOnly, setShowFavoritesOnly] = useState(false);
     const searchInputRef = useRef<HTMLInputElement | null>(null);
     const priceContainerRef = useRef<HTMLDivElement | null>(null);
     const minPriceInputRef = useRef<HTMLInputElement | null>(null);
@@ -62,6 +65,8 @@ function DashboardLoggedIn() {
     const acceptedRequestItems = useNotificationStore((state) =>
         state.requests.find((request) => request.status === "accepted")?.items ?? []
     );
+    const favoriteItems = useFavoritesStore((state) => state.items ?? []);
+    const favoriteIds = useMemo(() => favoriteItems.map((item) => item.id), [favoriteItems]);
 
     const closeMobileMenu = () => setIsMobileMenuOpen(false);
     const handleMobileNavigate = (path: string) => {
@@ -131,9 +136,10 @@ function DashboardLoggedIn() {
             const matchesSearch = !normalized || haystack.includes(normalized);
             const matchesPrice = item.priceValue >= priceRange.min && item.priceValue <= priceRange.max;
             const matchesCategory = selectedCategory === ALL_CATEGORIES || item.category === selectedCategory;
-            return matchesSearch && matchesPrice && matchesCategory;
+            const matchesFavorites = !showFavoritesOnly || favoriteIds.includes(`${item.name}-${item.namee}`);
+            return matchesSearch && matchesPrice && matchesCategory && matchesFavorites;
         });
-    }, [searchTerm, priceRange, selectedCategory, catalogueWithUserItems]);
+    }, [searchTerm, priceRange, selectedCategory, catalogueWithUserItems, showFavoritesOnly, favoriteIds]);
 
     const expandSearch = () => {
         if (isSearchExpanded) {
@@ -266,6 +272,13 @@ function DashboardLoggedIn() {
         }
     };
 
+    const handleFavoritesKeyDown = (event: ReactKeyboardEvent<HTMLDivElement>) => {
+        if (event.key === "Enter" || event.key === " ") {
+            event.preventDefault();
+            setShowFavoritesOnly((prev) => !prev);
+        }
+    };
+
     const handleMinPriceChange = (event: ChangeEvent<HTMLInputElement>) => {
         const nextValue = event.target.value;
         setPriceDraft(prev => ({ ...prev, min: nextValue }));
@@ -315,7 +328,7 @@ function DashboardLoggedIn() {
     };
 
     const renderMobileLayout = () => (
-        <div className={`relative flex min-h-screen flex-col gap-6 bg-[#5AB688] px-4 pb-16 pt-6 text-white ${isMobileMenuOpen ? "overflow-hidden" : ""}`}>
+        <div className={`relative flex min-h-screen flex-col gap-6 bg-[#3B7CFF] px-4 pb-16 pt-6 text-white ${isMobileMenuOpen ? "overflow-hidden" : ""}`}>
             <header className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
                     <button
@@ -400,21 +413,21 @@ function DashboardLoggedIn() {
                             <button
                                 type="button"
                                 onClick={() => handleMobileNavigate('/stores')}
-                                className="rounded-2xl bg-[#F4FFFA] px-4 py-3 text-left text-lg font-semibold text-[#5AB688]"
+                                className="rounded-2xl bg-[#F4FFFA] px-4 py-3 text-left text-lg font-semibold text-[#3B7CFF]"
                             >
                                 Stores
                             </button>
                             <button
                                 type="button"
                                 onClick={() => handleMobileNavigate('/settings')}
-                                className="rounded-2xl bg-[#F4FFFA] px-4 py-3 text-left text-lg font-semibold text-[#5AB688]"
+                                className="rounded-2xl bg-[#F4FFFA] px-4 py-3 text-left text-lg font-semibold text-[#3B7CFF]"
                             >
                                 Settings
                             </button>
                             <button
                                 type="button"
                                 onClick={() => handleMobileNavigate('/login')}
-                                className="rounded-2xl bg-[#5AB688] px-4 py-3 text-left text-lg font-semibold text-white"
+                                className="rounded-2xl bg-[#3B7CFF] px-4 py-3 text-left text-lg font-semibold text-white"
                             >
                                 Log Out
                             </button>
@@ -423,7 +436,7 @@ function DashboardLoggedIn() {
                 </div>
             )}
 
-            <section className="rounded-3xl bg-linear-to-br from-[#5DBC8C] to-[#E3C59F] p-6 shadow-lg">
+            <section className="rounded-3xl bg-linear-to-br from-[#7CA6FF] to-[#E3C59F] p-6 shadow-lg">
                 <p className="text-3xl font-bold">Check out</p>
                 <p className="text-2xl font-semibold">All available</p>
                 <button
@@ -443,7 +456,7 @@ function DashboardLoggedIn() {
                             onChange={(event) => setSearchTerm(event.target.value)}
                             type="search"
                             placeholder="Type to search..."
-                            className="flex-1 bg-transparent text-sm font-semibold text-[#5DBC8C] placeholder-[#9DB7AA] focus:outline-none"
+                            className="flex-1 bg-transparent text-sm font-semibold text-[#7CA6FF] placeholder-[#9DB7AA] focus:outline-none"
                         />
                     </div>
                 </div>
@@ -452,7 +465,7 @@ function DashboardLoggedIn() {
                     <select
                         value={selectedCategory}
                         onChange={(event) => handleCategorySelect(event.target.value as (typeof categoryOptions)[number])}
-                        className="mt-2 w-full rounded-2xl border border-white/60 bg-white px-4 py-3 text-sm font-semibold text-[#5DBC8C] focus:outline-none focus:ring-2 focus:ring-white"
+                        className="mt-2 w-full rounded-2xl border border-white/60 bg-white px-4 py-3 text-sm font-semibold text-[#7CA6FF] focus:outline-none focus:ring-2 focus:ring-white"
                     >
                         {categoryOptions.map(option => (
                             <option key={option} value={option}>
@@ -471,7 +484,7 @@ function DashboardLoggedIn() {
                             type="number"
                             min={dynamicPriceBounds.min}
                             max={dynamicPriceBounds.max}
-                            className="mt-2 rounded-2xl border border-white/60 bg-white px-4 py-3 text-sm font-semibold text-[#5DBC8C] focus:outline-none focus:ring-2 focus:ring-white"
+                            className="mt-2 rounded-2xl border border-white/60 bg-white px-4 py-3 text-sm font-semibold text-[#7CA6FF] focus:outline-none focus:ring-2 focus:ring-white"
                         />
                     </div>
                     <div className="flex flex-col">
@@ -483,9 +496,24 @@ function DashboardLoggedIn() {
                             type="number"
                             min={dynamicPriceBounds.min}
                             max={dynamicPriceBounds.max}
-                            className="mt-2 rounded-2xl border border-white/60 bg-white px-4 py-3 text-sm font-semibold text-[#5DBC8C] focus:outline-none focus:ring-2 focus:ring-white"
+                            className="mt-2 rounded-2xl border border-white/60 bg-white px-4 py-3 text-sm font-semibold text-[#7CA6FF] focus:outline-none focus:ring-2 focus:ring-white"
                         />
                     </div>
+                </div>
+                <div>
+                    <label className="text-sm font-semibold text-white/80">Favorites</label>
+                    <button
+                        type="button"
+                        onClick={() => setShowFavoritesOnly((prev) => !prev)}
+                        className={`mt-2 flex w-full items-center justify-center gap-2 rounded-2xl border px-4 py-3 text-sm font-semibold transition ${
+                            showFavoritesOnly
+                                ? "border-white bg-white text-[#7CA6FF]"
+                                : "border-white/60 bg-[#7CA6FF]/10 text-white"
+                        }`}
+                    >
+                        <img className="w-4" src={heart} alt="favorites filter" />
+                        {showFavoritesOnly ? "Showing favorites only" : "Show favorites only"}
+                    </button>
                 </div>
             </section>
             <section className="space-y-4">
@@ -527,7 +555,7 @@ function DashboardLoggedIn() {
                     Settings
                 </button>
                 <button
-                    className="flex items-center justify-center gap-2 rounded-2xl border-2 border-white bg-transparent px-4 py-3 text-sm font-bold text-white transition duration-300 ease-in-out hover:bg-white hover:text-[#65CD99]"
+                    className="flex items-center justify-center gap-2 rounded-2xl border-2 border-white bg-transparent px-4 py-3 text-sm font-bold text-white transition duration-300 ease-in-out hover:bg-white hover:text-[#8DB9FF]"
                     onClick={() => navigate('/login')}
                 >
                     <img className="w-5" src={logout} alt="logout" />
@@ -553,7 +581,7 @@ function DashboardLoggedIn() {
                         Home
                     </button>
                     <div
-                        className={`flex w-full items-center gap-3 rounded-2xl px-4 py-3 text-sm font-semibold transition focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 ${isSearchExpanded ? "bg-white text-[#5DBC8C] shadow-lg cursor-text" : "bg-white/10 text-white hover:bg-white/20 cursor-pointer"}`}
+                        className={`flex w-full items-center gap-3 rounded-2xl px-4 py-3 text-sm font-semibold transition focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 ${isSearchExpanded ? "bg-white text-[#7CA6FF] shadow-lg cursor-text" : "bg-white/10 text-white hover:bg-white/20 cursor-pointer"}`}
                         onClick={expandSearch}
                         onFocus={expandSearch}
                         onKeyDown={handleSearchContainerKeyDown}
@@ -572,14 +600,14 @@ function DashboardLoggedIn() {
                                 onClick={(event) => event.stopPropagation()}
                                 type="search"
                                 placeholder="Type to search..."
-                                className="flex-1 bg-transparent text-base font-semibold text-[#5DBC8C] placeholder-[#9DB7AA] focus:outline-none"
+                                className="flex-1 bg-transparent text-base font-semibold text-[#7CA6FF] placeholder-[#9DB7AA] focus:outline-none"
                             />
                         ) : (
                             <span className="font-bold text-base">Search</span>
                         )}
                     </div>
                     <div
-                        className={`relative flex w-full items-center gap-3 rounded-2xl px-4 py-3 transition focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 ${isCategoriesExpanded ? "bg-white text-[#5DBC8C] shadow-lg" : "bg-white/10 text-white hover:bg-white/20 cursor-pointer"}`}
+                        className={`relative flex w-full items-center gap-3 rounded-2xl px-4 py-3 transition focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 ${isCategoriesExpanded ? "bg-white text-[#7CA6FF] shadow-lg" : "bg-white/10 text-white hover:bg-white/20 cursor-pointer"}`}
                         onClick={(event) => {
                             event.currentTarget.focus();
                             toggleCategories();
@@ -615,7 +643,7 @@ function DashboardLoggedIn() {
                         </div>
                         {isCategoriesExpanded && (
                             <ul
-                                className="absolute left-0 top-full z-10 mt-2 w-full overflow-hidden rounded-2xl bg-white py-1 text-[#5DBC8C] shadow-xl ring-1 ring-[#CDE6D6]"
+                                className="absolute left-0 top-full z-10 mt-2 w-full overflow-hidden rounded-2xl bg-white py-1 text-[#7CA6FF] shadow-xl ring-1 ring-[#CDE6D6]"
                                 role="listbox"
                             >
                                 {categoryOptions.map(option => {
@@ -624,7 +652,7 @@ function DashboardLoggedIn() {
                                         <li key={option}>
                                             <button
                                                 type="button"
-                                                className={`w-full px-4 py-2 text-left text-sm font-semibold transition-colors duration-150 ${isActive ? "bg-[#5DBC8C] text-white" : "hover:bg-[#F3FBF6]"}`}
+                                                className={`w-full px-4 py-2 text-left text-sm font-semibold transition-colors duration-150 ${isActive ? "bg-[#7CA6FF] text-white" : "hover:bg-[#F3FBF6]"}`}
                                                 onClick={(event) => {
                                                     event.stopPropagation();
                                                     handleCategorySelect(option);
@@ -642,7 +670,7 @@ function DashboardLoggedIn() {
                     </div>
                     <div
                         ref={priceContainerRef}
-                        className={`flex w-full items-center gap-3 rounded-2xl px-4 py-3 transition focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 ${isPriceExpanded ? "bg-white text-[#5DBC8C] shadow-lg cursor-text" : "bg-white/10 text-white hover:bg-white/20 cursor-pointer"}`}
+                        className={`flex w-full items-center gap-3 rounded-2xl px-4 py-3 transition focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 ${isPriceExpanded ? "bg-white text-[#7CA6FF] shadow-lg cursor-text" : "bg-white/10 text-white hover:bg-white/20 cursor-pointer"}`}
                         onClick={handlePriceContainerClick}
                         onFocus={expandPrice}
                         onBlur={handlePriceBlur}
@@ -669,9 +697,9 @@ function DashboardLoggedIn() {
                                     type="number"
                                     min={dynamicPriceBounds.min}
                                     max={dynamicPriceBounds.max}
-                                    className="w-24 rounded-xl border border-[#CDE6D6] bg-white px-3 py-1 text-sm font-semibold text-[#5DBC8C] focus:border-transparent focus:outline-none focus:ring-2 focus:ring-[#5DBC8C]"
+                                    className="w-24 rounded-xl border border-[#CDE6D6] bg-white px-3 py-1 text-sm font-semibold text-[#7CA6FF] focus:border-transparent focus:outline-none focus:ring-2 focus:ring-[#7CA6FF]"
                                 />
-                                <span className="text-[#5DBC8C] font-semibold">-</span>
+                                <span className="text-[#7CA6FF] font-semibold">-</span>
                                 <input
                                     ref={maxPriceInputRef}
                                     value={priceDraft.max}
@@ -681,15 +709,29 @@ function DashboardLoggedIn() {
                                     type="number"
                                     min={dynamicPriceBounds.min}
                                     max={dynamicPriceBounds.max}
-                                    className="w-24 rounded-xl border border-[#CDE6D6] bg-white px-3 py-1 text-sm font-semibold text-[#5DBC8C] focus:border-transparent focus:outline-none focus:ring-2 focus:ring-[#5DBC8C]"
+                                    className="w-24 rounded-xl border border-[#CDE6D6] bg-white px-3 py-1 text-sm font-semibold text-[#7CA6FF] focus:border-transparent focus:outline-none focus:ring-2 focus:ring-[#7CA6FF]"
                                 />
                             </div>
                         ) : (
                             <span className="text-base font-bold">Price Range</span>
                         )}
                     </div>
+                    <div
+                        role="button"
+                        tabIndex={0}
+                        aria-pressed={showFavoritesOnly}
+                        aria-label="Toggle favorites filter"
+                        onClick={() => setShowFavoritesOnly((prev) => !prev)}
+                        onKeyDown={handleFavoritesKeyDown}
+                        className={`flex w-full items-center gap-3 rounded-2xl px-4 py-3 transition focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 ${showFavoritesOnly ? "bg-white text-[#7CA6FF] shadow-lg cursor-pointer" : "bg-white/10 text-white hover:bg-white/20 cursor-pointer"}`}
+                    >
+                        <img className="w-6" src={heart} alt="favorites logo" />
+                        <span className="font-bold text-base">
+                            {showFavoritesOnly ? "Favorites only" : "Favorites"}
+                        </span>
+                    </div>
                     <button
-                        className="flex w-full items-center gap-3 rounded-2xl border border-white/30 px-4 py-3 text-left text-sm font-semibold text-white transition hover:bg-white hover:text-[#5DBC8C]"
+                        className="flex w-full items-center gap-3 rounded-2xl border border-white/30 px-4 py-3 text-left text-sm font-semibold text-white transition hover:bg-white hover:text-[#7CA6FF]"
                         onClick={() => navigate('/settings')}
                     >
                         <img className="w-6" src={settings} alt="settings logo" />
@@ -711,7 +753,7 @@ function DashboardLoggedIn() {
                         <button
                             type="button"
                             onClick={() => navigate('/cart')}
-                            className="relative rounded-full bg-[#5AB688]/10 p-3 text-[#5AB688]"
+                            className="relative rounded-full bg-[#3B7CFF]/10 p-3 text-[#3B7CFF]"
                             aria-label="Go to cart"
                         >
                             <img className="w-7" src={cart} alt="cart" />
@@ -724,7 +766,7 @@ function DashboardLoggedIn() {
                         <button
                             type="button"
                             onClick={() => navigate('/notifications/user')}
-                            className="relative rounded-full border border-[#5AB688]/30 bg-[#5AB688]/10 p-3 text-[#5AB688] transition hover:bg-[#5AB688]/20"
+                            className="relative rounded-full border border-[#3B7CFF]/30 bg-[#3B7CFF]/10 p-3 text-[#3B7CFF] transition hover:bg-[#3B7CFF]/20"
                             aria-label="View notifications"
                         >
                             <svg
@@ -745,11 +787,11 @@ function DashboardLoggedIn() {
                                 </span>
                             )}
                         </button>
-                        <img className="w-10 rounded-full border border-[#5AB688]/20 p-2" src={lightMode} alt="toggle theme" />
+                        <img className="w-10 rounded-full border border-[#3B7CFF]/20 p-2" src={lightMode} alt="toggle theme" />
                     </div>
                 </header>
                 <section className="rounded-3xl bg-white p-8 shadow-lg">
-                    <div className="relative overflow-hidden rounded-3xl bg-linear-to-br from-[#5DBC8C] to-[#E3C59F] px-6 py-8 text-white shadow-inner">
+                    <div className="relative overflow-hidden rounded-3xl bg-linear-to-br from-[#7CA6FF] to-[#E3C59F] px-6 py-8 text-white shadow-inner">
                         <div className="pointer-events-none absolute -right-10 bottom-0 hidden h-48 w-48 rounded-full bg-white/20 blur-3xl lg:block" aria-hidden="true" />
                         <div className="flex flex-col items-start gap-8 md:flex-row md:items-end">
                             <div className="relative z-10 flex-1 space-y-3">
@@ -767,6 +809,16 @@ function DashboardLoggedIn() {
                             </div>
                         </div>
                     </div>
+                    <button
+                        type="button"
+                        onClick={() => setShowFavoritesOnly((prev) => !prev)}
+                        className={`flex w-full items-center gap-3 rounded-2xl px-4 py-3 text-sm font-semibold transition ${
+                            showFavoritesOnly ? "bg-white text-[#7CA6FF] shadow-lg" : "bg-white/10 text-white hover:bg-white/20"
+                        }`}
+                    >
+                        <img className="w-6" src={heart} alt="favorites logo" />
+                        {showFavoritesOnly ? "Favorites only" : "Show favorites"}
+                    </button>
                     <div className="mt-10">
                         {filteredItems.length > 0 ? (
                             <div className="grid gap-10 lg:grid-cols-2 xl:grid-cols-3 justify-items-center">
@@ -785,7 +837,7 @@ function DashboardLoggedIn() {
                                 ))}
                             </div>
                         ) : (
-                            <p className="rounded-2xl bg-[#F3FBF6] py-12 text-center text-[#5DBC8C]">
+                            <p className="rounded-2xl bg-[#F3FBF6] py-12 text-center text-[#7CA6FF]">
                                 No items match your filters right now.
                             </p>
                         )}
@@ -796,7 +848,7 @@ function DashboardLoggedIn() {
     );
 
   return (
-    <div className="min-h-screen bg-[#5AB688]">
+    <div className="min-h-screen bg-[#3B7CFF]">
         {isDesktopLayout ? renderDesktopLayout() : renderMobileLayout()}
     </div>
   )

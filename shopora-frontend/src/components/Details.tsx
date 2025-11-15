@@ -96,23 +96,25 @@ function Details() {
   };
 
   return (
-    <div className="min-h-screen bg-[#65CD99] px-4 py-6 sm:px-6 md:px-10 lg:py-10">
+    <div className="min-h-screen bg-[#8DB9FF] px-4 py-6 sm:px-6 md:px-10 lg:py-10">
       <div className="mx-auto flex max-w-6xl flex-col gap-6">
         <button
           type="button"
           onClick={handleBack}
-          className="flex w-full items-center justify-center gap-3 rounded-full border border-gray-200 bg-white px-4 py-2 text-sm font-semibold text-[#388063] shadow-sm transition hover:bg-[#65CD99] hover:text-white focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-[#388063] sm:w-fit"
+          className="flex w-full items-center justify-center gap-3 rounded-full border border-gray-200 bg-white px-4 py-2 text-sm font-semibold text-[#1E3B86] shadow-sm transition hover:bg-[#8DB9FF] hover:text-white focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-[#1E3B86] sm:w-fit"
         >
           Back
         </button>
 
-        <div className="grid items-start gap-8 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)]">
+        <div className="grid items-start gap-8 lg:grid-cols-[minmax(0,1.4fr)_minmax(0,0.8fr)]">
           <div className="flex flex-col items-center gap-6 rounded-3xl bg-white/10 p-6 text-center backdrop-blur-sm lg:items-start lg:text-left">
-            <img
-              src={image}
-              alt={`${name ?? ""} ${namee ?? ""} pic`}
-              className="w-40 max-w-full rounded-2xl object-contain sm:w-56"
-            />
+            <div className="w-full max-w-[520px]">
+              <img
+                src={image}
+                alt={`${name ?? ""} ${namee ?? ""} pic`}
+                className="w-full rounded-3xl object-contain shadow-2xl"
+              />
+            </div>
             <div className="space-y-1">
               <p className="text-3xl font-bold text-white sm:text-4xl">{name}</p>
               <p className="text-xl font-semibold text-white/90 sm:text-2xl">{namee}</p>
@@ -124,13 +126,13 @@ function Details() {
               <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                 <div className="flex items-center gap-4">
                   <img src={reviewss} alt="reviews icon" className="w-16 sm:w-20 lg:w-24" />
-                  <p className="text-2xl font-bold text-[#65CD99] sm:text-3xl">{totalReviews} Reviews</p>
+                  <p className="text-2xl font-bold text-[#8DB9FF] sm:text-3xl">{totalReviews} Reviews</p>
                 </div>
                 <button
                   type="button"
                   onClick={() => setShowAddReview((prev) => !prev)}
                   disabled={!hasOrdered || hasReviewed}
-                  className={`w-full rounded-xl bg-[#65CD99] px-4 py-2 text-sm font-semibold text-white transition hover:bg-[#4CAF50] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#388063] sm:w-auto ${
+                  className={`w-full rounded-xl bg-[#8DB9FF] px-4 py-2 text-sm font-semibold text-white transition hover:bg-[#2D54E0] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1E3B86] sm:w-auto ${
                     !hasOrdered || hasReviewed ? "cursor-not-allowed opacity-60" : ""
                   }`}
                 >
@@ -146,7 +148,7 @@ function Details() {
             </div>
 
             {showAddReview && (
-              <div className="mt-5 space-y-4 rounded-2xl border border-dashed border-[#65CD99]/40 bg-gray-50 p-4 sm:p-5">
+              <div className="mt-5 space-y-4 rounded-2xl border border-dashed border-[#8DB9FF]/40 bg-gray-50 p-4 sm:p-5">
                 <div>
                   <label className="mb-2 block text-sm font-medium text-gray-700">Rating</label>
                   <div className="flex flex-wrap gap-2">
@@ -167,7 +169,7 @@ function Details() {
                   value={newReview}
                   onChange={(e) => setNewReview(e.target.value)}
                   placeholder="Write your review here..."
-                  className="w-full resize-none rounded-xl border border-gray-200 p-3 text-sm text-gray-700 outline-none focus:border-[#65CD99]"
+                  className="w-full resize-none rounded-xl border border-gray-200 p-3 text-sm text-gray-700 outline-none focus:border-[#8DB9FF]"
                   rows={4}
                 />
 
@@ -182,7 +184,7 @@ function Details() {
                   <button
                     type="button"
                     onClick={handleReviewSubmit}
-                    className="w-full rounded-xl bg-[#65CD99] px-4 py-2 text-sm font-semibold text-white transition hover:bg-[#4CAF50] sm:w-auto"
+                    className="w-full rounded-xl bg-[#8DB9FF] px-4 py-2 text-sm font-semibold text-white transition hover:bg-[#2D54E0] sm:w-auto"
                   >
                     Submit Review
                   </button>

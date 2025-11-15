@@ -84,11 +84,11 @@ useEffect(() => {
   if (!activeStore) {
     return (
       <div className="flex min-h-screen flex-col items-center justify-center bg-[#F4F7F6] px-4 text-center">
-        <p className="text-xl font-semibold text-[#388063]">We couldn't find that shop.</p>
+        <p className="text-xl font-semibold text-[#1E3B86]">We couldn't find that shop.</p>
         <button
           type="button"
           onClick={handleGoBack}
-          className="mt-6 rounded-full border border-[#388063] px-5 py-2 text-sm font-bold text-[#388063] transition hover:bg-[#388063] hover:text-white"
+          className="mt-6 rounded-full border border-[#1E3B86] px-5 py-2 text-sm font-bold text-[#1E3B86] transition hover:bg-[#1E3B86] hover:text-white"
         >
           Back to admin dashboard
         </button>
@@ -106,7 +106,7 @@ useEffect(() => {
           <button
             type="button"
             onClick={handleGoBack}
-            className="flex items-center gap-2 rounded-full border border-gray-300 bg-white px-4 py-2 text-sm font-semibold text-[#388063] shadow-sm transition hover:bg-[#65CD99] hover:text-white"
+            className="flex items-center gap-2 rounded-full border border-gray-300 bg-white px-4 py-2 text-sm font-semibold text-[#1E3B86] shadow-sm transition hover:bg-[#8DB9FF] hover:text-white"
           >
             Back
           </button>
@@ -139,7 +139,7 @@ useEffect(() => {
                     <div className="space-y-1">
                       <p className="text-lg font-semibold text-[#1F3B2F]">{item.name}</p>
                       <p className="text-sm text-[#6A857C]">{item.namee}</p>
-                      <p className="text-xl font-bold text-[#65CD99]">{item.price}</p>
+                      <p className="text-xl font-bold text-[#8DB9FF]">{item.price}</p>
                       <p className="text-xs uppercase tracking-wide text-[#9AA9A4]">
                         {item.category} · {item.ratings}
                       </p>
@@ -150,7 +150,7 @@ useEffect(() => {
                     <button
                       type="button"
                       onClick={() => handleViewItemDetails(item)}
-                      className="flex-1 rounded-2xl border border-[#65CD99] px-4 py-2 text-sm font-semibold text-[#388063] transition hover:bg-[#65CD99] hover:text-white"
+                      className="flex-1 rounded-2xl border border-[#8DB9FF] px-4 py-2 text-sm font-semibold text-[#1E3B86] transition hover:bg-[#8DB9FF] hover:text-white"
                     >
                       View details
                     </button>

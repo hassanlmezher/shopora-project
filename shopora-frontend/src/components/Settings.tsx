@@ -2,7 +2,6 @@ import { useNavigate } from "react-router-dom";
 import useAuthStore from "../store/useAuthStore";
 import useNotificationStore from "../store/useNotificationStore";
 import profile from "../images/profile.png";
-import heart from "../images/heart.png";
 import cartt from "../images/cartt.png";
 import create from "../images/create.png";
 
@@ -12,12 +11,6 @@ function Settings() {
   const requests = useNotificationStore((state) => state.requests);
   const acceptedRequest = requests.find((request) => request.status === "accepted");
   const cards = [
-    {
-      image: heart,
-      title: "Favorites",
-      description: "View all of your favorited items!",
-      action: () => navigate("/favorites"),
-    },
     {
       image: cartt,
       title: "Cart history",
@@ -44,7 +37,7 @@ function Settings() {
       <button
         type="button"
         onClick={() => (isLoggedIn ? navigate("/DashboardLoggedIn") : navigate("/dashboard"))}
-        className="flex w-fit items-center gap-3 rounded-full border border-gray-300 bg-white px-4 py-2 text-sm font-semibold text-[#388063] shadow-sm transition hover:bg-[#65CD99] hover:text-white"
+        className="flex w-fit items-center gap-3 rounded-full border border-gray-300 bg-white px-4 py-2 text-sm font-semibold text-[#1E3B86] shadow-sm transition hover:bg-[#8DB9FF] hover:text-white"
       >
         Back
       </button>
@@ -61,7 +54,7 @@ function Settings() {
               type="button"
               onClick={card.action}
               disabled={!clickable}
-              className={`flex flex-col items-center gap-4 rounded-3xl bg-[#65CD99] px-6 py-8 text-center shadow-md transition hover:-translate-y-1 hover:shadow-lg ${
+              className={`flex flex-col items-center gap-4 rounded-3xl bg-[#8DB9FF] px-6 py-8 text-center shadow-md transition hover:-translate-y-1 hover:shadow-lg ${
                 clickable ? "" : "cursor-not-allowed opacity-75"
               }`}
             >
