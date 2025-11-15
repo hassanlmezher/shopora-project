@@ -31,6 +31,7 @@ function Details() {
   const [selectedRating, setSelectedRating] = useState(5);
   const [showAddReview, setShowAddReview] = useState(false);
   const [reviews, setReviews] = useState<Review[]>(productReviews || []);
+  const [validationErrors, setValidationErrors] = useState<{ rating?: string; reviewText?: string }>({});
 
   const totalReviews = reviews.length;
   const storageKey = name && namee ? `reviews-${name}-${namee}` : null;
@@ -67,9 +68,23 @@ function Details() {
   };
 
   const handleReviewSubmit = () => {
-    if (!newReview.trim()) {
+    const trimmedReview = newReview.trim();
+    const errors: { rating?: string; reviewText?: string } = {};
+
+    if (selectedRating < 1 || selectedRating > 5) {
+      errors.rating = "Please select a rating between 1 and 5.";
+    }
+
+    if (!trimmedReview) {
+      errors.reviewText = "Please write your review before submitting.";
+    }
+
+    if (Object.keys(errors).length > 0) {
+      setValidationErrors(errors);
       return;
     }
+
+    setValidationErrors({});
 
     if (!itemKey || !canReview) {
       return;
@@ -78,7 +93,7 @@ function Details() {
     const newReviewObj: Review = {
       reviewer: "You",
       rating: selectedRating,
-      text: newReview.trim(),
+      text: trimmedReview,
     };
 
     setReviews((prev) => {
@@ -163,22 +178,39 @@ function Details() {
                       <button
                         key={star}
                         type="button"
-                        onClick={() => setSelectedRating(star)}
+                        onClick={() => {
+                          setSelectedRating(star);
+                          setValidationErrors((prev) => ({ ...prev, rating: undefined }));
+                        }}
                         className={`text-2xl ${star <= selectedRating ? "text-yellow-400" : "text-gray-300"}`}
                       >
                         {"\u2605"}
                       </button>
                     ))}
                   </div>
+                  {validationErrors.rating && (
+                    <p className="mt-1 text-xs font-medium text-red-500">{validationErrors.rating}</p>
+                  )}
                 </div>
 
                 <textarea
                   value={newReview}
-                  onChange={(e) => setNewReview(e.target.value)}
+                  onChange={(e) => {
+                    setNewReview(e.target.value);
+                    setValidationErrors((prev) => ({ ...prev, reviewText: undefined }));
+                  }}
                   placeholder="Write your review here..."
-                  className="w-full resize-none rounded-xl border border-gray-200 p-3 text-sm text-gray-700 outline-none focus:border-[#8DB9FF]"
+                  className={`w-full resize-none rounded-xl border p-3 text-sm text-gray-700 outline-none ${
+                    validationErrors.reviewText
+                      ? "border-red-500 focus:border-red-500"
+                      : "border-gray-200 focus:border-[#8DB9FF]"
+                  }`}
                   rows={4}
                 />
+
+                {validationErrors.reviewText && (
+                  <p className="mt-1 text-xs font-medium text-red-500">{validationErrors.reviewText}</p>
+                )}
 
                 <div className="flex flex-col gap-3 sm:flex-row sm:justify-end">
                   <button
