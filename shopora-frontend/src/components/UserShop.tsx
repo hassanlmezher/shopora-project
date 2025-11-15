@@ -19,11 +19,14 @@ function UserShop() {
           Back
         </button>
         <p className="text-3xl mt-5 font-bold">Your Show Name</p>
-        <div className="flex flex-wrap pt-10 gap-7">
+        <div className="flex flex-wrap pt-10 gap-7  items-center">
           <YourItem />
           <YourItem />
           <YourItem />
-          <button className="bg-[#5AB688]">Click</button>
+          <div className="flex flex-col ml-10 justify-center items-center gap-5">
+            <button className="bg-[#5AB688] w-[10rem] text-white text-7xl font-bold rounded-2xl h-[10rem]" onClick={() => navigate("/itemform")}>+</button>
+            <p className="text-[#5AB688] font-bold text-2xl">Add an item</p>
+          </div>
         </div>
       </div>
 
