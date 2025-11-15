@@ -14,7 +14,6 @@ function ItemForm() {
   const [name, setName] = useState("");
   const [namee, setNamee] = useState("");
   const [priceLabel, setPriceLabel] = useState("");
-  const [priceValue, setPriceValue] = useState("");
   const [category, setCategory] = useState<(typeof categories)[number]>(categories[0]);
   const [description, setDescription] = useState("");
   const [image, setImage] = useState("");
@@ -35,7 +34,8 @@ function ItemForm() {
     if (!priceLabel.trim()) {
       return "";
     }
-    return priceLabel.trim().startsWith("$") ? priceLabel.trim() : `$${priceLabel.trim()}`;
+    const trimmed = priceLabel.trim();
+    return trimmed.startsWith("$") ? trimmed : `$${trimmed}`;
   }, [priceLabel]);
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
@@ -45,12 +45,12 @@ function ItemForm() {
       return;
     }
 
-    if (!name.trim() || !priceValue.trim()) {
+    if (!name.trim() || !priceLabel.trim()) {
       setPopup({ message: "Please give the item a name and price.", variant: "error" });
       return;
     }
 
-    const numericPrice = Number(priceValue);
+    const numericPrice = Number(priceLabel.replace(/[^0-9.]+/g, ""));
     if (Number.isNaN(numericPrice) || numericPrice <= 0) {
       setPopup({ message: "Provide a valid numeric price value.", variant: "error" });
       return;
@@ -72,7 +72,6 @@ function ItemForm() {
     setName("");
     setNamee("");
     setPriceLabel("");
-    setPriceValue("");
     setDescription("");
     setImage("");
     setRatings("(0)");
