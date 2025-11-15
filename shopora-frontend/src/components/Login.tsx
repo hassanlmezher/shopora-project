@@ -5,6 +5,11 @@ import useAuthStore from "../store/useAuthStore";
 import PopupMessage from "./PopupMessage";
 
 
+type FieldErrors = {
+  email?: string;
+  password?: string;
+};
+
 function Login() {
     const navigate = useNavigate();
     const email = "hassan@gmail.com";
@@ -18,12 +23,15 @@ function Login() {
     const [popupVariant, setPopupVariant] = useState<"success" | "error">("success");
     const hideTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
     const { login, logout } = useAuthStore();
+    const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
     
     const handleEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
-      setEmaill(e.target.value)
+      setEmaill(e.target.value);
+      setFieldErrors((prev) => ({ ...prev, email: undefined }));
     };
     const handlePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
-      setPassWordd(e.target.value)
+      setPassWordd(e.target.value);
+      setFieldErrors((prev) => ({ ...prev, password: undefined }));
     };
     const scheduleHide = (callback?: () => void) => {
       if (hideTimerRef.current) {
@@ -45,16 +53,36 @@ function Login() {
     }, []);
 
     const handleLogIn = () => {
-      if(adminEmail === emaill && adminPassword === passwordd) {
+      const errors: FieldErrors = {};
+      const trimmedEmail = emaill.trim();
+      const trimmedPassword = passwordd.trim();
+
+      if (!trimmedEmail) {
+        errors.email = "Email address is required.";
+      } else if (!/^\S+@\S+\.\S+$/.test(trimmedEmail)) {
+        errors.email = "Enter a valid email address.";
+      }
+
+      if (!trimmedPassword) {
+        errors.password = "Password is required.";
+      }
+
+      if (Object.keys(errors).length > 0) {
+        setFieldErrors(errors);
+        return;
+      }
+
+      setFieldErrors({});
+
+      if (adminEmail === trimmedEmail && adminPassword === trimmedPassword) {
         setPopupMessage("Welcome back Admin!");
         setPopupVariant("success");
         setShowPopup(true);
         scheduleHide(() => {
           login();
-          navigate('/adminDashboard');
+          navigate("/adminDashboard");
         });
-      }
-      else if(email === emaill && password === passwordd) {
+      } else if (email === trimmedEmail && password === trimmedPassword) {
         setPopupMessage("Login successful!");
         setPopupVariant("success");
         setShowPopup(true);
@@ -77,16 +105,30 @@ function Login() {
           <p className="text-center text-4xl font-bold text-[#4EA67D] sm:text-5xl lg:text-left">Log In</p>
           <input
             type="text"
-            className="h-12 w-full rounded-2xl border border-[#0E5861] px-4 text-base focus:border-[#8DB9FF] focus:outline-none"
+            className={`h-12 w-full rounded-2xl px-4 text-base focus:outline-none ${
+              fieldErrors.email
+                ? "border border-red-500 focus:border-red-500"
+                : "border border-[#0E5861] focus:border-[#8DB9FF]"
+            }`}
             onChange={handleEmail}
             placeholder="Email address"
           />
+          {fieldErrors.email && (
+            <p className="mt-1 text-left text-xs font-semibold text-red-500">{fieldErrors.email}</p>
+          )}
           <input
             type="password"
-            className="h-12 w-full rounded-2xl border border-[#0E5861] px-4 text-base focus:border-[#8DB9FF] focus:outline-none"
+            className={`h-12 w-full rounded-2xl px-4 text-base focus:outline-none ${
+              fieldErrors.password
+                ? "border border-red-500 focus:border-red-500"
+                : "border border-[#0E5861] focus:border-[#8DB9FF]"
+            }`}
             onChange={handlePassword}
             placeholder="Password"
           />
+          {fieldErrors.password && (
+            <p className="mt-1 text-left text-xs font-semibold text-red-500">{fieldErrors.password}</p>
+          )}
           <div className="flex flex-col gap-2 text-center text-sm text-[#666666] sm:flex-row sm:items-center sm:justify-center lg:justify-start">
             <p>Don't have an account?</p>
             <button
