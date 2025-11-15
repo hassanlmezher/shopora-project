@@ -79,12 +79,12 @@ function ItemForm() {
   };
 
   return (
-    <div className="min-h-screen bg-[#65CD99] px-4 py-6 sm:px-10">
+    <div className="min-h-screen bg-[#8DB9FF] px-4 py-6 sm:px-10">
       <div className="mx-auto flex w-full max-w-4xl flex-col gap-6">
         <button
           type="button"
           onClick={() => navigate(-1)}
-          className="flex w-fit items-center gap-3 rounded-full border border-gray-300 bg-white px-4 py-2 text-sm font-semibold text-[#388063] shadow-sm transition hover:bg-[#f0fff7]"
+          className="flex w-fit items-center gap-3 rounded-full border border-gray-300 bg-white px-4 py-2 text-sm font-semibold text-[#1E3B86] shadow-sm transition hover:bg-[#f0fff7]"
         >
           Back
         </button>
@@ -102,19 +102,19 @@ function ItemForm() {
               value={name}
               onChange={(event) => setName(event.target.value)}
               placeholder="Product name"
-              className="rounded-2xl border border-[#E0E3E1] px-4 py-3 text-sm text-[#1F3B2F] focus:outline-none focus:ring-2 focus:ring-[#65CD99]"
+              className="rounded-2xl border border-[#E0E3E1] px-4 py-3 text-sm text-[#1F3B2F] focus:outline-none focus:ring-2 focus:ring-[#8DB9FF]"
             />
             <input
               type="text"
               value={priceLabel}
               onChange={(event) => setPriceLabel(event.target.value)}
               placeholder="Price label (e.g., $199)"
-              className="rounded-2xl border border-[#E0E3E1] px-4 py-3 text-sm text-[#1F3B2F] focus:outline-none focus:ring-2 focus:ring-[#65CD99]"
+              className="rounded-2xl border border-[#E0E3E1] px-4 py-3 text-sm text-[#1F3B2F] focus:outline-none focus:ring-2 focus:ring-[#8DB9FF]"
             />
             <select
               value={category}
               onChange={(event) => setCategory(event.target.value as typeof categories[number])}
-              className="rounded-2xl border border-[#E0E3E1] px-4 py-3 text-sm text-[#1F3B2F] focus:outline-none focus:ring-2 focus:ring-[#65CD99]"
+              className="rounded-2xl border border-[#E0E3E1] px-4 py-3 text-sm text-[#1F3B2F] focus:outline-none focus:ring-2 focus:ring-[#8DB9FF]"
             >
               {categories.map((option) => (
                 <option key={option} value={option}>
@@ -127,7 +127,7 @@ function ItemForm() {
               value={image}
               onChange={(event) => setImage(event.target.value)}
               placeholder="Image URL"
-              className="rounded-2xl border border-[#E0E3E1] px-4 py-3 text-sm text-[#1F3B2F] focus:outline-none focus:ring-2 focus:ring-[#65CD99]"
+              className="rounded-2xl border border-[#E0E3E1] px-4 py-3 text-sm text-[#1F3B2F] focus:outline-none focus:ring-2 focus:ring-[#8DB9FF]"
               required
             />
             <textarea
@@ -135,13 +135,13 @@ function ItemForm() {
               onChange={(event) => setDescription(event.target.value)}
               placeholder="Description"
               rows={3}
-              className="rounded-2xl border border-[#E0E3E1] px-4 py-3 text-sm text-[#1F3B2F] focus:outline-none focus:ring-2 focus:ring-[#65CD99] md:col-span-2"
+              className="rounded-2xl border border-[#E0E3E1] px-4 py-3 text-sm text-[#1F3B2F] focus:outline-none focus:ring-2 focus:ring-[#8DB9FF] md:col-span-2"
             />
           </div>
           <button
             type="submit"
             disabled={!isSubmissionReady}
-            className="mt-6 w-full rounded-2xl bg-[#65CD99] px-6 py-3 text-sm font-semibold text-white transition hover:bg-[#53b785] disabled:cursor-not-allowed disabled:opacity-60"
+            className="mt-6 w-full rounded-2xl bg-[#8DB9FF] px-6 py-3 text-sm font-semibold text-white transition hover:bg-[#53b785] disabled:cursor-not-allowed disabled:opacity-60"
           >
             Save item
           </button>
