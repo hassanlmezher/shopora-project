@@ -120,27 +120,28 @@ function Details() {
           </div>
 
           <div className="w-full rounded-3xl bg-white p-5 shadow-xl sm:p-6">
-            <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-              <div className="flex items-center gap-4">
-                <img src={reviewss} alt="reviews icon" className="w-16 sm:w-20 lg:w-24" />
-                <p className="text-2xl font-bold text-[#65CD99] sm:text-3xl">{totalReviews} Reviews</p>
+            <div className="flex flex-col gap-4">
+              <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                <div className="flex items-center gap-4">
+                  <img src={reviewss} alt="reviews icon" className="w-16 sm:w-20 lg:w-24" />
+                  <p className="text-2xl font-bold text-[#65CD99] sm:text-3xl">{totalReviews} Reviews</p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setShowAddReview((prev) => !prev)}
+                  disabled={!hasOrdered || hasReviewed}
+                  className={`w-full rounded-xl bg-[#65CD99] px-4 py-2 text-sm font-semibold text-white transition hover:bg-[#4CAF50] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#388063] sm:w-auto ${
+                    !hasOrdered || hasReviewed ? "cursor-not-allowed opacity-60" : ""
+                  }`}
+                >
+                  {hasReviewed ? "Review submitted" : showAddReview ? "Close" : "Add Review"}
+                </button>
               </div>
-
-              <button
-                type="button"
-                onClick={() => setShowAddReview((prev) => !prev)}
-                disabled={!hasOrdered || hasReviewed}
-                className={`w-full rounded-xl bg-[#65CD99] px-4 py-2 text-sm font-semibold text-white transition hover:bg-[#4CAF50] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#388063] sm:w-auto ${
-                  !hasOrdered || hasReviewed ? "cursor-not-allowed opacity-60" : ""
-                }`}
-              >
-                {hasReviewed ? "Review submitted" : showAddReview ? "Close" : "Add Review"}
-              </button>
-              {!hasOrdered && (
-                <p className="mt-2 text-xs text-gray-500">Purchase this item before leaving a review.</p>
-              )}
-              {hasReviewed && (
-                <p className="mt-2 text-xs text-gray-500">You already reviewed this item.</p>
+              {(!hasOrdered || hasReviewed) && (
+                <div className="space-y-1 text-xs text-gray-500 sm:text-sm">
+                  {!hasOrdered && <p>Purchase this item before leaving a review.</p>}
+                  {hasReviewed && <p>You already reviewed this item.</p>}
+                </div>
               )}
             </div>
 
