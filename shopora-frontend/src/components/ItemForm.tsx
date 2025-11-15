@@ -15,7 +15,7 @@ function ItemForm() {
   const [namee, setNamee] = useState("");
   const [priceLabel, setPriceLabel] = useState("");
   const [priceValue, setPriceValue] = useState("");
-  const [category, setCategory] = useState(categories[0]);
+  const [category, setCategory] = useState<(typeof categories)[number]>(categories[0]);
   const [description, setDescription] = useState("");
   const [image, setImage] = useState("");
   const [ratings, setRatings] = useState("(0)");

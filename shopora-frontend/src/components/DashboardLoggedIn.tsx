@@ -109,7 +109,7 @@ function DashboardLoggedIn() {
             const matchesCategory = selectedCategory === ALL_CATEGORIES || item.category === selectedCategory;
             return matchesSearch && matchesPrice && matchesCategory;
         });
-    }, [searchTerm, priceRange, selectedCategory, updatedCatalogue]);
+    }, [searchTerm, priceRange, selectedCategory, catalogueWithUserItems]);
 
     const expandSearch = () => {
         if (isSearchExpanded) {
