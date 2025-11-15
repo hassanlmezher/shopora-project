@@ -16,24 +16,20 @@ function YourItem({ item, onRemove }: YourItemProps) {
   };
 
   return (
-    <div className="shadow-lg rounded-3xl shadow-gray-300 w-full max-w-[420px] flex-1 flex flex-col gap-4 overflow-hidden bg-white sm:w-[45%] lg:w-[30%] p-6 transition hover:-translate-y-1">
-      <div className="flex flex-col gap-3">
-        <img
-          className="mx-auto h-40 w-full object-contain sm:h-48"
-          src={item.image || shirt}
-          alt={`${item.name} ${item.namee}`}
-        />
-        <div className="flex flex-col items-center text-center">
+    <div className="flex w-full max-w-[360px] flex-col justify-between rounded-3xl border border-[#E4ECE7] bg-white p-6 text-center shadow-sm transition hover:-translate-y-1 hover:shadow-lg">
+      <div className="flex flex-col gap-4">
+        <img className="mx-auto h-48 w-full object-contain" src={item.image || shirt} alt={`${item.name} ${item.namee}`} />
+        <div className="space-y-1">
           <p className="text-xl font-bold text-[#1F3B2F]">{item.name}</p>
-          <p className="text-lg font-semibold text-[#5ABC8E]">{item.namee}</p>
+          <p className="text-lg font-semibold text-[#5AB688]">{item.namee}</p>
         </div>
       </div>
-      <p className="text-center text-sm text-[#4B5B56]">{item.description || "No description provided yet."}</p>
-      <div className="flex items-center justify-center gap-3">
-        <img className="w-28" src={stars} alt="rating stars" />
+      <p className="mt-2 min-h-[40px] text-sm text-[#4B5B56]">{item.description || "No description provided yet."}</p>
+      <div className="mt-2 flex items-center justify-center gap-2">
+        <img className="h-6 w-24 object-contain" src={stars} alt="rating stars" />
         <p className="text-sm text-gray-600">{item.ratings}</p>
       </div>
-      <div className="flex flex-wrap justify-between gap-3 mt-auto">
+      <div className="mt-4 flex flex-col gap-3 sm:flex-row">
         <button
           type="button"
           onClick={handleDetails}

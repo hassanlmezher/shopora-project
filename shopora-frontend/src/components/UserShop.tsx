@@ -46,7 +46,7 @@ function UserShop() {
           )}
         </div>
 
-        <div className="flex flex-wrap justify-between gap-6 pt-6">
+        <section className="grid gap-6 pt-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 justify-items-center">
           {items.length > 0 ? (
             items.map((item) => (
               <YourItem
@@ -56,19 +56,18 @@ function UserShop() {
               />
             ))
           ) : (
-            <div className="flex flex-1 flex-col items-start justify-center gap-4 rounded-3xl border border-dashed border-[#5AB688]/40 bg-white px-6 py-10 text-[#5AB688] shadow-sm">
+            <div className="lg:col-span-2 xl:col-span-3 mx-auto flex w-full max-w-2xl flex-col justify-center gap-4 rounded-3xl border border-dashed border-[#5AB688]/40 bg-white px-8 py-12 text-[#5AB688] shadow-sm">
               <p className="text-xl font-semibold">No items in your shop yet.</p>
-              <p className="text-sm text-[#4B5B56]">
+              <p className="mt-2 text-sm text-[#4B5B56]">
                 Add your first product so everyone can discover what you are selling.
               </p>
             </div>
           )}
-
-          <div className="flex min-w-[220px] flex-col items-center justify-center gap-4 rounded-3xl border-2 border-dashed border-[#5AB688]/40 bg-white px-6 py-10 text-center shadow-sm">
+          <div className="flex min-h-[220px] flex-col items-center justify-center gap-4 rounded-3xl border-2 border-dashed border-[#5AB688]/40 bg-white px-6 py-10 text-center shadow-sm">
             <button
               type="button"
               onClick={handleAddItem}
-              className="bg-[#5AB688] w-[10rem] text-white text-7xl font-bold rounded-2xl h-[10rem] shadow-lg transition hover:bg-[#479270]"
+              className="bg-[#5AB688] flex h-[10rem] w-[10rem] items-center justify-center rounded-2xl text-7xl font-bold text-white transition hover:bg-[#479270]"
             >
               +
             </button>
@@ -77,7 +76,7 @@ function UserShop() {
               <p className="text-xs text-[#4B5B56]">Get your shop approved first in settings.</p>
             )}
           </div>
-        </div>
+        </section>
       </div>
     </div>
   );
