@@ -13,7 +13,8 @@ import { useNavigate } from "react-router-dom";
 import { useMemo, useRef, useState, useEffect } from "react";
 import type { ChangeEvent, FocusEvent as ReactFocusEvent, KeyboardEvent as ReactKeyboardEvent } from "react";
 import useDashboardLayout from "../hooks/useDashboardLayout";
-import useNotificationStore from "../store/useNotificationStore";
+import useNotificationStore, { EMPTY_USER_SHOP_ITEMS } from "../store/useNotificationStore";
+
 
 function getUpdatedCatalogue() {
     return catalogue.map(item => {
@@ -52,9 +53,10 @@ function DashboardLogout() {
     const minPriceInputRef = useRef<HTMLInputElement | null>(null);
     const maxPriceInputRef = useRef<HTMLInputElement | null>(null);
     const isDesktopLayout = useDashboardLayout();
-    const acceptedRequestItems = useNotificationStore((state) =>
-        state.requests.find((request) => request.status === "accepted")?.items ?? []
-    );
+    const acceptedRequestItems = useNotificationStore((state) => {
+        const acceptedRequest = state.requests.find((request) => request.status === "accepted");
+        return acceptedRequest ? acceptedRequest.items : EMPTY_USER_SHOP_ITEMS;
+    });
 
     const closeMobileMenu = () => setIsMobileMenuOpen(false);
     const handleMobileNavigate = (path: string) => {
