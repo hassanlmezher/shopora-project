@@ -13,8 +13,19 @@ const formatCurrency = (value: number) =>
 
 type ShippingOption = "pickup" | "delivery";
 
-function Cart() {
+type CartProps = {
+    onClose?: () => void;
+};
+
+function Cart({ onClose }: CartProps) {
     const navigate = useNavigate();
+    const [isVisible, setIsVisible] = useState(false);
+    const transitionDuration = 280;
+
+    useEffect(() => {
+        const frame = requestAnimationFrame(() => setIsVisible(true));
+        return () => cancelAnimationFrame(frame);
+    }, []);
     const items = useCartStore((state) => state.items);
     const clearCart = useCartStore((state) => state.clear);
     const addOrders = useOrderStore((state) => state.addOrders);
@@ -68,15 +79,28 @@ function Cart() {
 
     return (
         <div className="fixed inset-0 z-40 flex">
-            <div className="absolute inset-0 bg-[#123169]/80" />
-            <div className="relative ml-auto flex h-full w-full max-w-[460px] flex-col overflow-y-auto bg-gradient-to-b from-[#0F3D73] to-[#1F5BB4] p-8 shadow-2xl">
+            <div className="absolute backdrop-blur bg-transparent" />
+            <div
+                className={`relative ml-auto flex h-full w-full max-w-[480px] flex-col overflow-y-auto rounded-l-3xl bg-gradient-to-b from-white/95 to-white/90 p-8 shadow-2xl shadow-slate-900/40 transition-transform duration-300 ${
+                    isVisible ? "translate-x-0" : "translate-x-full"
+                }`}
+            >
                 <div className="flex items-center justify-between">
                     <p className="text-3xl font-bold text-white md:text-4xl">
                         My Cart
                     </p>
                     <button
                         type="button"
-                        onClick={() => navigate("/DashboardLoggedIn")}
+                        onClick={() => {
+                            setIsVisible(false);
+                            setTimeout(() => {
+                                if (onClose) {
+                                    onClose();
+                                } else {
+                                    navigate("/DashboardLoggedIn");
+                                }
+                            }, transitionDuration);
+                        }}
                         className="flex items-center gap-2 rounded-full border border-white/70 bg-white/90 px-4 py-2 text-sm font-semibold uppercase text-[#0F3D73] transition hover:bg-[#0F3D73] hover:text-white"
                     >
                         Close
@@ -91,13 +115,13 @@ function Cart() {
                             ))}
                         </div>
                     ) : (
-                        <div className="rounded-3xl border border-white/60 bg-white/10 p-8 text-center text-base font-semibold uppercase tracking-wide text-white/80 shadow-inner">
+                        <div className="rounded-3xl border border-slate-200 bg-white/70 p-8 text-center text-base font-semibold uppercase tracking-wide text-slate-500 shadow-inner">
                             Your cart is empty. Keep exploring and add products you love!
                         </div>
                     )}
 
                     {items.length > 0 && (
-                        <div className="rounded-3xl border border-white/30 bg-white/10 p-6 shadow-inner">
+                        <div className="rounded-3xl border border-slate-200 bg-white/90 p-6 shadow-lg">
                             <h2 className="text-lg font-semibold uppercase tracking-wide text-white/80">
                                 Choose shipping mode:
                             </h2>
@@ -126,16 +150,16 @@ function Cart() {
                                             value={option.value}
                                             checked={shippingOption === option.value}
                                             onChange={() => setShippingOption(option.value as ShippingOption)}
-                                            className="h-5 w-5 accent-white"
+                                            className="h-5 w-5 accent-blue-500"
                                         />
                                         <div>
-                                            <p className="text-base font-semibold text-white">
+                                            <p className="text-base font-semibold text-slate-800">
                                                 {option.label}
-                                                <span className="ml-2 text-sm font-normal text-white/70">
+                                                <span className="ml-2 text-sm font-normal text-slate-500">
                                                     ({option.cost})
                                                 </span>
                                             </p>
-                                            <p className="text-sm text-white/80">
+                                            <p className="text-sm text-slate-500">
                                                 {option.detail}
                                             </p>
                                         </div>
@@ -167,7 +191,7 @@ function Cart() {
                             <button
                                 type="button"
                                 onClick={handleCheckout}
-                                className="mt-6 w-full rounded-full bg-white py-3 text-lg font-semibold text-[#0F3D73] transition hover:bg-white/80"
+                                className="mt-6 w-full rounded-full bg-blue-600 py-3 text-lg font-semibold text-white transition hover:bg-blue-700"
                             >
                                 Complete order
                             </button>
