@@ -16,6 +16,7 @@ function ShopForm() {
   const hasActiveRequest = useNotificationStore((state) =>
     state.requests.some((request) => request.status !== "declined")
   );
+  const [hasAttemptedSubmit, setHasAttemptedSubmit] = useState(false);
 
   useEffect(() => {
     if (!popupContent) return undefined;
@@ -26,7 +27,7 @@ function ShopForm() {
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    if (hasActiveRequest) {
+    if (hasActiveRequest && hasAttemptedSubmit) {
       setPopupContent({
         message: "You already have an active request. Please wait for a response.",
         variant: "error",
@@ -49,6 +50,7 @@ function ShopForm() {
     setShopDescription("");
     setPhoneNumber("");
     setPopupContent({ message: "Your shop request is pending review.", variant: "success" });
+    setHasAttemptedSubmit(true);
   };
 
   return (
