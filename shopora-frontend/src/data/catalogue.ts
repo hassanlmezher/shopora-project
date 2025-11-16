@@ -22,6 +22,7 @@ export interface CatalogueReview {
 }
 
 export interface CatalogueItem {
+    id: string;
     image: string;
     images?: string[];
     name: string;
@@ -37,6 +38,7 @@ export interface CatalogueItem {
 
 export const catalogue: CatalogueItem[] = [
     {
+        id: "catalog-headphones-1",
         image: headphones,
         images: [headphones, headphonesTwo, headphonesThree],
         name: "Wirless",
@@ -54,6 +56,7 @@ export const catalogue: CatalogueItem[] = [
         ]
     },
     {
+        id: "catalog-headphones-2",
         image: headphonesTwo,
         images: [headphonesTwo, headphonesThree, headphonesFour],
         name: "Echo",
@@ -70,6 +73,7 @@ export const catalogue: CatalogueItem[] = [
         ]
     },
     {
+        id: "catalog-headphones-3",
         image: headphonesThree,
         images: [headphonesThree, headphonesFour, headphonesFive],
         name: "Pulse",
@@ -85,6 +89,7 @@ export const catalogue: CatalogueItem[] = [
         ]
     },
     {
+        id: "catalog-headphones-4",
         image: headphonesFour,
         images: [headphonesFour, headphonesFive, headphones],
         name: "Drift",
@@ -100,6 +105,7 @@ export const catalogue: CatalogueItem[] = [
         ]
     },
     {
+        id: "catalog-headphones-5",
         image: headphonesFive,
         images: [headphonesFive, headphones, headphonesTwo],
         name: "Nova",
@@ -115,6 +121,7 @@ export const catalogue: CatalogueItem[] = [
         ]
     },
     {
+        id: "catalog-tshirt-1",
         image: tShirt,
         images: [tShirt, tShirtTwo, tShirtThree],
         name: "Metalica",
@@ -132,6 +139,7 @@ export const catalogue: CatalogueItem[] = [
         ]
     },
     {
+        id: "catalog-tshirt-2",
         image: tShirtTwo,
         images: [tShirtTwo, tShirtThree, tShirtFour],
         name: "Cedar",
@@ -147,6 +155,7 @@ export const catalogue: CatalogueItem[] = [
         ]
     },
     {
+        id: "catalog-tshirt-3",
         image: tShirtThree,
         images: [tShirtThree, tShirtFour, tShirtFive],
         name: "Sprint",
@@ -162,6 +171,7 @@ export const catalogue: CatalogueItem[] = [
         ]
     },
     {
+        id: "catalog-tshirt-4",
         image: tShirtFour,
         images: [tShirtFour, tShirtFive, tShirt],
         name: "Muse",
@@ -177,6 +187,7 @@ export const catalogue: CatalogueItem[] = [
         ]
     },
     {
+        id: "catalog-tshirt-5",
         image: tShirtFive,
         images: [tShirtFive, tShirt, tShirtTwo],
         name: "Solstice",
@@ -192,6 +203,7 @@ export const catalogue: CatalogueItem[] = [
         ]
     },
     {
+        id: "catalog-shoes-1",
         image: shoes,
         images: [shoes, shoesTwo, shoesThree],
         name: "Travis",
@@ -209,6 +221,7 @@ export const catalogue: CatalogueItem[] = [
         ]
     },
     {
+        id: "catalog-shoes-2",
         image: shoesTwo,
         images: [shoesTwo, shoesThree, shoesFour],
         name: "Orbit",
@@ -224,6 +237,7 @@ export const catalogue: CatalogueItem[] = [
         ]
     },
     {
+        id: "catalog-shoes-3",
         image: shoesThree,
         images: [shoesThree, shoesFour, shoesFive],
         name: "Prime",
@@ -239,6 +253,7 @@ export const catalogue: CatalogueItem[] = [
         ]
     },
     {
+        id: "catalog-shoes-4",
         image: shoesFour,
         images: [shoesFour, shoesFive, shoes],
         name: "Comet",
@@ -254,6 +269,7 @@ export const catalogue: CatalogueItem[] = [
         ]
     },
     {
+        id: "catalog-shoes-5",
         image: shoesFive,
         images: [shoesFive, shoes, shoesTwo],
         name: "Volt",
