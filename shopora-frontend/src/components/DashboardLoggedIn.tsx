@@ -62,7 +62,9 @@ function DashboardLoggedIn() {
     const totalCartItems = useCartStore(
         (state) => state.items.reduce((sum, item) => sum + item.quantity, 0)
     );
-    const notificationCount = useNotificationStore((state) => state.requests.length);
+    const notificationCount = useNotificationStore(
+        (state) => Math.max(0, state.requests.length - state.latestReadRequestCount)
+    );
     const acceptedRequest = useNotificationStore((state) =>
         state.requests.find((request) => request.status === "accepted")
     );
@@ -99,6 +101,7 @@ function DashboardLoggedIn() {
             return updatedCatalogue;
         }
         const creatorItems = acceptedRequestItems.map((item) => ({
+            id: item.id,
             image: item.image || shirt,
             images: item.images,
             name: item.name,
@@ -627,8 +630,8 @@ function DashboardLoggedIn() {
                 {filteredItems.length > 0 ? (
                     <div className="grid place-items-center gap-6 sm:grid-cols-2">
                         {filteredItems.map(item => (
-                                <ItemCard
-                                    key={item.namee}
+                            <ItemCard
+                                key={item.id ?? `${item.name}-${item.namee}-${item.priceValue}`}
                                     image={item.image}
                                     images={item.images}
                                     name={item.name}
@@ -970,7 +973,7 @@ function DashboardLoggedIn() {
                             <div className="grid gap-10 lg:grid-cols-2 xl:grid-cols-3 justify-items-center">
                                 {filteredItems.map(item => (
                                     <ItemCard
-                                        key={item.namee}
+                                        key={item.id ?? `${item.name}-${item.namee}-${item.priceValue}`}
                                         image={item.image}
                                         images={item.images}
                                         name={item.name}
