@@ -44,14 +44,17 @@ interface NotificationStore {
   updateUserShopItem: (requestId: string, item: UserShopItem) => void;
   deleteUserShopItem: (requestId: string, itemId: string) => void;
   clearRequests: () => void;
+  latestReadRequestCount: number;
+  markNotificationsRead: () => void;
 }
 
 const useNotificationStore = create<NotificationStore>()(
   persist(
-    (set) => ({
-      requests: [],
-      submitShopRequest: (payload) =>
-        set((state) => {
+  (set) => ({
+    requests: [],
+    latestReadRequestCount: 0,
+    submitShopRequest: (payload) =>
+      set((state) => {
           const hasActiveRequest = state.requests.some((request) => request.status !== "declined");
           if (hasActiveRequest) {
             return state;
@@ -65,7 +68,11 @@ const useNotificationStore = create<NotificationStore>()(
             ...rest,
           };
           return { requests: [...state.requests, newRequest] };
-        }),
+      }),
+    markNotificationsRead: () =>
+      set((state) => ({
+        latestReadRequestCount: state.requests.length,
+      })),
       updateRequestStatus: (id, status) =>
         set((state) => ({
           requests: state.requests.map((request) =>

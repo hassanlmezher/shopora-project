@@ -458,7 +458,7 @@ function DashboardLogout() {
                             <div className="grid place-items-center gap-6 sm:grid-cols-2">
                                 {filteredItems.map(item => (
                                     <ItemCard
-                                        key={item.namee}
+                                        key={item.id ?? `${item.name}-${item.namee}-${item.priceValue}`}
                                         image={item.image}
                                         images={item.images}
                                         name={item.name}
