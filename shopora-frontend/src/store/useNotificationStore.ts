@@ -29,6 +29,8 @@ export interface ShopRequestNotification {
   items: UserShopItem[];
 }
 
+export const EMPTY_USER_SHOP_ITEMS: UserShopItem[] = [];
+
 type ShopRequestPayload = Omit<ShopRequestNotification, "id" | "status" | "submittedAt"> & {
   items?: UserShopItem[];
 };
@@ -109,7 +111,7 @@ const useNotificationStore = create<NotificationStore>()(
       clearRequests: () => set({ requests: [] }),
     }),
     {
-      name: "shopora-notifications",
+      name: "shopora-notifications1",
     }
   )
 );

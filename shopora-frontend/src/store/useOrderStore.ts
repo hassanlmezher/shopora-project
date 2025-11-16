@@ -67,7 +67,7 @@ const useOrderStore = create<OrderState>()(
       clearOrders: () => set({ orders: [], reviewedItems: [] }),
     }),
     {
-      name: "shopora-orders",
+      name: "shopora-orders1",
     }
   )
 );

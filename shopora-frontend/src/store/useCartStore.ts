@@ -69,7 +69,7 @@ const useCartStore = create<CartStore>()(
             clear: () => set({ items: [] }),
         }),
         {
-            name: "shopora-cart",
+            name: "shopora-cart1",
         }
     )
 );
