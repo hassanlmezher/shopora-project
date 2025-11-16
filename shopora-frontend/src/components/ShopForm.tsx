@@ -13,6 +13,10 @@ function ShopForm() {
     variant: "success" | "error";
   } | null>(null);
   const submitShopRequest = useNotificationStore((state) => state.submitShopRequest);
+  const hasActiveRequest = useNotificationStore((state) =>
+    state.requests.some((request) => request.status !== "declined")
+  );
+  const [hasAttemptedSubmit, setHasAttemptedSubmit] = useState(false);
 
   useEffect(() => {
     if (!popupContent) return undefined;
@@ -22,6 +26,14 @@ function ShopForm() {
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+
+    if (hasActiveRequest && hasAttemptedSubmit) {
+      setPopupContent({
+        message: "You already have an active request. Please wait for a response.",
+        variant: "error",
+      });
+      return;
+    }
     if (!shopTitle.trim() || !shopDescription.trim() || !phoneNumber.trim()) {
       setPopupContent({ message: "Please complete all the fields before submitting.", variant: "error" });
       return;
@@ -38,6 +50,7 @@ function ShopForm() {
     setShopDescription("");
     setPhoneNumber("");
     setPopupContent({ message: "Your shop request is pending review.", variant: "success" });
+    setHasAttemptedSubmit(true);
   };
 
   return (
@@ -79,10 +92,18 @@ function ShopForm() {
             />
             <button
               type="submit"
-              className="rounded-2xl bg-[#8DB9FF] px-10 py-3 font-bold text-white transition hover:bg-white hover:border-2 hover:border-[#8DB9FF] hover:text-[#8DB9FF]"
+              disabled={hasActiveRequest}
+              className={`rounded-2xl px-10 py-3 font-bold text-white transition hover:bg-white hover:border-2 hover:border-[#8DB9FF] hover:text-[#8DB9FF] ${
+                hasActiveRequest ? "bg-[#B7CCFF] text-[#4C67A6] cursor-not-allowed" : "bg-[#8DB9FF]"
+              }`}
             >
               Submit
             </button>
+            {hasActiveRequest && (
+              <p className="text-sm font-semibold text-[#FF6B6B]">
+                You already have a pending or approved shop request.
+              </p>
+            )}
           </form>
         </div>
       </div>
