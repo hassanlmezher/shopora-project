@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import useAuthStore from "../store/useAuthStore";
 import useCartStore from "../store/useCartStore";
 import useFavoritesStore from "../store/useFavoritesStore";
@@ -13,6 +13,7 @@ interface Review {
 
 interface ProductItem {
   image: string;
+  images?: string[];
   name: string;
   namee: string;
   price: string;
@@ -22,7 +23,17 @@ interface ProductItem {
   reviews: Review[];
 }
 
-function ItemCard({ image, name, namee, price, priceValue, description, by, reviews }: ProductItem) {
+function ItemCard({
+  image,
+  images,
+  name,
+  namee,
+  price,
+  priceValue,
+  description,
+  by,
+  reviews,
+}: ProductItem) {
   const navigate = useNavigate();
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
   const addItem = useCartStore((state) => state.addItem);
@@ -31,6 +42,9 @@ function ItemCard({ image, name, namee, price, priceValue, description, by, revi
   const [toast, setToast] = useState<{ message: string; variant: "success" | "error" | "info" } | null>(null);
   const [isToastVisible, setIsToastVisible] = useState(false);
   const hideTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const slides = useMemo(() => (images && images.length ? images : [image]), [image, images]);
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const displayedImage = slides[currentSlide];
 
   const safeReviews = reviews ?? [];
   const reviewCount = safeReviews.length;
@@ -46,6 +60,21 @@ function ItemCard({ image, name, namee, price, priceValue, description, by, revi
       }
     };
   }, []);
+
+  useEffect(() => {
+    if (slides.length <= 1) {
+      setCurrentSlide(0);
+      return;
+    }
+
+    const slideInterval = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % slides.length);
+    }, 2000);
+
+    return () => {
+      clearInterval(slideInterval);
+    };
+  }, [slides.length]);
 
   const showToast = (message: string, variant: "success" | "error" | "info" = "info") => {
     setToast({ message, variant });
@@ -67,7 +96,7 @@ function ItemCard({ image, name, namee, price, priceValue, description, by, revi
 
     addItem({
       id: `${name}-${namee}`,
-      image,
+      image: displayedImage,
       name,
       namee,
       by,
@@ -78,7 +107,7 @@ function ItemCard({ image, name, namee, price, priceValue, description, by, revi
   };
 
   const handleDetailsClick = () => {
-    navigate("/details", { state: { image, name, namee, reviews } });
+    navigate("/details", { state: { image, images, name, namee, reviews } });
   };
 
   const handleToggleFavorite = () => {
@@ -91,6 +120,7 @@ function ItemCard({ image, name, namee, price, priceValue, description, by, revi
     toggleFavorite({
       id: `${name}-${namee}`,
       image,
+      images,
       name,
       namee,
       price,
@@ -127,8 +157,22 @@ function ItemCard({ image, name, namee, price, priceValue, description, by, revi
             </svg>
           </button>
           <div className="mx-auto flex h-32 w-32 items-center justify-center rounded-[26px] bg-blue-50 shadow-inner shadow-blue-500/20">
-            <img className="h-28 w-28 object-contain" src={image} alt={`${name} ${namee}`} />
+            <img
+              className="h-28 w-28 object-contain"
+              src={displayedImage}
+              alt={`${name} ${namee}`}
+            />
           </div>
+          {slides.length > 1 && (
+            <div className="flex justify-center gap-2">
+              {slides.map((_, index) => (
+                <span
+                  key={index}
+                  className={`h-1.5 w-8 rounded-full transition-all ${currentSlide === index ? "bg-[#3875F0]" : "bg-blue-100"}`}
+                />
+              ))}
+            </div>
+          )}
           <div className="text-center">
             <p className="text-lg font-bold text-slate-900">{name}</p>
             <p className="text-sm font-semibold text-blue-700">{namee}</p>
