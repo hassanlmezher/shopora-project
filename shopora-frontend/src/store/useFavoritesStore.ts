@@ -36,7 +36,7 @@ const useFavoritesStore = create<FavoritesState>()(
       clearFavorites: () => set({ items: [] }),
     }),
     {
-      name: "shopora-favorites",
+      name: "shopora-favorites1",
     }
   )
 );

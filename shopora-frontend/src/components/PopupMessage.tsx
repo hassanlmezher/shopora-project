@@ -6,7 +6,7 @@ interface PopupMessageProps {
 }
 
 const variantStyles: Record<NonNullable<PopupMessageProps["variant"]>, string> = {
-    success: "bg-green-600 text-white",
+    success: "bg-blue-600 text-white",
     error: "bg-[#1f1f1f] text-white",
     info: "bg-white text-[#1f1f1f]",
 };

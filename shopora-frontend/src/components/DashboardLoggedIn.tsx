@@ -17,7 +17,7 @@ import { useMemo, useRef, useState, useEffect } from "react";
 import type { ChangeEvent, FocusEvent as ReactFocusEvent, KeyboardEvent as ReactKeyboardEvent } from "react";
 import useCartStore from "../store/useCartStore";
 import useDashboardLayout from "../hooks/useDashboardLayout";
-import useNotificationStore from "../store/useNotificationStore";
+import useNotificationStore, { EMPTY_USER_SHOP_ITEMS } from "../store/useNotificationStore";
 import useFavoritesStore from "../store/useFavoritesStore";
 
 function getUpdatedCatalogue() {
@@ -65,9 +65,7 @@ function DashboardLoggedIn() {
     const acceptedRequest = useNotificationStore((state) =>
         state.requests.find((request) => request.status === "accepted")
     );
-    const acceptedRequestItems = useNotificationStore((state) =>
-        state.requests.find((request) => request.status === "accepted")?.items ?? []
-    );
+    const acceptedRequestItems = acceptedRequest?.items ?? EMPTY_USER_SHOP_ITEMS;
     const favoriteItems = useFavoritesStore((state) => state.items ?? []);
     const favoriteIds = useMemo(() => favoriteItems.map((item) => item.id), [favoriteItems]);
     const [isSettingsDrawerOpen, setIsSettingsDrawerOpen] = useState(false);
@@ -777,7 +775,7 @@ function DashboardLoggedIn() {
                     </button>
                 </nav>
                 <button
-                    className="flex w-full items-center justify-center gap-3 rounded-2xl bg-white/90 px-4 py-3 text-sm font-bold text-[#DDC59E] transition hover:bg-white"
+                    className="flex w-full items-center h-10 justify-center gap-3 mt-[-11px] rounded-2xl bg-white/90 px-4 py-3 text-sm font-bold text-[#DDC59E] transition hover:bg-white"
                     onClick={() => navigate('/login')}
                 >
                     <img className="w-6" src={logout} alt="logout logo" />

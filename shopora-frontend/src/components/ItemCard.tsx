@@ -104,76 +104,75 @@ function ItemCard({ image, name, namee, price, priceValue, description, by, revi
 
   return (
     <>
-    <div className="relative flex h-full w-[360px] max-w-[300px] flex-col gap-4 rounded-3xl border border-gray-100 bg-white p-6 text-left shadow-lg transition hover:-translate-y-1 hover:shadow-xl">
-      <button
-        type="button"
-        onClick={handleToggleFavorite}
-        aria-label={isFavorite ? "Remove from favorites" : "Add to favorites"}
-        className={`absolute right-4 top-4 flex h-10 w-10 items-center justify-center rounded-full border transition ${
-          isFavorite ? "border-[#FF6B6B] bg-[#FF6B6B]/10" : "border-gray-200 bg-white"
-        }`}
-      >
-        <svg
-          className="h-5 w-5"
-          viewBox="0 0 24 24"
-          fill={isFavorite ? "#FF6B6B" : "none"}
-          stroke="#FF6B6B"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        >
-          <path d="M12 21s-6.2-4.35-9.33-7.47A5.5 5.5 0 1 1 11.4 5.4L12 6l.6-.6a5.5 5.5 0 0 1 7.73 7.73C18.2 16.65 12 21 12 21z" />
-        </svg>
-      </button>
-      <img className="mx-auto w-32 sm:w-36" src={image} alt={`${name} ${namee}`} />
-      <div className="flex flex-1 flex-col gap-4">
-        <div className="flex items-start justify-between gap-4">
-          <div>
-            <p className="text-xl font-bold text-[#333]">{name}</p>
-            <p className="text-lg font-semibold text-[#555]">{namee}</p>
+      <article className="relative flex h-full w-full max-w-[320px] flex-col gap-5 rounded-[28px] border border-blue-100 bg-gradient-to-b from-blue-50 via-white to-white shadow-[0_25px_45px_rgba(59,124,255,0.18)]">
+        <div className="relative flex flex-1 flex-col gap-4 rounded-[24px] bg-white px-6 pb-6 pt-8">
+          <button
+            type="button"
+            onClick={handleToggleFavorite}
+            aria-label={isFavorite ? "Remove from favorites" : "Add to favorites"}
+            className={`absolute right-4 top-4 flex h-10 w-10 items-center justify-center rounded-full border transition ${
+              isFavorite ? "border-[#FF6B6B] bg-white shadow" : "border-slate-200 bg-white/90"
+            }`}
+          >
+            <svg
+              className="h-5 w-5"
+              viewBox="0 0 24 24"
+              fill={isFavorite ? "#FF6B6B" : "none"}
+              stroke="#FF6B6B"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="M12 21s-6.2-4.35-9.33-7.47A5.5 5.5 0 1 1 11.4 5.4L12 6l.6-.6a5.5 5.5 0 0 1 7.73 7.73C18.2 16.65 12 21 12 21z" />
+            </svg>
+          </button>
+          <div className="mx-auto flex h-32 w-32 items-center justify-center rounded-[26px] bg-blue-50 shadow-inner shadow-blue-500/20">
+            <img className="h-28 w-28 object-contain" src={image} alt={`${name} ${namee}`} />
           </div>
-          <p className="text-xl font-bold text-[#7CA6FF]">{price}</p>
-        </div>
-        <p className="text-sm text-gray-500 sm:text-base">{description}</p>
-        <div className="flex items-center justify-between gap-4">
-          <div className="flex items-center gap-3">
-            <div className="flex" aria-label={`Average rating ${averageRatingLabel} out of 5`}>
+          <div className="text-center">
+            <p className="text-lg font-bold text-slate-900">{name}</p>
+            <p className="text-sm font-semibold text-blue-700">{namee}</p>
+          </div>
+          <p className="text-sm text-slate-500">{description}</p>
+          <div className="flex items-center justify-between rounded-[18px] border border-blue-100 bg-blue-50/70 px-4 py-3 text-sm">
+            <div>
+              <p className="text-[10px] uppercase tracking-[0.5em] text-blue-500">Price</p>
+              <p className="text-lg font-bold text-blue-700">{price}</p>
+            </div>
+            <div className="text-right">
+              <p className="text-[10px] uppercase tracking-[0.5em] text-blue-500">Shop</p>
+              <p className="text-sm font-semibold text-slate-900">{by}</p>
+            </div>
+          </div>
+          <div className="flex items-center justify-between gap-4 text-sm text-slate-600">
+            <div className="flex items-center gap-2 text-lg text-[#FFB703]">
               {[1, 2, 3, 4, 5].map((star) => (
-                <span key={star} className={`text-lg ${star <= roundedRating ? "text-yellow-400" : "text-gray-300"}`}>
+                <span key={star} className={`${star <= roundedRating ? "text-[#FFB703]" : "text-slate-200"}`}>
                   {"\u2605"}
                 </span>
               ))}
             </div>
-            <div className="flex flex-col leading-none">
-              <span className="text-base font-semibold text-gray-900">
-                {averageRatingLabel}
-                <span className="text-xs font-normal text-gray-500"> / 5</span>
-              </span>
-              <span className="text-xs text-gray-500">
-                {reviewCount} review{reviewCount === 1 ? "" : "s"}
-              </span>
-            </div>
+            <span className="text-[11px] font-semibold uppercase tracking-[0.3em] text-blue-600">
+              {averageRatingLabel} - ({reviewCount}) review{reviewCount === 1 ? "" : "s"}
+            </span>
           </div>
-          <p className="whitespace-nowrap text-sm font-semibold text-gray-600">{by}</p>
         </div>
-      </div>
-      {/* keep action buttons pinned to the card bottom for consistent alignment */}
-      <div className="mt-auto flex flex-col gap-3 sm:flex-row">
-        <button
-          className="w-full rounded-2xl bg-[#7CA6FF] self-end px-4 py-3 text-sm font-bold text-white transition duration-300 ease-in-out hover:bg-white hover:text-black hover:ring-2 hover:ring-black"
-          onClick={handleAddToCart}
-        >
-          Add to cart
-        </button>
-        <button
-          className="w-full rounded-2xl border-2 self-end border-[#7CA6FF] px-4 py-3 text-sm font-bold text-[#7CA6FF] transition duration-300 ease-in-out hover:bg-white hover:text-black hover:border-black"
-          onClick={handleDetailsClick}
-        >
-          Details
-        </button>
-      </div>
-    </div>
-    <PopupMessage message={toast?.message ?? ""} isVisible={isToastVisible && Boolean(toast)} variant={toast?.variant ?? "info"} />
+        <div className="flex gap-3 rounded-b-[28px] border-t border-blue-100 bg-white px-6 py-3">
+          <button
+            className="flex-1 min-h-[42px] rounded-[20px] border border-transparent bg-gradient-to-r from-[#5F9EFF] to-[#7CA6FF] px-3 py-2 text-[11px] font-bold uppercase tracking-[0.1em] text-white shadow-md transition hover:opacity-90 hover:scale-[1.01]"
+            onClick={handleAddToCart}
+          >
+            Add to cart
+          </button>
+          <button
+            className="flex-1 min-h-[42px] rounded-[20px] border-2 border-[#7CA6FF] bg-white px-3 py-2 text-[11px] font-bold uppercase tracking-[0.1em] text-[#7CA6FF] transition hover:bg-[#7CA6FF] hover:text-white hover:scale-[1.01]"
+            onClick={handleDetailsClick}
+          >
+            Details
+          </button>
+        </div>
+      </article>
+      <PopupMessage message={toast?.message ?? ""} isVisible={isToastVisible && Boolean(toast)} variant={toast?.variant ?? "info"} />
     </>
   );
 }
