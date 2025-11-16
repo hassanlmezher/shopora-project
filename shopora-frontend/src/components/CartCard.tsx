@@ -63,26 +63,26 @@ function CartCard({ item, onRemove }: CartCardProps) {
                 </div>
             </div>
             <div className="flex flex-1 items-center justify-end gap-6">
-                <div className="flex items-center gap-4">
+                <div className="flex items-center gap-3">
                     <button
                         type="button"
-                        className="rounded-full bg-[#F0F0F0] p-2 transition hover:bg-[#E0E0E0] disabled:cursor-not-allowed disabled:opacity-60"
+                        className="flex h-11 w-11 items-center justify-center rounded-2xl border border-[#E4E4E4] bg-white text-2xl font-semibold text-[#1F3D90] shadow-[0_5px_12px_rgba(59,124,255,0.15)] transition hover:border-[#7CA6FF] hover:bg-[#F4F7FF] disabled:cursor-not-allowed disabled:border-[#D9D9D9] disabled:bg-[#F7F7F7] disabled:text-[#B5B5B5]"
                         onClick={handleDecrement}
                         aria-label={`Decrease quantity of ${displayName}`}
                         disabled={item.quantity === 1}
                     >
-                        <img className="w-4" src={minus} alt="" />
+                        −
                     </button>
-                    <p className="text-2xl font-bold text-[#333]">
+                    <p className="text-2xl font-bold text-[#1F3D90]">
                         {item.quantity}
                     </p>
                     <button
                         type="button"
-                        className="rounded-full bg-[#F0F0F0] p-2 transition hover:bg-[#E0E0E0]"
+                        className="flex h-11 w-11 items-center justify-center pb-1 rounded-2xl bg-[#3875F0] text-2xl font-bold text-white  shadow-[0_5px_12px_rgba(59,124,255,0.15)] transition hover:border hover:border-[#3875F0] hover:bg-[#F4F7FF] hover:text-[#3875F0]"
                         onClick={handleIncrement}
                         aria-label={`Increase quantity of ${displayName}`}
                     >
-                        <img className="w-4" src={plus} alt="" />
+                        +
                     </button>
                 </div>
                 <p className="text-2xl font-bold text-[#8DB9FF]">
