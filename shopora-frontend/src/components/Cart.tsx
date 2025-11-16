@@ -79,7 +79,7 @@ function Cart({ onClose }: CartProps) {
 
     return (
         <div className="fixed inset-0 z-40 flex">
-            <div className="absolute backdrop-blur bg-transparent" />
+            <div className="absolute inset-0 bg-slate-900/60 backdrop-blur-[24px]" />
             <div
                 className={`relative ml-auto flex h-full w-full max-w-[480px] flex-col overflow-y-auto rounded-l-3xl bg-gradient-to-b from-white/95 to-white/90 p-8 shadow-2xl shadow-slate-900/40 transition-transform duration-300 ${
                     isVisible ? "translate-x-0" : "translate-x-full"

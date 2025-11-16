@@ -991,9 +991,9 @@ function DashboardLoggedIn() {
         </div>
     );
 
-  return (
+    return (
     <div className="min-h-screen bg-[#3B7CFF] relative">
-        <div className={`transition duration-200 ${isCartOpen ? "filter blur-sm" : ""}`}>
+        <div className="transition duration-200">
             {isDesktopLayout ? renderDesktopLayout() : renderMobileLayout()}
         </div>
         {isCartOpen && <Cart onClose={() => setIsCartOpen(false)} />}
