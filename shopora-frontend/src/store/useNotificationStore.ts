@@ -6,6 +6,7 @@ export type ShopRequestStatus = "pending" | "accepted" | "declined";
 export interface UserShopItem {
   id: string;
   image: string;
+  images?: string[];
   name: string;
   namee: string;
   price: string;

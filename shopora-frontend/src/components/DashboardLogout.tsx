@@ -455,12 +455,13 @@ function DashboardLogout() {
             </section>
             <section className="space-y-4">
                 {filteredItems.length > 0 ? (
-                    <div className="grid place-items-center gap-6 sm:grid-cols-2">
-                        {filteredItems.map(item => (
-                            <ItemCard
-                                key={item.namee}
-                                image={item.image}
-                                name={item.name}
+                            <div className="grid place-items-center gap-6 sm:grid-cols-2">
+                                {filteredItems.map(item => (
+                                    <ItemCard
+                                        key={item.namee}
+                                        image={item.image}
+                                        images={item.images}
+                                        name={item.name}
                                 namee={item.namee}
                                 price={item.price}
                                 priceValue={item.priceValue}
@@ -683,10 +684,11 @@ function DashboardLogout() {
                         {filteredItems.length > 0 ? (
                             <div className="grid gap-10 lg:grid-cols-2 xl:grid-cols-3 justify-items-center">
                                 {filteredItems.map(item => (
-                                    <ItemCard
-                                        key={item.namee}
-                                        image={item.image}
-                                        name={item.name}
+                                <ItemCard
+                                    key={item.namee}
+                                    image={item.image}
+                                    images={item.images}
+                                    name={item.name}
                                         namee={item.namee}
                                         price={item.price}
                                         priceValue={item.priceValue}

@@ -23,6 +23,7 @@ export interface CatalogueReview {
 
 export interface CatalogueItem {
     image: string;
+    images?: string[];
     name: string;
     namee: string;
     price: string;
@@ -37,6 +38,7 @@ export interface CatalogueItem {
 export const catalogue: CatalogueItem[] = [
     {
         image: headphones,
+        images: [headphones, headphonesTwo, headphonesThree],
         name: "Wirless",
         namee: "Headphones",
         price: "$199",
@@ -53,6 +55,7 @@ export const catalogue: CatalogueItem[] = [
     },
     {
         image: headphonesTwo,
+        images: [headphonesTwo, headphonesThree, headphonesFour],
         name: "Echo",
         namee: "Noise Cancelling",
         price: "$229",
@@ -68,6 +71,7 @@ export const catalogue: CatalogueItem[] = [
     },
     {
         image: headphonesThree,
+        images: [headphonesThree, headphonesFour, headphonesFive],
         name: "Pulse",
         namee: "Studio Pods",
         price: "$259",
@@ -82,6 +86,7 @@ export const catalogue: CatalogueItem[] = [
     },
     {
         image: headphonesFour,
+        images: [headphonesFour, headphonesFive, headphones],
         name: "Drift",
         namee: "Travel Earbuds",
         price: "$149",
@@ -96,6 +101,7 @@ export const catalogue: CatalogueItem[] = [
     },
     {
         image: headphonesFive,
+        images: [headphonesFive, headphones, headphonesTwo],
         name: "Nova",
         namee: "Gaming Headset",
         price: "$189",
@@ -110,6 +116,7 @@ export const catalogue: CatalogueItem[] = [
     },
     {
         image: tShirt,
+        images: [tShirt, tShirtTwo, tShirtThree],
         name: "Metalica",
         namee: "T-shirt",
         price: "$299",
@@ -126,6 +133,7 @@ export const catalogue: CatalogueItem[] = [
     },
     {
         image: tShirtTwo,
+        images: [tShirtTwo, tShirtThree, tShirtFour],
         name: "Cedar",
         namee: "Oversized Tee",
         price: "$249",
@@ -140,6 +148,7 @@ export const catalogue: CatalogueItem[] = [
     },
     {
         image: tShirtThree,
+        images: [tShirtThree, tShirtFour, tShirtFive],
         name: "Sprint",
         namee: "Performance Tee",
         price: "$199",
@@ -154,6 +163,7 @@ export const catalogue: CatalogueItem[] = [
     },
     {
         image: tShirtFour,
+        images: [tShirtFour, tShirtFive, tShirt],
         name: "Muse",
         namee: "Graphic Tee",
         price: "$179",
@@ -168,6 +178,7 @@ export const catalogue: CatalogueItem[] = [
     },
     {
         image: tShirtFive,
+        images: [tShirtFive, tShirt, tShirtTwo],
         name: "Solstice",
         namee: "Ribbed Tee",
         price: "$209",
@@ -182,6 +193,7 @@ export const catalogue: CatalogueItem[] = [
     },
     {
         image: shoes,
+        images: [shoes, shoesTwo, shoesThree],
         name: "Travis",
         namee: "Nike shoes",
         price: "$399",
@@ -198,6 +210,7 @@ export const catalogue: CatalogueItem[] = [
     },
     {
         image: shoesTwo,
+        images: [shoesTwo, shoesThree, shoesFour],
         name: "Orbit",
         namee: "Trail Runner",
         price: "$359",
@@ -212,6 +225,7 @@ export const catalogue: CatalogueItem[] = [
     },
     {
         image: shoesThree,
+        images: [shoesThree, shoesFour, shoesFive],
         name: "Prime",
         namee: "Court Sneaker",
         price: "$279",
@@ -226,6 +240,7 @@ export const catalogue: CatalogueItem[] = [
     },
     {
         image: shoesFour,
+        images: [shoesFour, shoesFive, shoes],
         name: "Comet",
         namee: "Daily Trainer",
         price: "$219",
@@ -240,6 +255,7 @@ export const catalogue: CatalogueItem[] = [
     },
     {
         image: shoesFive,
+        images: [shoesFive, shoes, shoesTwo],
         name: "Volt",
         namee: "High-top",
         price: "$329",

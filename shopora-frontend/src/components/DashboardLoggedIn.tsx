@@ -18,6 +18,7 @@ import type { ChangeEvent, FocusEvent as ReactFocusEvent, KeyboardEvent as React
 import useCartStore from "../store/useCartStore";
 import useDashboardLayout from "../hooks/useDashboardLayout";
 import useNotificationStore, { EMPTY_USER_SHOP_ITEMS } from "../store/useNotificationStore";
+import Cart from "./Cart";
 import useFavoritesStore from "../store/useFavoritesStore";
 
 function getUpdatedCatalogue() {
@@ -69,6 +70,7 @@ function DashboardLoggedIn() {
     const favoriteItems = useFavoritesStore((state) => state.items ?? []);
     const favoriteIds = useMemo(() => favoriteItems.map((item) => item.id), [favoriteItems]);
     const [isSettingsExpanded, setIsSettingsExpanded] = useState(false);
+    const [isCartOpen, setIsCartOpen] = useState(false);
 
     const closeMobileMenu = () => setIsMobileMenuOpen(false);
     const handleMobileNavigate = (path: string) => {
@@ -98,6 +100,7 @@ function DashboardLoggedIn() {
         }
         const creatorItems = acceptedRequestItems.map((item) => ({
             image: item.image || shirt,
+            images: item.images,
             name: item.name,
             namee: item.namee,
             price: item.price,
@@ -296,7 +299,7 @@ function DashboardLoggedIn() {
             description: acceptedRequest
                 ? `Manage "${acceptedRequest.shopTitle}" items, pricing, and stock.`
                 : "Launch a storefront and start selling on Shopora.",
-            action: () => navigate(acceptedRequest ? "/my-shop" : "/welcome-create"),
+            action: () => navigate(acceptedRequest ? "/my-shop" : "/shopForm"),
         },
     ];
 
@@ -405,9 +408,9 @@ function DashboardLoggedIn() {
                 <div className="flex items-center gap-3">
                     <button
                         type="button"
-                        onClick={() => navigate('/cart')}
+                        onClick={() => setIsCartOpen(true)}
                         className="relative rounded-full bg-white/20 p-2"
-                        aria-label="Go to cart"
+                        aria-label="Open cart sidebar"
                     >
                         <img className="w-7" src={cart} alt="cart" />
                         {totalCartItems > 0 && (
@@ -525,24 +528,29 @@ function DashboardLoggedIn() {
                                 </>
                             )}
                         </div>
-                        {isSettingsExpanded && (
-                            <div className="flex w-full flex-col gap-1 min-h-[48px] overflow-y-auto pr-1">
-                                {settingsDrawerItems.map((item) => (
-                                    <button
-                                        key={item.title}
-                                        type="button"
-                                        onClick={(event) => {
-                                            event.stopPropagation();
-                                            handleSettingsDrawerItemClick(item.action);
-                                        }}
-                                        className="flex w-full items-center justify-between rounded-2xl border border-white/30 bg-white/10 px-3 py-2 text-left text-xs font-semibold text-white transition hover:border-white hover:bg-white/20"
-                                    >
-                                        <span>{item.title}</span>
-                                        <span className="text-xs uppercase tracking-wide text-[#7CA6FF]">Go</span>
-                                    </button>
-                                ))}
-                            </div>
-                        )}
+                        <div
+                            className="flex w-full flex-col gap-1 overflow-hidden pr-1 transition-[max-height,opacity] duration-200 ease-out"
+                            style={{
+                                maxHeight: isSettingsExpanded ? `${settingsDrawerItems.length * 48}px` : 0,
+                                opacity: isSettingsExpanded ? 1 : 0,
+                            }}
+                            aria-hidden={!isSettingsExpanded}
+                        >
+                            {settingsDrawerItems.map((item) => (
+                                <button
+                                    key={item.title}
+                                    type="button"
+                                    onClick={(event) => {
+                                        event.stopPropagation();
+                                        handleSettingsDrawerItemClick(item.action);
+                                    }}
+                                    className="flex w-full items-center justify-between rounded-2xl border border-white/30 bg-white/10 px-3 py-2 text-left text-xs font-semibold text-white transition hover:border-white hover:bg-white/20"
+                                >
+                                    <span>{item.title}</span>
+                                    <span className="text-xs uppercase tracking-wide text-[#7CA6FF]">Go</span>
+                                </button>
+                            ))}
+                        </div>
                     </div>
             </div>
             <section className="space-y-4 rounded-3xl border border-white/30 bg-white/10 p-4 backdrop-blur-sm">
@@ -619,10 +627,11 @@ function DashboardLoggedIn() {
                 {filteredItems.length > 0 ? (
                     <div className="grid place-items-center gap-6 sm:grid-cols-2">
                         {filteredItems.map(item => (
-                            <ItemCard
-                                key={item.namee}
-                                image={item.image}
-                                name={item.name}
+                                <ItemCard
+                                    key={item.namee}
+                                    image={item.image}
+                                    images={item.images}
+                                    name={item.name}
                                 namee={item.namee}
                                 price={item.price}
                                 priceValue={item.priceValue}
@@ -887,12 +896,12 @@ function DashboardLoggedIn() {
                 <header className="flex items-center justify-between rounded-3xl bg-white px-8 py-5 shadow-lg">
                     <img className="w-32" src={logo} alt="logo" />
                     <div className="flex items-center gap-6">
-                        <button
-                            type="button"
-                            onClick={() => navigate('/cart')}
-                            className="relative rounded-full bg-[#3B7CFF]/10 p-3 text-[#3B7CFF]"
-                            aria-label="Go to cart"
-                        >
+                    <button
+                        type="button"
+                        onClick={() => setIsCartOpen(true)}
+                        className="relative rounded-full bg-[#3B7CFF]/10 p-3 text-[#3B7CFF]"
+                        aria-label="Open cart sidebar"
+                    >
                             <img className="w-7" src={cart} alt="cart" />
                             {totalCartItems > 0 && (
                                 <span className="absolute -top-1 -right-1 flex h-5 min-w-5 items-center justify-center rounded-full bg-[#FF6B6B] px-1 text-xs font-bold text-white">
@@ -963,6 +972,7 @@ function DashboardLoggedIn() {
                                     <ItemCard
                                         key={item.namee}
                                         image={item.image}
+                                        images={item.images}
                                         name={item.name}
                                         namee={item.namee}
                                         price={item.price}
@@ -984,9 +994,12 @@ function DashboardLoggedIn() {
         </div>
     );
 
-  return (
-    <div className="min-h-screen bg-[#3B7CFF]">
-        {isDesktopLayout ? renderDesktopLayout() : renderMobileLayout()}
+    return (
+    <div className="min-h-screen bg-[#3B7CFF] relative">
+        <div className="transition duration-200">
+            {isDesktopLayout ? renderDesktopLayout() : renderMobileLayout()}
+        </div>
+        {isCartOpen && <Cart onClose={() => setIsCartOpen(false)} />}
     </div>
   )
 }
