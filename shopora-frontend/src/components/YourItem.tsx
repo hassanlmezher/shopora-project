@@ -1,3 +1,4 @@
+import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import shirt from "../images/shirt.png";
 import stars from "../images/5stars.png";
@@ -10,6 +11,28 @@ interface YourItemProps {
 
 function YourItem({ item, onRemove }: YourItemProps) {
   const navigate = useNavigate();
+  const slides = useMemo(() => {
+    if (item.images && item.images.length > 0) {
+      return item.images;
+    }
+    if (item.image) {
+      return [item.image];
+    }
+    return [shirt];
+  }, [item.image, item.images]);
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const displayedImage = slides[currentSlide] ?? shirt;
+
+  useEffect(() => {
+    if (slides.length <= 1) {
+      setCurrentSlide(0);
+      return undefined;
+    }
+    const interval = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % slides.length);
+    }, 2000);
+    return () => clearInterval(interval);
+  }, [slides.length]);
 
   const handleDetails = () => {
     navigate("/details", { state: { ...item, returnPath: "/my-shop" } });
@@ -17,8 +40,18 @@ function YourItem({ item, onRemove }: YourItemProps) {
 
   return (
     <div className="flex w-full max-w-[360px] flex-col justify-between rounded-3xl border border-[#E4ECE7] bg-white p-6 text-center shadow-sm transition hover:-translate-y-1 hover:shadow-lg">
-      <div className="flex flex-col gap-4">
-        <img className="mx-auto h-48 w-full object-contain" src={item.image || shirt} alt={`${item.name} ${item.namee}`} />
+        <div className="flex flex-col gap-4">
+          <img className="mx-auto h-48 w-full object-contain" src={displayedImage} alt={`${item.name} ${item.namee}`} />
+          {slides.length > 1 && (
+            <div className="flex justify-center gap-2">
+              {slides.map((_, index) => (
+                <span
+                  key={index}
+                  className={`h-1.5 w-8 rounded-full transition ${currentSlide === index ? "bg-[#3B7CFF]" : "bg-blue-100"}`}
+                />
+              ))}
+            </div>
+          )}
         <div className="space-y-1">
           <p className="text-xl font-bold text-[#1F3B2F]">{item.name}</p>
           <p className="text-lg font-semibold text-[#3B7CFF]">{item.namee}</p>
