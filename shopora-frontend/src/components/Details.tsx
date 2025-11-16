@@ -1,5 +1,5 @@
 import { useNavigate, useLocation } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import useAuthStore from "../store/useAuthStore";
 import useOrderStore, { normalizeItemId } from "../store/useOrderStore";
 import reviewss from "../images/reviews.png";
@@ -18,6 +18,7 @@ function Details() {
   const locationState = location.state as
     | {
         image?: string;
+        images?: string[];
         name?: string;
         namee?: string;
         reviews?: Review[];
@@ -25,7 +26,15 @@ function Details() {
       }
     | null;
 
-  const { image, name, namee, reviews: productReviews, returnPath } = locationState ?? {};
+  const { image, images, name, namee, reviews: productReviews, returnPath } = locationState ?? {};
+  const slides = useMemo(() => {
+    if (images && images.length > 0) {
+      return images;
+    }
+    return image ? [image] : [];
+  }, [image, images]);
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const displayedImage = slides[currentSlide] ?? image ?? "";
 
   const [newReview, setNewReview] = useState("");
   const [selectedRating, setSelectedRating] = useState(5);
@@ -52,6 +61,20 @@ function Details() {
       setReviews(JSON.parse(savedReviews));
     }
   }, [storageKey]);
+
+  useEffect(() => {
+    if (slides.length <= 1) {
+      setCurrentSlide(0);
+      return;
+    }
+
+    const slideInterval = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % slides.length);
+    }, 2000);
+    return () => {
+      clearInterval(slideInterval);
+    };
+  }, [slides.length]);
 
   useEffect(() => {
     if (!canReview) {
@@ -123,13 +146,27 @@ function Details() {
 
         <div className="grid items-start gap-6 lg:grid-cols-[minmax(0,1.3fr)_minmax(0,0.7fr)]">
           <div className="flex flex-col items-center gap-4 rounded-3xl bg-gradient-to-b from-white via-slate-50 to-white p-6 text-center shadow-inner lg:items-start lg:text-left">
-            <div className="w-full max-w-[360px] sm:max-w-[420px]">
-              <img
-                src={image}
-                alt={`${name ?? ""} ${namee ?? ""} pic`}
-                className="w-70 rounded-3xl object-contain shadow-2xl"
-              />
-            </div>
+              <div className="w-full max-w-[360px] sm:max-w-[420px]">
+                {displayedImage && (
+                  <img
+                    src={displayedImage}
+                    alt={`${name ?? ""} ${namee ?? ""} pic`}
+                    className="w-70 rounded-3xl object-contain shadow-2xl"
+                  />
+                )}
+              </div>
+              {slides.length > 1 && (
+                <div className="flex justify-center gap-2 pt-2">
+                  {slides.map((_, index) => (
+                    <span
+                      key={index}
+                      className={`h-1.5 w-8 rounded-full transition-all ${
+                        currentSlide === index ? "bg-[#1E3B86]" : "bg-blue-100"
+                      }`}
+                    />
+                  ))}
+                </div>
+              )}
             <div className="space-y-1">
               <p className="text-3xl font-bold text-slate-900 sm:text-4xl">{name}</p>
               <p className="text-xl font-semibold text-slate-500 sm:text-2xl">{namee}</p>
