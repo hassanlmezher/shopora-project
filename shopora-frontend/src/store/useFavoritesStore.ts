@@ -4,6 +4,7 @@ import { persist } from "zustand/middleware";
 export interface FavoriteItem {
   id: string;
   image: string;
+  images?: string[];
   name: string;
   namee: string;
   price: string;

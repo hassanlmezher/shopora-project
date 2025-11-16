@@ -100,6 +100,7 @@ function DashboardLoggedIn() {
         }
         const creatorItems = acceptedRequestItems.map((item) => ({
             image: item.image || shirt,
+            images: item.images,
             name: item.name,
             namee: item.namee,
             price: item.price,
@@ -626,10 +627,11 @@ function DashboardLoggedIn() {
                 {filteredItems.length > 0 ? (
                     <div className="grid place-items-center gap-6 sm:grid-cols-2">
                         {filteredItems.map(item => (
-                            <ItemCard
-                                key={item.namee}
-                                image={item.image}
-                                name={item.name}
+                                <ItemCard
+                                    key={item.namee}
+                                    image={item.image}
+                                    images={item.images}
+                                    name={item.name}
                                 namee={item.namee}
                                 price={item.price}
                                 priceValue={item.priceValue}
@@ -970,6 +972,7 @@ function DashboardLoggedIn() {
                                     <ItemCard
                                         key={item.namee}
                                         image={item.image}
+                                        images={item.images}
                                         name={item.name}
                                         namee={item.namee}
                                         price={item.price}
