@@ -17,6 +17,21 @@ type CartProps = {
     onClose?: () => void;
 };
 
+const shippingOptions = [
+    {
+        label: "Store pickup",
+        detail: "Collect from your closest Shopora store.",
+        value: "pickup" as const,
+        cost: "Free",
+    },
+    {
+        label: "Delivery at home",
+        detail: "Courier delivery right to your doorstep.",
+        value: "delivery" as const,
+        cost: "$9.99",
+    },
+];
+
 function Cart({ onClose }: CartProps) {
     const navigate = useNavigate();
     const [isVisible, setIsVisible] = useState(false);
@@ -26,6 +41,7 @@ function Cart({ onClose }: CartProps) {
         const frame = requestAnimationFrame(() => setIsVisible(true));
         return () => cancelAnimationFrame(frame);
     }, []);
+
     const items = useCartStore((state) => state.items);
     const clearCart = useCartStore((state) => state.clear);
     const addOrders = useOrderStore((state) => state.addOrders);
@@ -77,128 +93,190 @@ function Cart({ onClose }: CartProps) {
         showToast("Order confirmed! Review once you receive it.", "success");
     };
 
-    return (
-        <div className="fixed inset-0 z-40 flex">
-            <div className="absolute inset-0 bg-slate-900/60 backdrop-blur-[24px]" />
-            <div
-                className={`relative ml-auto flex h-full w-full max-w-[480px] flex-col overflow-y-auto rounded-l-3xl bg-gradient-to-b from-white/95 to-white/90 p-8 shadow-2xl shadow-slate-900/40 transition-transform duration-300 ${
-                    isVisible ? "translate-x-0" : "translate-x-full"
-                }`}
-            >
+    const isOverlay = Boolean(onClose);
+
+    const itemsSection = (
+        <section className="space-y-4">
+            {items.length > 0 ? (
+                <div className="space-y-4">
+                    {items.map((item) => (
+                        <CartCard key={item.id} item={item} onRemove={triggerRemovedPopup} />
+                    ))}
+                </div>
+            ) : (
+                <div className="rounded-[28px] border border-dashed border-white/60 bg-white/70 px-6 py-8 text-center text-base font-semibold text-slate-600 shadow">
+                    Your bag is empty. Keep shopping for deals.
+                </div>
+            )}
+        </section>
+    );
+
+    const renderShippingInputs = (titleClass: string, detailClass: string, borderClass: string, bgClass: string) => (
+        <div className="space-y-3">
+            {shippingOptions.map((option) => (
+                <label
+                    key={option.value}
+                    className={`flex cursor-pointer items-start gap-3 rounded-2xl border px-4 py-2 transition ${borderClass} ${bgClass}`}
+                >
+                    <input
+                        type="radio"
+                        name="shipping"
+                        value={option.value}
+                        checked={shippingOption === option.value}
+                        onChange={() => setShippingOption(option.value)}
+                        className="mt-1 h-4 w-4 accent-slate-900"
+                    />
+                    <div>
+                        <p className={`text-sm font-semibold ${titleClass}`}>
+                            {option.label}
+                            <span className={`ml-2 text-xs font-medium ${detailClass}`}>
+                                ({option.cost})
+                            </span>
+                        </p>
+                        <p className={detailClass}>{option.detail}</p>
+                    </div>
+                </label>
+            ))}
+        </div>
+    );
+
+    const summaryDetails = (
+        <div className="space-y-2 text-sm text-slate-600">
+            <div className="flex items-center justify-between">
+                <span>Subtotal</span>
+                <span className="font-semibold text-slate-900">{formatCurrency(subtotal)}</span>
+            </div>
+            <div className="flex items-center justify-between">
+                <span>Shipping</span>
+                <span className="font-semibold text-slate-900">
+                    {shippingCost === 0 ? "Free" : formatCurrency(shippingCost)}
+                </span>
+            </div>
+            <div className="border-t border-slate-200 pt-3 text-lg font-bold text-slate-900">
                 <div className="flex items-center justify-between">
-                    <p className="text-3xl font-bold text-white md:text-4xl">
-                        My Cart
-                    </p>
-                    <button
-                        type="button"
-                        onClick={() => {
-                            setIsVisible(false);
-                            setTimeout(() => {
-                                if (onClose) {
-                                    onClose();
-                                } else {
-                                    navigate("/DashboardLoggedIn");
-                                }
-                            }, transitionDuration);
-                        }}
-                        className="flex items-center gap-2 rounded-full border border-white/70 bg-white/90 px-4 py-2 text-sm font-semibold uppercase text-[#0F3D73] transition hover:bg-[#0F3D73] hover:text-white"
-                    >
-                        Close
-                    </button>
+                    <span>Total</span>
+                    <span>{formatCurrency(total)}</span>
+                </div>
+            </div>
+        </div>
+    );
+
+    if (isOverlay) {
+        return (
+            <div className="fixed inset-0 z-40 flex">
+                <div className="absolute inset-0 bg-slate-900/70 backdrop-blur-[24px]" />
+                <div
+                    className={`relative ml-auto flex h-full w-full max-w-[450px] flex-col overflow-y-hidden rounded-l-[32px] bg-gradient-to-b from-[#1F3B88] to-[#2555C0] px-6 py-8 shadow-2xl shadow-slate-900/60 transition-transform duration-300 ${
+                        isVisible ? "translate-x-0" : "translate-x-full"
+                    }`}
+                >
+                    <div className="flex items-center justify-between">
+                        <p className="text-3xl font-bold text-white">My Cart</p>
+                        <button
+                            type="button"
+                            onClick={() => {
+                                setIsVisible(false);
+                                setTimeout(() => {
+                                    onClose?.();
+                                }, transitionDuration);
+                            }}
+                            className="flex items-center gap-2 rounded-full border border-white/70 bg-white/90 px-3 py-1 text-xs font-semibold uppercase tracking-[0.3em] text-[#0F3D73] shadow-sm transition hover:bg-[#0F3D73] hover:text-white"
+                        >
+                            Close
+                        </button>
+                    </div>
+
+                    <div className="mt-6 flex flex-1 flex-col gap-6 overflow-y-auto pr-1">
+                        <div className="space-y-4">
+                            {itemsSection}
+                        </div>
+
+                        {items.length > 0 && (
+                            <div className="space-y-4 rounded-[28px] bg-white/95 p-5 shadow-lg">
+                                <p className="text-sm font-semibold uppercase tracking-[0.4em] text-slate-400">
+                                    Shipping
+                                </p>
+                                {renderShippingInputs("text-slate-900", "text-slate-500", "border-slate-200", "bg-white/50")}
+                                {summaryDetails}
+                                <button
+                                    type="button"
+                                    onClick={handleCheckout}
+                                    className="w-full rounded-[999px] bg-[#1F3B88] py-3 text-sm font-semibold uppercase tracking-[0.3em] text-white shadow-lg transition hover:bg-[#122c66]"
+                                >
+                                    Complete order
+                                </button>
+                            </div>
+                        )}
+                    </div>
+                </div>
+                <PopupMessage message={toast?.message ?? ""} isVisible={Boolean(toast)} variant={toast?.variant ?? "success"} />
+            </div>
+        );
+    }
+
+    return (
+        <div className="min-h-screen bg-gradient-to-b from-[#0a1f36] via-[#132c5d] to-[#194ea7] pt-12 pb-16 text-white">
+            <div className="mx-auto max-w-6xl px-4">
+                <div className="rounded-[36px] bg-white/80 p-8 text-slate-900 shadow-2xl">
+                    <p className="text-sm font-semibold uppercase tracking-[0.4em] text-slate-500">Shopping bag</p>
+                    <div className="mt-3 flex items-end justify-between">
+                        <div>
+                            <h1 className="text-4xl font-bold">Your cart</h1>
+                            <p className="text-sm text-slate-500">Review items and prepare for checkout.</p>
+                        </div>
+                        <button
+                            type="button"
+                            onClick={() => navigate("/DashboardLoggedIn")}
+                            className="rounded-full border border-slate-300 px-6 py-2 text-sm font-semibold uppercase tracking-[0.3em] text-slate-700 transition hover:bg-slate-100"
+                        >
+                            Continue shopping
+                        </button>
+                    </div>
                 </div>
 
-                <div className="mt-10 flex flex-1 flex-col gap-6">
-                    {items.length > 0 ? (
+                <div className="mt-10 grid gap-8 lg:grid-cols-[1.5fr_0.7fr]">
+                    <section className="rounded-[32px] bg-white/90 p-6 shadow-xl">
+                        <div className="flex items-center justify-between pb-3">
+                            <h2 className="text-xl font-semibold text-slate-700">Items ({items.length})</h2>
+                            {items.length > 0 && (
+                                <button
+                                    type="button"
+                                    onClick={() => {
+                                        clearCart();
+                                        showToast("Cart cleared", "success");
+                                    }}
+                                    className="text-xs font-semibold uppercase tracking-[0.3em] text-[#3875F0]"
+                                >
+                                    Clear cart
+                                </button>
+                            )}
+                        </div>
                         <div className="space-y-4">
-                            {items.map((item) => (
-                                <CartCard key={item.id} item={item} onRemove={triggerRemovedPopup} />
-                            ))}
+                            {itemsSection}
                         </div>
-                    ) : (
-                        <div className="rounded-3xl border border-slate-200 bg-white/70 p-8 text-center text-base font-semibold uppercase tracking-wide text-slate-500 shadow-inner">
-                            Your cart is empty. Keep exploring and add products you love!
-                        </div>
-                    )}
+                    </section>
 
                     {items.length > 0 && (
-                        <div className="rounded-3xl border border-slate-200 bg-white/90 p-6 shadow-lg">
-                            <h2 className="text-lg font-semibold uppercase tracking-wide text-white/80">
-                                Choose shipping mode:
-                            </h2>
-                            <div className="mt-4 space-y-3">
-                                {[
-                                    {
-                                        label: "Store pickup",
-                                        detail: "Pick up your items from the nearest Shopora store.",
-                                        value: "pickup",
-                                        cost: "Free",
-                                    },
-                                    {
-                                        label: "Delivery at home",
-                                        detail: "Fast courier delivery right to your doorstep.",
-                                        value: "delivery",
-                                        cost: "$9.99",
-                                    },
-                                ].map((option) => (
-                                    <label
-                                        key={option.value}
-                                        className="flex cursor-pointer items-center gap-3 rounded-2xl border border-white/30 bg-white/5 px-4 py-3 transition hover:border-white/70"
-                                    >
-                                        <input
-                                            type="radio"
-                                            name="shipping"
-                                            value={option.value}
-                                            checked={shippingOption === option.value}
-                                            onChange={() => setShippingOption(option.value as ShippingOption)}
-                                            className="h-5 w-5 accent-blue-500"
-                                        />
-                                        <div>
-                                            <p className="text-base font-semibold text-slate-800">
-                                                {option.label}
-                                                <span className="ml-2 text-sm font-normal text-slate-500">
-                                                    ({option.cost})
-                                                </span>
-                                            </p>
-                                            <p className="text-sm text-slate-500">
-                                                {option.detail}
-                                            </p>
-                                        </div>
-                                    </label>
-                                ))}
+                        <section className="flex flex-col gap-6 rounded-[32px] bg-white/90 p-6 shadow-xl">
+                            <div className="space-y-4">
+                                <p className="text-sm font-semibold uppercase tracking-[0.4em] text-slate-500">Shipping</p>
+                                {renderShippingInputs("text-slate-900", "text-slate-500", "border-slate-200", "bg-slate-50")}
                             </div>
-
-                            <div className="mt-6 space-y-3 text-sm text-white/70">
-                                <div className="flex justify-between">
-                                    <span>Cart total price:</span>
-                                    <span className="font-semibold text-white">
-                                        {formatCurrency(subtotal)}
-                                    </span>
-                                </div>
-                                <div className="flex justify-between">
-                                    <span>Shipping:</span>
-                                    <span className="font-semibold text-white">
-                                        {shippingCost === 0 ? "Free" : formatCurrency(shippingCost)}
-                                    </span>
-                                </div>
-                                <div className="flex justify-between border-t border-white/20 pt-4 text-xl font-bold text-white">
-                                    <span>Total:</span>
-                                    <span className="text-white">
-                                        {formatCurrency(total)}
-                                    </span>
-                                </div>
+                            <div className="rounded-[28px] border border-slate-200 bg-slate-50 p-5">
+                                {summaryDetails}
                             </div>
-
                             <button
                                 type="button"
                                 onClick={handleCheckout}
-                                className="mt-6 w-full rounded-full bg-blue-600 py-3 text-lg font-semibold text-white transition hover:bg-blue-700"
+                                className="w-full rounded-[999px] bg-[#1F3B88] py-3 text-sm font-semibold uppercase tracking-[0.3em] text-white transition hover:bg-[#122c66]"
                             >
                                 Complete order
                             </button>
-                        </div>
+                        </section>
                     )}
                 </div>
             </div>
+
             <PopupMessage message={toast?.message ?? ""} isVisible={Boolean(toast)} variant={toast?.variant ?? "success"} />
         </div>
     );
