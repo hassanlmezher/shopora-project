@@ -1,5 +1,3 @@
-import minus from "../images/minus.png";
-import plus from "../images/plus.png";
 import useCartStore, { type CartLineItem } from "../store/useCartStore";
 
 interface CartCardProps {
