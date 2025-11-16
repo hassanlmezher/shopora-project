@@ -51,6 +51,10 @@ const useNotificationStore = create<NotificationStore>()(
       requests: [],
       submitShopRequest: (payload) =>
         set((state) => {
+          const hasActiveRequest = state.requests.some((request) => request.status !== "declined");
+          if (hasActiveRequest) {
+            return state;
+          }
           const { items = [], ...rest } = payload;
           const newRequest: ShopRequestNotification = {
             id: `${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,

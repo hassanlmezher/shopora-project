@@ -9,7 +9,7 @@ function Welcome() {
   };
 
   return (
-    <div className="relative flex min-h-screen flex-col mt-[-100px] overflow-hidden bg-[#8DB9FF] text-white">
+    <div className="relative flex h-screen flex-col justify-center items-center  overflow-hidden bg-[#2BB1F0] text-white">
       <div className="pointer-events-none absolute left-1/2 top-[10%] -translate-x-1/2 rounded-full bg-white/10 blur-3xl md:w-[600px] md:h-[600px]" />
       <div className="relative z-10 flex flex-1 flex-col items-center gap-10 px-6 py-16 md:px-12 lg:flex-row lg:items-center lg:justify-between lg:px-20">
         <div className="flex flex-1 flex-col items-center gap-8 text-center lg:items-start lg:text-left">
@@ -44,7 +44,7 @@ function Welcome() {
           <div className="relative">
             <div className="absolute -inset-6 rounded-full bg-white/20 blur-2xl sm:-inset-10" />
             <img
-              className="relative w-full max-w-xs drop-shadow-xl sm:max-w-md lg:max-w-xl xl:max-w-2xl"
+              className="relative w-full max-w-xs rounded-3xl drop-shadow-xl sm:max-w-md lg:max-w-xl xl:max-w-2xl"
               src={welcomepic}
               alt="welcome illustration"
             />

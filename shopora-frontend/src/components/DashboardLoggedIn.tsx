@@ -68,13 +68,13 @@ function DashboardLoggedIn() {
     const acceptedRequestItems = acceptedRequest?.items ?? EMPTY_USER_SHOP_ITEMS;
     const favoriteItems = useFavoritesStore((state) => state.items ?? []);
     const favoriteIds = useMemo(() => favoriteItems.map((item) => item.id), [favoriteItems]);
-    const [isSettingsDrawerOpen, setIsSettingsDrawerOpen] = useState(false);
+    const [isSettingsExpanded, setIsSettingsExpanded] = useState(false);
 
     const closeMobileMenu = () => setIsMobileMenuOpen(false);
     const handleMobileNavigate = (path: string) => {
         closeMobileMenu();
         if (path === "/settings") {
-            setIsSettingsDrawerOpen(true);
+            setIsSettingsExpanded(true);
             return;
         }
         navigate(path);
@@ -302,7 +302,7 @@ function DashboardLoggedIn() {
 
     const handleSettingsDrawerItemClick = (action?: () => void) => {
         action?.();
-        setIsSettingsDrawerOpen(false);
+        setIsSettingsExpanded(false);
     };
 
     const handleMinPriceChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -473,14 +473,42 @@ function DashboardLoggedIn() {
                 </button>
             </section>
             <div className="mt-4">
-                <button
-                    type="button"
-                    onClick={() => setIsSettingsDrawerOpen(true)}
-                    className="flex w-full items-center justify-center gap-3 rounded-2xl border border-white/40 bg-white/10 px-4 py-3 text-sm font-semibold text-white transition hover:border-white hover:bg-white/20"
-                >
-                    <img className="w-5" src={settings} alt="settings logo" />
-                    Settings
-                </button>
+                    <div
+                        role="button"
+                        tabIndex={0}
+                        aria-expanded={isSettingsExpanded}
+                        onClick={() => setIsSettingsExpanded((prev) => !prev)}
+                        onKeyDown={(event) => {
+                            if (event.key === "Enter" || event.key === " ") {
+                                event.preventDefault();
+                                setIsSettingsExpanded((prev) => !prev);
+                            }
+                        }}
+                        className="flex w-full cursor-pointer flex-col items-center gap-2 rounded-2xl border border-white/40 bg-white/10 px-4 py-4 text-center text-white transition hover:border-white hover:bg-white/20"
+                    >
+                        <div className="flex w-full items-center justify-center gap-3">
+                            <img className="w-6" src={settings} alt="settings logo" />
+                            {!isSettingsExpanded && <span className="text-base font-semibold">Settings</span>}
+                        </div>
+                        {isSettingsExpanded && (
+                            <div className="flex w-full flex-col gap-2">
+                                {settingsDrawerItems.map((item) => (
+                                    <button
+                                        key={item.title}
+                                        type="button"
+                                        onClick={(event) => {
+                                            event.stopPropagation();
+                                            handleSettingsDrawerItemClick(item.action);
+                                        }}
+                                        className="w-full rounded-2xl border border-white/40 bg-white px-4 py-2 text-left text-xs font-semibold text-slate-800 transition hover:border-white hover:bg-white"
+                                    >
+                                        <p className="text-sm font-semibold text-[#3D3D3D]">{item.title}</p>
+                                        <p className="text-xs text-[#7A7A7A]">{item.description}</p>
+                                    </button>
+                                ))}
+                            </div>
+                        )}
+                    </div>
             </div>
             <section className="space-y-4 rounded-3xl border border-white/30 bg-white/10 p-4 backdrop-blur-sm">
                 <div>
@@ -585,7 +613,7 @@ function DashboardLoggedIn() {
                 </button>
                 <button
                     className="flex items-center justify-center gap-2 rounded-2xl bg-white px-4 py-3 text-sm font-bold text-[#E6C79A] transition duration-300 ease-in-out hover:bg-[#E6C79A] hover:text-white"
-                    onClick={() => setIsSettingsDrawerOpen(true)}
+                    onClick={() => setIsSettingsExpanded(true)}
                 >
                     <img className="w-5" src={settings} alt="settings" />
                     Settings
@@ -766,13 +794,44 @@ function DashboardLoggedIn() {
                             {showFavoritesOnly ? "Favorites only" : "Favorites"}
                         </span>
                     </div>
-                    <button
-                        className="flex w-full items-center gap-3 rounded-2xl border border-white/30 px-4 py-3 text-left text-sm font-semibold text-white transition hover:bg-white hover:text-[#7CA6FF]"
-                        onClick={() => setIsSettingsDrawerOpen(true)}
+                    <div
+                        role="button"
+                        tabIndex={0}
+                        aria-expanded={isSettingsExpanded}
+                        onClick={() => setIsSettingsExpanded((prev) => !prev)}
+                        onKeyDown={(event) => {
+                            if (event.key === "Enter" || event.key === " ") {
+                                event.preventDefault();
+                                setIsSettingsExpanded((prev) => !prev);
+                            }
+                        }}
+                        className={`flex w-full cursor-pointer flex-col gap-3 rounded-2xl border border-white/30 bg-white/10 px-4 ${
+                            isSettingsExpanded ? "py-6 text-left" : "py-3 items-center text-sm"
+                        } font-semibold text-white transition hover:border-white hover:bg-white/20`}
                     >
-                        <img className="w-6" src={settings} alt="settings logo" />
-                        Settings
-                    </button>
+                        <div className="flex w-full items-center justify-center gap-3">
+                            <img className="w-6" src={settings} alt="settings logo" />
+                            {!isSettingsExpanded && <span className="text-base">Settings</span>}
+                        </div>
+                        {isSettingsExpanded && (
+                            <div className="flex w-full flex-col gap-2">
+                                {settingsDrawerItems.map((item) => (
+                                    <button
+                                        key={item.title}
+                                        type="button"
+                                        onClick={(event) => {
+                                            event.stopPropagation();
+                                            handleSettingsDrawerItemClick(item.action);
+                                        }}
+                                        className="flex w-full flex-col rounded-2xl border border-slate-100 bg-white/80 px-4 py-3 text-left transition hover:border-slate-200 hover:bg-white"
+                                    >
+                                        <p className="text-lg font-semibold text-[#3D3D3D]">{item.title}</p>
+                                        <p className="mt-1 text-xs text-[#7A7A7A]">{item.description}</p>
+                                    </button>
+                                ))}
+                            </div>
+                        )}
+                    </div>
                 </nav>
                 <button
                     className="flex w-full items-center h-10 justify-center gap-3 mt-[-11px] rounded-2xl bg-white/90 px-4 py-3 text-sm font-bold text-[#DDC59E] transition hover:bg-white"
@@ -886,42 +945,6 @@ function DashboardLoggedIn() {
   return (
     <div className="min-h-screen bg-[#3B7CFF]">
         {isDesktopLayout ? renderDesktopLayout() : renderMobileLayout()}
-        {isSettingsDrawerOpen && (
-            <div className="fixed inset-0 z-50 flex">
-                <div
-                    className="absolute inset-0 bg-slate-900/40 backdrop-blur-sm"
-                    onClick={() => setIsSettingsDrawerOpen(false)}
-                />
-                <div className="relative ml-auto h-full w-full max-w-xs bg-white p-6 shadow-2xl">
-                    <div className="flex items-center justify-between">
-                        <div>
-                            <p className="text-lg font-semibold text-slate-900">Quick settings</p>
-                            <p className="text-xs text-slate-500">Jump to key pages</p>
-                        </div>
-                        <button
-                            type="button"
-                            onClick={() => setIsSettingsDrawerOpen(false)}
-                            className="rounded-full border border-slate-200 px-2 py-1 text-xs font-semibold text-slate-600 transition hover:border-slate-300"
-                        >
-                            Close
-                        </button>
-                    </div>
-                    <div className="mt-6 space-y-3">
-                        {settingsDrawerItems.map((item) => (
-                    <button
-                        key={item.title}
-                        type="button"
-                        onClick={() => handleSettingsDrawerItemClick(item.action)}
-                        className="flex w-full flex-col rounded-2xl border border-slate-100 bg-slate-50/80 px-4 py-4 text-left transition hover:border-slate-200 hover:bg-white"
-                    >
-                        <p className="text-xl font-semibold text-slate-900">{item.title}</p>
-                        <p className="mt-1 text-xs text-slate-500">{item.description}</p>
-                    </button>
-                ))}
-            </div>
-        </div>
-            </div>
-        )}
     </div>
   )
 }
