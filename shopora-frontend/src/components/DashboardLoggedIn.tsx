@@ -62,7 +62,9 @@ function DashboardLoggedIn() {
     const totalCartItems = useCartStore(
         (state) => state.items.reduce((sum, item) => sum + item.quantity, 0)
     );
-    const notificationCount = useNotificationStore((state) => state.requests.length);
+    const notificationCount = useNotificationStore(
+        (state) => Math.max(0, state.requests.length - state.latestReadRequestCount)
+    );
     const acceptedRequest = useNotificationStore((state) =>
         state.requests.find((request) => request.status === "accepted")
     );

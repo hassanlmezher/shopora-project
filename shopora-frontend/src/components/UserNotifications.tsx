@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import useNotificationStore from "../store/useNotificationStore";
 import type { ShopRequestStatus } from "../store/useNotificationStore";
@@ -11,7 +12,12 @@ const statusStyles: Record<ShopRequestStatus, string> = {
 function UserNotifications() {
   const navigate = useNavigate();
   const requests = useNotificationStore((state) => state.requests);
+  const markNotificationsRead = useNotificationStore((state) => state.markNotificationsRead);
   const sortedRequests = [...requests].reverse();
+
+  useEffect(() => {
+    markNotificationsRead();
+  }, [markNotificationsRead]);
 
   return (
     <div className="min-h-screen bg-[#F4F7F6] pb-16">
