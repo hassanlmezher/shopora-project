@@ -139,14 +139,14 @@ function Login() {
             </button>
           </div>
           <button
-            className="w-full rounded-2xl bg-[#8DB9FF] py-3 text-lg font-bold text-white transition duration-300 ease-in-out hover:bg-white hover:text-[#8DB9FF]"
+            className="w-full rounded-2xl bg-[#3875F0] py-3 text-lg font-bold text-white transition duration-300 ease-in-out hover:bg-white hover:text-[#8DB9FF]"
             onClick={handleLogIn}
           >
             Log In
           </button>
         </div>
         <div className="flex w-full  bg-[#D9D9D9] lg:w-1/2">
-          <img className="w-full  max-w-xs  sm:max-w-sm rounded-2xl " src={loginsignup} alt="auth illustration" />
+          <img className="w-full  max-w-xs  sm:max-w-sm rounded-r-2xl " src={loginsignup} alt="auth illustration" />
         </div>
       </div>
       <PopupMessage message={popupMessage} isVisible={showPopup} variant={popupVariant} />
