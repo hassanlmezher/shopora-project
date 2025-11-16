@@ -300,10 +300,41 @@ function DashboardLoggedIn() {
         },
     ];
 
+    const settingsSectionRef = useRef<HTMLDivElement | null>(null);
+    const sidebarNavRef = useRef<HTMLDivElement | null>(null);
+
     const handleSettingsDrawerItemClick = (action?: () => void) => {
         action?.();
         setIsSettingsExpanded(false);
     };
+
+    useEffect(() => {
+        if (!isSettingsExpanded) {
+            return;
+        }
+
+        const target = settingsSectionRef.current;
+        const container = sidebarNavRef.current;
+        if (container && target) {
+            const targetRect = target.getBoundingClientRect();
+            const containerRect = container.getBoundingClientRect();
+
+            if (targetRect.bottom > containerRect.bottom) {
+                container.scrollBy({
+                    top: targetRect.bottom - containerRect.bottom + 12,
+                    behavior: "smooth",
+                });
+            } else if (targetRect.top < containerRect.top) {
+                container.scrollBy({
+                    top: targetRect.top - containerRect.top - 12,
+                    behavior: "smooth",
+                });
+            }
+            return;
+        }
+
+        target?.scrollIntoView({ block: "end", behavior: "smooth" });
+    }, [isSettingsExpanded]);
 
     const handleMinPriceChange = (event: ChangeEvent<HTMLInputElement>) => {
         const nextValue = event.target.value;
@@ -487,11 +518,15 @@ function DashboardLoggedIn() {
                         className="flex w-full cursor-pointer flex-col items-center gap-2 rounded-2xl border border-white/40 bg-white/10 px-4 py-4 text-center text-white transition hover:border-white hover:bg-white/20"
                     >
                         <div className="flex w-full items-center justify-center gap-3">
-                            <img className="w-6" src={settings} alt="settings logo" />
-                            {!isSettingsExpanded && <span className="text-base font-semibold">Settings</span>}
+                            {!isSettingsExpanded && (
+                                <>
+                                    <img className="w-6" src={settings} alt="settings logo" />
+                                    <span className="text-base font-semibold">Settings</span>
+                                </>
+                            )}
                         </div>
                         {isSettingsExpanded && (
-                            <div className="flex w-full flex-col gap-2">
+                            <div className="flex w-full flex-col gap-1 min-h-[48px] overflow-y-auto pr-1">
                                 {settingsDrawerItems.map((item) => (
                                     <button
                                         key={item.title}
@@ -500,10 +535,10 @@ function DashboardLoggedIn() {
                                             event.stopPropagation();
                                             handleSettingsDrawerItemClick(item.action);
                                         }}
-                                        className="w-full rounded-2xl border border-white/40 bg-white px-4 py-2 text-left text-xs font-semibold text-slate-800 transition hover:border-white hover:bg-white"
+                                        className="flex w-full items-center justify-between rounded-2xl border border-white/30 bg-white/10 px-3 py-2 text-left text-xs font-semibold text-white transition hover:border-white hover:bg-white/20"
                                     >
-                                        <p className="text-sm font-semibold text-[#3D3D3D]">{item.title}</p>
-                                        <p className="text-xs text-[#7A7A7A]">{item.description}</p>
+                                        <span>{item.title}</span>
+                                        <span className="text-xs uppercase tracking-wide text-[#7CA6FF]">Go</span>
                                     </button>
                                 ))}
                             </div>
@@ -636,7 +671,10 @@ function DashboardLoggedIn() {
                     <p className="text-sm text-white/70">Welcome back</p>
                     <p className="text-2xl font-bold">Shopora</p>
                 </div>
-                <nav className="flex flex-1 flex-col gap-4">
+                <nav
+                    ref={sidebarNavRef}
+                    className={`flex flex-1 flex-col gap-4 overflow-y-auto pr-1 max-h-[calc(100vh-6rem)] ${isSettingsExpanded ? "pb-8" : "pb-4"}`}
+                >
                     <button
                         className="flex w-full items-center gap-3 rounded-2xl bg-white px-4 py-3 text-left font-bold text-[#E6C79A] shadow-lg transition hover:-translate-y-0.5 hover:shadow-xl"
                         onClick={() => navigate('/DashboardLoggedIn')}
@@ -810,8 +848,12 @@ function DashboardLoggedIn() {
                         } font-semibold text-white transition hover:border-white hover:bg-white/20`}
                     >
                         <div className="flex w-full items-center justify-center gap-3">
-                            <img className="w-6" src={settings} alt="settings logo" />
-                            {!isSettingsExpanded && <span className="text-base">Settings</span>}
+                            {!isSettingsExpanded && (
+                                <>
+                                    <img className="w-6" src={settings} alt="settings logo" />
+                                    <span className="text-base">Settings</span>
+                                </>
+                            )}
                         </div>
                         {isSettingsExpanded && (
                             <div className="flex w-full flex-col gap-2">
@@ -823,10 +865,10 @@ function DashboardLoggedIn() {
                                             event.stopPropagation();
                                             handleSettingsDrawerItemClick(item.action);
                                         }}
-                                        className="flex w-full flex-col rounded-2xl border border-slate-100 bg-white/80 px-4 py-3 text-left transition hover:border-slate-200 hover:bg-white"
+                                        className="flex w-full items-center justify-between rounded-2xl border border-white/30 bg-white/10 px-4 py-3 text-left text-sm font-semibold text-white transition hover:border-white hover:bg-white/20"
                                     >
-                                        <p className="text-lg font-semibold text-[#3D3D3D]">{item.title}</p>
-                                        <p className="mt-1 text-xs text-[#7A7A7A]">{item.description}</p>
+                                        <span>{item.title}</span>
+                                        <span className="text-xs uppercase tracking-wide text-[#7CA6FF]">Go</span>
                                     </button>
                                 ))}
                             </div>
