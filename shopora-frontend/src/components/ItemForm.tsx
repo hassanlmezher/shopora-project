@@ -16,7 +16,9 @@ function ItemForm() {
   const [priceLabel, setPriceLabel] = useState("");
   const [category, setCategory] = useState<(typeof categories)[number]>(categories[0]);
   const [description, setDescription] = useState("");
-  const [image, setImage] = useState("");
+  const [imageOne, setImageOne] = useState("");
+  const [imageTwo, setImageTwo] = useState("");
+  const [imageThree, setImageThree] = useState("");
   const [ratings, setRatings] = useState("(0)");
   const [popup, setPopup] = useState<{ message: string; variant: "success" | "error" } | null>(null);
 
@@ -56,8 +58,15 @@ function ItemForm() {
       return;
     }
 
+    const trimmedImages = [imageOne, imageTwo, imageThree].map((value) => value.trim()).filter(Boolean);
+    if (trimmedImages.length !== 3) {
+      setPopup({ message: "Add three image URLs so your carousel works.", variant: "error" });
+      return;
+    }
+
     addUserShopItem(acceptedRequest!.id, {
-      image: image.trim(),
+      image: trimmedImages[0],
+      images: trimmedImages,
       name: name.trim(),
       namee: namee.trim() || "Product",
       price: formattedPrice || `$${numericPrice.toFixed(2)}`,
@@ -73,7 +82,9 @@ function ItemForm() {
     setNamee("");
     setPriceLabel("");
     setDescription("");
-    setImage("");
+    setImageOne("");
+    setImageTwo("");
+    setImageThree("");
     setRatings("(0)");
     setPopup({ message: "Item added to your shop.", variant: "success" });
   };
@@ -124,9 +135,25 @@ function ItemForm() {
             </select>
             <input
               type="text"
-              value={image}
-              onChange={(event) => setImage(event.target.value)}
-              placeholder="Image URL"
+              value={imageOne}
+              onChange={(event) => setImageOne(event.target.value)}
+              placeholder="Image URL #1"
+              className="rounded-2xl border border-[#E0E3E1] px-4 py-3 text-sm text-[#1F3B2F] focus:outline-none focus:ring-2 focus:ring-[#8DB9FF]"
+              required
+            />
+            <input
+              type="text"
+              value={imageTwo}
+              onChange={(event) => setImageTwo(event.target.value)}
+              placeholder="Image URL #2"
+              className="rounded-2xl border border-[#E0E3E1] px-4 py-3 text-sm text-[#1F3B2F] focus:outline-none focus:ring-2 focus:ring-[#8DB9FF]"
+              required
+            />
+            <input
+              type="text"
+              value={imageThree}
+              onChange={(event) => setImageThree(event.target.value)}
+              placeholder="Image URL #3"
               className="rounded-2xl border border-[#E0E3E1] px-4 py-3 text-sm text-[#1F3B2F] focus:outline-none focus:ring-2 focus:ring-[#8DB9FF]"
               required
             />
