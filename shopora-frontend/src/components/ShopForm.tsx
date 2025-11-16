@@ -58,7 +58,7 @@ function ShopForm() {
       <div className="mx-auto flex w-full max-w-5xl flex-1 flex-col">
         <button
           type="button"
-          onClick={() => navigate("/welcome-create")}
+          onClick={() => navigate("/DashboardLoggedIn")}
           className="flex w-fit items-center gap-3 rounded-full border border-gray-300 bg-white px-4 py-2 text-sm font-semibold text-[#1E3B86] shadow-sm transition hover:bg-[#8DB9FF] hover:text-white"
         >
           Back

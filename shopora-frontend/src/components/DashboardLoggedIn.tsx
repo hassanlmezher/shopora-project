@@ -296,7 +296,7 @@ function DashboardLoggedIn() {
             description: acceptedRequest
                 ? `Manage "${acceptedRequest.shopTitle}" items, pricing, and stock.`
                 : "Launch a storefront and start selling on Shopora.",
-            action: () => navigate(acceptedRequest ? "/my-shop" : "/welcome-create"),
+            action: () => navigate(acceptedRequest ? "/my-shop" : "/shopForm"),
         },
     ];
 
@@ -525,24 +525,29 @@ function DashboardLoggedIn() {
                                 </>
                             )}
                         </div>
-                        {isSettingsExpanded && (
-                            <div className="flex w-full flex-col gap-1 min-h-[48px] overflow-y-auto pr-1">
-                                {settingsDrawerItems.map((item) => (
-                                    <button
-                                        key={item.title}
-                                        type="button"
-                                        onClick={(event) => {
-                                            event.stopPropagation();
-                                            handleSettingsDrawerItemClick(item.action);
-                                        }}
-                                        className="flex w-full items-center justify-between rounded-2xl border border-white/30 bg-white/10 px-3 py-2 text-left text-xs font-semibold text-white transition hover:border-white hover:bg-white/20"
-                                    >
-                                        <span>{item.title}</span>
-                                        <span className="text-xs uppercase tracking-wide text-[#7CA6FF]">Go</span>
-                                    </button>
-                                ))}
-                            </div>
-                        )}
+                        <div
+                            className="flex w-full flex-col gap-1 overflow-hidden pr-1 transition-[max-height,opacity] duration-200 ease-out"
+                            style={{
+                                maxHeight: isSettingsExpanded ? `${settingsDrawerItems.length * 48}px` : 0,
+                                opacity: isSettingsExpanded ? 1 : 0,
+                            }}
+                            aria-hidden={!isSettingsExpanded}
+                        >
+                            {settingsDrawerItems.map((item) => (
+                                <button
+                                    key={item.title}
+                                    type="button"
+                                    onClick={(event) => {
+                                        event.stopPropagation();
+                                        handleSettingsDrawerItemClick(item.action);
+                                    }}
+                                    className="flex w-full items-center justify-between rounded-2xl border border-white/30 bg-white/10 px-3 py-2 text-left text-xs font-semibold text-white transition hover:border-white hover:bg-white/20"
+                                >
+                                    <span>{item.title}</span>
+                                    <span className="text-xs uppercase tracking-wide text-[#7CA6FF]">Go</span>
+                                </button>
+                            ))}
+                        </div>
                     </div>
             </div>
             <section className="space-y-4 rounded-3xl border border-white/30 bg-white/10 p-4 backdrop-blur-sm">
