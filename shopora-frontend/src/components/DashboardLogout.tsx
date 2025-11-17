@@ -1,5 +1,5 @@
 import logo from "../images/Logo.png";
-import lightMode from "../images/lightMode.png";
+import ThemeToggle from "./ThemeToggle";
 import women from "../images/women.png";
 import shirt from "../images/shirt.png";
 import ItemCard from "./ItemCard";
@@ -327,22 +327,22 @@ function DashboardLogout() {
                     </button>
                     <img className="w-24" src={logo} alt="logo" />
                 </div>
-                <div className="flex items-center gap-3">
-                    <button
-                        type="button"
-                        onClick={() => navigate('/login')}
-                        className="rounded-2xl bg-white/20 px-4 py-2 text-sm font-semibold text-white"
-                    >
-                        Log In
-                    </button>
-                    <button
-                        type="button"
-                        className="h-11 w-11 rounded-2xl bg-white/20 p-2"
-                        aria-label="Toggle theme"
-                    >
-                        <img className="h-full w-full" src={lightMode} alt="toggle theme" />
-                    </button>
-                </div>
+            <div className="flex items-center gap-3">
+                <button
+                    type="button"
+                    onClick={() => navigate('/login')}
+                    className="rounded-2xl bg-white/20 px-4 py-2 text-sm font-semibold text-white"
+                >
+                    Log In
+                </button>
+                <button
+                    type="button"
+                    className="h-11 w-11 rounded-2xl bg-white/20 p-2"
+                    aria-label="Toggle theme"
+                >
+                    <ThemeToggle className="flex-shrink-0" />
+                </button>
+            </div>
             </header>
             {isMobileMenuOpen && (
                 <div className="fixed inset-0 z-50 flex flex-col bg-black/60 px-4 py-6 backdrop-blur-sm" role="dialog" aria-modal="true">
@@ -684,8 +684,8 @@ function DashboardLogout() {
                         {filteredItems.length > 0 ? (
                             <div className="grid gap-10 lg:grid-cols-2 xl:grid-cols-3 justify-items-center">
                                 {filteredItems.map(item => (
-                                <ItemCard
-                                    key={item.namee}
+                                    <ItemCard
+                                        key={item.id ?? `${item.name}-${item.namee}-${item.priceValue}`}
                                     image={item.image}
                                     images={item.images}
                                     name={item.name}
