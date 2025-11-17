@@ -1,2 +1,28 @@
 @import "tailwindcss";
 
+@layer base {
+  :root {
+    --page-bg: #f8fafc;
+    --page-text: #0f172a;
+  }
+
+  body {
+    background-color: var(--page-bg);
+    color: var(--page-text);
+    transition: background-color 250ms ease, color 250ms ease;
+  }
+
+  .dark {
+    --page-bg: #020617;
+    --page-text: #e2e8f0;
+  }
+
+  .dark body {
+    background-color: var(--page-bg);
+    color: var(--page-text);
+  }
+
+  #root {
+    min-height: 100vh;
+  }
+}

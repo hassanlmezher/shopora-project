@@ -105,7 +105,7 @@ function Login() {
           <p className="text-center text-4xl font-bold text-blue-500 sm:text-5xl lg:text-left">Log In</p>
           <input
             type="text"
-            className={`h-12 w-full rounded-2xl px-4 text-base focus:outline-none ${
+            className={`h-12 w-full rounded-2xl px-4 text-base text-black placeholder:text-[#6B7280] focus:outline-none ${
               fieldErrors.email
                 ? "border border-red-500 focus:border-red-500"
                 : "border border-[#0E5861] focus:border-[#8DB9FF]"
@@ -118,7 +118,7 @@ function Login() {
           )}
           <input
             type="password"
-            className={`h-12 w-80 rounded-2xl px-4 text-base focus:outline-none ${
+            className={`h-12 w-80 rounded-2xl px-4 text-base text-black placeholder:text-[#6B7280] focus:outline-none ${
               fieldErrors.password
                 ? "border border-red-500 focus:border-red-500"
                 : "border border-[#0E5861] focus:border-[#8DB9FF]"

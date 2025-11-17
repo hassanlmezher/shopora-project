@@ -1,5 +1,4 @@
 import logo from "../images/Logo.png";
-import ThemeToggle from "./ThemeToggle";
 import women from "../images/women.png";
 import shirt from "../images/shirt.png";
 import ItemCard from "./ItemCard";
@@ -335,7 +334,6 @@ function DashboardLogout() {
                 >
                     Log In
                 </button>
-                <ThemeToggle className="flex-shrink-0" />
             </div>
             </header>
             {isMobileMenuOpen && (
@@ -651,9 +649,8 @@ function DashboardLogout() {
                 </button>
             </aside>
             <div className="flex flex-1 flex-col gap-6">
-                <header className="flex items-center justify-between rounded-3xl bg-white px-8 py-5 shadow-lg">
+                <header className="flex items-center rounded-3xl bg-white px-8 py-5 shadow-lg">
                     <img className="w-32" src={logo} alt="logo" />
-                    <ThemeToggle className="flex-shrink-0" />
                 </header>
                 <section className="rounded-3xl bg-white p-8 shadow-lg">
                     <div className="relative overflow-hidden rounded-3xl bg-linear-to-br from-[#7CA6FF] to-[#E3C59F] px-6 py-8 text-white shadow-inner">
