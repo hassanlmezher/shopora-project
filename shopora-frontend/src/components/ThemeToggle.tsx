@@ -64,8 +64,8 @@ export default function ThemeToggle({ className = "" }: ThemeToggleProps) {
 
   const buttonClasses = `relative inline-flex h-9 w-[88px] items-center justify-between rounded-full border border-[#E5E7EB] bg-gradient-to-tr from-white to-[#F3F4F6] px-2 shadow-inner transition ${className}`;
 
-  const knobClasses = `relative z-10 h-8 w-8 rounded-full shadow transition-transform duration-200 ${
-    isDarkMode ? "translate-x-0 bg-[#0F172A]" : "translate-x-[calc(100%-32px)] bg-white"
+  const knobClasses = `absolute top-1/2 h-8 w-8 -translate-y-1/2 rounded-full shadow transition duration-200 ${
+    isDarkMode ? "left-2 bg-[#0F172A]" : "right-2 bg-white"
   }`;
 
   return (
