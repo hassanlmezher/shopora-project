@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import logo from "../images/Logo.png";
-import lightMode from "../images/lightMode.png";
+import ThemeToggle from "./ThemeToggle";
 import AdminShopCard from "./AdminShopCard";
 import useAdminStores from "../store/useAdminStores";
 import useNotificationStore from "../store/useNotificationStore";
@@ -19,7 +19,7 @@ function AdminDashboard() {
         <header className="flex flex-wrap items-center justify-between gap-6 rounded-2xl bg-white px-6 py-4 shadow-sm">
           <img className="w-20 max-w-[120px] sm:w-24 lg:w-28" src={logo} alt="logo" />
           <div className="flex items-center justify-center gap-6">
-            <img className="h-10 w-10" src={lightMode} alt="toggle theme" />
+            <ThemeToggle />
             <button
               type="button"
               onClick={() => navigate("/notifications/admin")}
