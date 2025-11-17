@@ -62,7 +62,12 @@ export default function ThemeToggle({ className = "" }: ThemeToggleProps) {
     setIsDarkMode((prev) => !prev);
   };
 
-  const buttonClasses = `relative inline-flex h-9 w-[88px] items-center justify-between rounded-full border border-[#E5E7EB] bg-gradient-to-tr from-white to-[#F3F4F6] px-2 shadow-inner transition ${className}`;
+  // Tailwind-driven gradient switch depending on the active theme.
+  const buttonClasses = `relative inline-flex h-9 w-[88px] items-center justify-between rounded-full border px-2 shadow-inner transition ${className} ${
+    isDarkMode
+      ? "border-[#0F172A] bg-gradient-to-tr from-[#020617] via-[#0b122c] to-[#1f3d7a]"
+      : "border-[#E5E7EB] bg-gradient-to-tr from-white to-[#F3F4F6]"
+  }`;
 
   const knobClasses = `absolute top-1/2 h-8 w-8 -translate-y-1/2 rounded-full shadow transition duration-200 ${
     isDarkMode ? "left-2 bg-[#0F172A]" : "right-2 bg-white"
@@ -89,7 +94,7 @@ export default function ThemeToggle({ className = "" }: ThemeToggleProps) {
             isDarkMode ? "opacity-100" : "opacity-0"
           }`}
         >
-          <MoonIcon className="h-4 w-4 text-[#1F2933]" />
+          <MoonIcon className="h-4 w-4 text-[#E0F2FE]" />
         </span>
       </span>
       <span className={knobClasses} />
