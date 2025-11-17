@@ -1,6 +1,5 @@
 import { useNavigate } from "react-router-dom";
 import logo from "../images/Logo.png";
-import ThemeToggle from "./ThemeToggle";
 
 function Header() {
   const navigate = useNavigate();
@@ -14,8 +13,7 @@ function Header() {
         alt="logo"
         onClick={() => navigate("/DashboardLoggedIn")}
       />
-      <div className="flex justify-center items-center gap-7">
-        <ThemeToggle />
+      <div className="flex justify-center items-center">
         <button
           className="flex w-full items-center cursor-pointer justify-center gap-3 rounded-2xl bg-white/90 px-4 py-2 text-sm font-bold text-[#1F3B2F] border-2 border-[#1F3B2F] transition hover:bg-black hover:text-white"
           onClick={() => navigate("/login")}

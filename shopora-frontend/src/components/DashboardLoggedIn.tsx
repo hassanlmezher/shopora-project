@@ -1,5 +1,4 @@
 import logo from "../images/Logo.png";
-import ThemeToggle from "./ThemeToggle";
 import women from "../images/women.png";
 import shirt from "../images/shirt.png";
 import ItemCard from "./ItemCard";
@@ -446,7 +445,6 @@ function DashboardLoggedIn() {
                             </span>
                         )}
                     </button>
-                    <ThemeToggle className="flex-shrink-0" />
                 </div>
             </header>
             {isMobileMenuOpen && (
@@ -930,7 +928,6 @@ function DashboardLoggedIn() {
                                 </span>
                             )}
                         </button>
-                        <ThemeToggle className="flex-shrink-0" />
                     </div>
                 </header>
                 <section className="rounded-3xl bg-white p-8 shadow-lg">
