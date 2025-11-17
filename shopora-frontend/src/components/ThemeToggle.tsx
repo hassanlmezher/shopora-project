@@ -4,6 +4,7 @@ const THEME_STORAGE_KEY = "shopora-theme-selection";
 
 const prefersDarkMode = () =>
   typeof window !== "undefined" &&
+  typeof window.matchMedia === "function" &&
   window.matchMedia("(prefers-color-scheme: dark)").matches;
 
 const getInitialTheme = () => {
@@ -61,12 +62,10 @@ export default function ThemeToggle({ className = "" }: ThemeToggleProps) {
     setIsDarkMode((prev) => !prev);
   };
 
-  const buttonClasses = `relative inline-flex h-12 w-[96px] items-center justify-between rounded-full border border-[#E5E7EB] bg-gradient-to-tr from-white to-[#F3F4F6] p-1 shadow-inner transition ${className}`;
+  const buttonClasses = `relative inline-flex h-9 w-[88px] items-center justify-between rounded-full border border-[#E5E7EB] bg-gradient-to-tr from-white to-[#F3F4F6] px-2 shadow-inner transition ${className}`;
 
-  const knobClasses = `relative z-10 h-10 w-10 rounded-full shadow transition-transform duration-200 ${
-    isDarkMode
-      ? "translate-x-[calc(100%-40px)] bg-[#0F172A]"
-      : "translate-x-0 bg-white"
+  const knobClasses = `relative z-10 h-8 w-8 rounded-full shadow transition-transform duration-200 ${
+    isDarkMode ? "translate-x-0 bg-[#0F172A]" : "translate-x-[calc(100%-32px)] bg-white"
   }`;
 
   return (
@@ -78,10 +77,18 @@ export default function ThemeToggle({ className = "" }: ThemeToggleProps) {
       aria-pressed={isDarkMode}
     >
       <span className="pointer-events-none absolute inset-0 flex items-center justify-between px-3 text-[#6B7280]">
-        <span className="flex items-center">
+        <span
+          className={`flex items-center transition-opacity duration-200 ${
+            isDarkMode ? "opacity-0" : "opacity-100"
+          }`}
+        >
           <SunIcon className="h-4 w-4 text-[#FACC15]" />
         </span>
-        <span className="flex items-center">
+        <span
+          className={`flex items-center transition-opacity duration-200 ${
+            isDarkMode ? "opacity-100" : "opacity-0"
+          }`}
+        >
           <MoonIcon className="h-4 w-4 text-[#1F2933]" />
         </span>
       </span>

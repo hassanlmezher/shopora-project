@@ -327,7 +327,7 @@ function DashboardLogout() {
                     </button>
                     <img className="w-24" src={logo} alt="logo" />
                 </div>
-            <div className="flex items-center gap-3">
+                <div className="flex items-center gap-3">
                 <button
                     type="button"
                     onClick={() => navigate('/login')}
@@ -335,13 +335,7 @@ function DashboardLogout() {
                 >
                     Log In
                 </button>
-                <button
-                    type="button"
-                    className="h-11 w-11 rounded-2xl bg-white/20 p-2"
-                    aria-label="Toggle theme"
-                >
-                    <ThemeToggle className="flex-shrink-0" />
-                </button>
+                <ThemeToggle className="flex-shrink-0" />
             </div>
             </header>
             {isMobileMenuOpen && (
@@ -659,7 +653,7 @@ function DashboardLogout() {
             <div className="flex flex-1 flex-col gap-6">
                 <header className="flex items-center justify-between rounded-3xl bg-white px-8 py-5 shadow-lg">
                     <img className="w-32" src={logo} alt="logo" />
-                    <img className="w-10 rounded-full border border-[#3B7CFF]/20 p-2" src={lightMode} alt="toggle theme" />
+                    <ThemeToggle className="flex-shrink-0" />
                 </header>
                 <section className="rounded-3xl bg-white p-8 shadow-lg">
                     <div className="relative overflow-hidden rounded-3xl bg-linear-to-br from-[#7CA6FF] to-[#E3C59F] px-6 py-8 text-white shadow-inner">
