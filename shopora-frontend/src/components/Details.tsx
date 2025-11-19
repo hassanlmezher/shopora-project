@@ -84,7 +84,7 @@ function Details() {
 
   const handleBack = () => {
     if (returnPath) {
-      navigate(returnPath);
+      navigate(returnPath, { replace: true });
       return;
     }
     navigate(isLoggedIn ? "/DashboardLoggedIn" : "/dashboard");

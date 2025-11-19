@@ -67,14 +67,17 @@ function DashboardLoggedIn() {
     );
     const { userEmail } = useAuthStore();
     const normalizedUserEmail = userEmail?.trim().toLowerCase() ?? "";
-    const acceptedRequest = useNotificationStore((state) =>
+    const userAcceptedRequest = useNotificationStore((state) =>
         state.requests.find(
             (request) =>
                 request.status === "accepted" &&
                 request.ownerEmail?.toLowerCase() === normalizedUserEmail
         )
     );
-    const acceptedRequestItems = acceptedRequest?.items ?? EMPTY_USER_SHOP_ITEMS;
+    const globalAcceptedRequest = useNotificationStore((state) =>
+        state.requests.find((request) => request.status === "accepted")
+    );
+    const globalAcceptedRequestItems = globalAcceptedRequest?.items ?? EMPTY_USER_SHOP_ITEMS;
     const favoriteItems = useFavoritesStore((state) => state.items ?? []);
     const favoriteIds = useMemo(() => favoriteItems.map((item) => item.id), [favoriteItems]);
     const [isSettingsExpanded, setIsSettingsExpanded] = useState(false);
@@ -103,10 +106,10 @@ function DashboardLoggedIn() {
     }, []);
 
     const catalogueWithUserItems = useMemo(() => {
-        if (!acceptedRequestItems.length) {
+        if (!globalAcceptedRequestItems.length) {
             return updatedCatalogue;
         }
-        const creatorItems = acceptedRequestItems.map((item) => ({
+        const creatorItems = globalAcceptedRequestItems.map((item) => ({
             id: item.id,
             image: item.image || shirt,
             images: item.images,
@@ -121,7 +124,7 @@ function DashboardLoggedIn() {
             reviews: item.reviews ?? [],
         }));
         return [...updatedCatalogue, ...creatorItems];
-    }, [updatedCatalogue, acceptedRequestItems]);
+    }, [updatedCatalogue, globalAcceptedRequestItems]);
 
     const dynamicPriceBounds = useMemo(() => {
         const allPrices = catalogueWithUserItems.map((item) => item.priceValue);
@@ -304,11 +307,11 @@ function DashboardLoggedIn() {
             action: () => navigate("/profile"),
         },
         {
-            title: acceptedRequest ? "Your shop" : "Create shop",
-            description: acceptedRequest
-                ? `Manage "${acceptedRequest.shopTitle}" items, pricing, and stock.`
+            title: userAcceptedRequest ? "Your shop" : "Create shop",
+            description: userAcceptedRequest
+                ? `Manage "${userAcceptedRequest.shopTitle}" items, pricing, and stock.`
                 : "Launch a storefront and start selling on Shopora.",
-            action: () => navigate(acceptedRequest ? "/my-shop" : "/shopForm"),
+            action: () => navigate(userAcceptedRequest ? "/my-shop" : "/shopForm"),
         },
     ];
 
