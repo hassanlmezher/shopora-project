@@ -2,5 +2,11 @@
   "dependencies": {
     "@tailwindcss/vite": "^4.1.16",
     "tailwindcss": "^4.1.16"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "vit build",
+    "preview": "vite preview",
+    "test:e2e": "playwright test"
   }
 }
