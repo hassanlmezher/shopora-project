@@ -2,6 +2,7 @@ import { type FormEvent, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import PopupMessage from "./PopupMessage";
 import useNotificationStore from "../store/useNotificationStore";
+import useAuthStore from "../store/useAuthStore";
 
 function ShopForm() {
   const navigate = useNavigate();
@@ -16,6 +17,7 @@ function ShopForm() {
   const hasActiveRequest = useNotificationStore((state) =>
     state.requests.some((request) => request.status !== "declined")
   );
+  const { isLoggedIn, userEmail } = useAuthStore();
   const [hasAttemptedSubmit, setHasAttemptedSubmit] = useState(false);
 
   useEffect(() => {
@@ -26,6 +28,12 @@ function ShopForm() {
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    const trimmedEmail = userEmail?.trim();
+
+    if (!trimmedEmail) {
+      setPopupContent({ message: "Please log in to request a shop.", variant: "error" });
+      return;
+    }
 
     if (hasActiveRequest && hasAttemptedSubmit) {
       setPopupContent({
@@ -43,6 +51,7 @@ function ShopForm() {
       shopTitle: shopTitle.trim(),
       description: shopDescription.trim(),
       phone: phoneNumber.trim(),
+      ownerEmail: trimmedEmail,
       items: [],
     });
 
@@ -92,9 +101,9 @@ function ShopForm() {
             />
             <button
               type="submit"
-              disabled={hasActiveRequest}
+              disabled={!userEmail || hasActiveRequest}
               className={`rounded-2xl px-10 py-3 font-bold text-white transition hover:bg-white hover:border-2 hover:border-[#8DB9FF] hover:text-[#8DB9FF] ${
-                hasActiveRequest ? "bg-[#B7CCFF] text-[#4C67A6] cursor-not-allowed" : "bg-[#8DB9FF]"
+                !userEmail || hasActiveRequest ? "bg-[#B7CCFF] text-[#4C67A6] cursor-not-allowed" : "bg-[#8DB9FF]"
               }`}
             >
               Submit
@@ -102,6 +111,11 @@ function ShopForm() {
             {hasActiveRequest && (
               <p className="text-sm font-semibold text-[#FF6B6B]">
                 You already have a pending or approved shop request.
+              </p>
+            )}
+            {!isLoggedIn && (
+              <p className="text-xs text-[#4B5B56]">
+                Log in or create an account before asking the admin for a shop.
               </p>
             )}
           </form>

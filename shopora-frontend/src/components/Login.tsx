@@ -82,7 +82,7 @@ function Login() {
         setPopupVariant("success");
         setShowPopup(true);
         scheduleHide(() => {
-          login();
+          login(trimmedEmail);
           navigate("/adminDashboard");
         });
       } else if (registeredUser && registeredUser.password === trimmedPassword) {
@@ -90,7 +90,7 @@ function Login() {
         setPopupVariant("success");
         setShowPopup(true);
         scheduleHide(() => {
-          login();
+          login(trimmedEmail);
           navigate('/DashboardLoggedIn');
         });
       } else if (email === trimmedEmail && password === trimmedPassword) {
@@ -98,7 +98,7 @@ function Login() {
         setPopupVariant("success");
         setShowPopup(true);
         scheduleHide(() => {
-          login();
+          login(trimmedEmail);
           navigate('/DashboardLoggedIn');
         });
       } else {
