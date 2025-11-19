@@ -60,12 +60,15 @@ const useNotificationStore = create<NotificationStore>()(
     latestReadRequestCount: 0,
     submitShopRequest: (payload) =>
       set((state) => {
-          const hasActiveRequest = state.requests.some((request) => request.status !== "declined");
+          const normalizedOwnerEmail = payload.ownerEmail.trim().toLowerCase();
+          const hasActiveRequest = state.requests.some(
+            (request) =>
+              request.ownerEmail === normalizedOwnerEmail && request.status !== "declined"
+          );
           if (hasActiveRequest) {
             return state;
           }
           const { items = [], ownerEmail, ...rest } = payload;
-          const normalizedOwnerEmail = ownerEmail.trim().toLowerCase();
           const newRequest: ShopRequestNotification = {
             id: `${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
             status: "pending",

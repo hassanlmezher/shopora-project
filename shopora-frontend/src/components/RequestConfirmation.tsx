@@ -1,8 +1,52 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import PopupMessage from "./PopupMessage";
-import useNotificationStore from "../store/useNotificationStore";
+import useNotificationStore, { type UserShopItem } from "../store/useNotificationStore";
 import type { ShopRequestStatus } from "../store/useNotificationStore";
+
+type ItemCardProps = {
+  item: UserShopItem;
+  onViewDetails?: () => void;
+};
+
+function ItemCard({ item, onViewDetails }: ItemCardProps) {
+  return (
+    <div className="rounded-[32px] bg-white p-6 shadow-lg">
+      <div className="flex flex-col gap-5 md:flex-row md:items-start">
+        <div className="flex h-24 w-24 items-center justify-center rounded-2xl bg-[#F4F7F6] p-3 shadow-sm">
+          <img src={item.image} alt={`${item.name} ${item.namee}`} className="h-full w-full object-contain" />
+        </div>
+        <div className="flex flex-1 flex-col gap-1">
+          <div className="text-lg font-semibold text-[#1F3B2F]">{item.name}</div>
+          <p className="text-sm text-[#6A857C]">{item.namee}</p>
+          <div className="flex flex-wrap items-baseline gap-2">
+            <span className="text-2xl font-bold text-[#3B7CFF]">{item.price}</span>
+            <span className="text-xs font-semibold uppercase tracking-[0.3em] text-[#9AA9A4]">
+              {item.category} · {item.ratings}
+            </span>
+          </div>
+        </div>
+      </div>
+      <p className="mt-2 text-sm text-[#4B5B56]">{item.description || "No description provided yet."}</p>
+      <div className="mt-4 flex flex-wrap items-center gap-3">
+        <button
+          type="button"
+          onClick={onViewDetails}
+          className="flex-1 rounded-full border border-[#3B7CFF] px-6 py-2 text-sm font-semibold text-[#1E3B86] shadow-sm transition hover:bg-[#3B7CFF] hover:text-white"
+        >
+          View details
+        </button>
+        <button
+          type="button"
+          className="flex-1 rounded-full bg-[#1F1F1F] px-6 py-2 text-sm font-semibold text-white transition hover:bg-black"
+          disabled
+        >
+          Delete item
+        </button>
+      </div>
+    </div>
+  );
+}
 
 function RequestConfirmation() {
   const navigate = useNavigate();
@@ -12,6 +56,8 @@ function RequestConfirmation() {
   const updateRequestStatus = useNotificationStore((state) => state.updateRequestStatus);
   const [popup, setPopup] = useState<{ message: string; variant: "success" | "error" } | null>(null);
   const locationState = location.state as { fromNotifications?: boolean } | null;
+  const sortedItems = useMemo(() => [...(request?.items ?? [])], [request?.items]);
+
   const handleBack = () => {
     if (locationState?.fromNotifications) {
       navigate(-1);
@@ -38,6 +84,10 @@ function RequestConfirmation() {
       message: status === "accepted" ? "Request accepted." : "Request declined.",
       variant: status === "accepted" ? "success" : "error",
     });
+  };
+
+  const handleViewItemDetails = (item: UserShopItem) => {
+    navigate("/details", { state: { ...item, returnPath: location.pathname } });
   };
 
   if (!request) {
@@ -125,6 +175,28 @@ function RequestConfirmation() {
               Decline
             </button>
           </div>
+        </section>
+
+        <section className="space-y-4">
+          <div className="flex flex-wrap items-center justify-between gap-2">
+            <p className="text-xl font-semibold text-[#1F3B2F]">Store inventory</p>
+            <span className="text-sm text-[#6A857C]">Sorted by newest</span>
+          </div>
+          {sortedItems.length > 0 ? (
+            <div className="grid gap-6 sm:grid-cols-2">
+              {sortedItems.map((item) => (
+                <ItemCard
+                  key={item.id}
+                  item={item}
+                  onViewDetails={() => handleViewItemDetails(item)}
+                />
+              ))}
+            </div>
+          ) : (
+            <div className="rounded-3xl bg-white p-8 text-center text-sm text-[#6A857C] shadow-sm">
+              No items were submitted with this request yet.
+            </div>
+          )}
         </section>
       </div>
 

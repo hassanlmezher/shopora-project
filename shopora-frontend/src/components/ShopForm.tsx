@@ -14,10 +14,16 @@ function ShopForm() {
     variant: "success" | "error";
   } | null>(null);
   const submitShopRequest = useNotificationStore((state) => state.submitShopRequest);
-  const hasActiveRequest = useNotificationStore((state) =>
-    state.requests.some((request) => request.status !== "declined")
-  );
   const { isLoggedIn, userEmail } = useAuthStore();
+  const normalizedUserEmail = userEmail?.trim().toLowerCase() ?? "";
+  const hasActiveRequest = useNotificationStore(
+    (state) =>
+      Boolean(normalizedUserEmail) &&
+      state.requests.some(
+        (request) =>
+          request.ownerEmail === normalizedUserEmail && request.status !== "declined"
+      )
+  );
   const [hasAttemptedSubmit, setHasAttemptedSubmit] = useState(false);
 
   useEffect(() => {
