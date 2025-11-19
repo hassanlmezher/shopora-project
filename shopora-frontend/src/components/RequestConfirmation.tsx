@@ -97,7 +97,9 @@ function RequestConfirmation() {
   };
 
   const handleViewItemDetails = (item: UserShopItem) => {
-    navigate("/details", { state: { ...item, returnPath: location.pathname } });
+    navigate("/details", {
+      state: { ...item, returnPath: "/adminDashboard" },
+    });
   };
 
   if (!request) {
