@@ -2,39 +2,37 @@ name: Playwright Tests
 
 on:
   push:
-    branches: [ BranchThree ]
+    branches:
+      - BranchThree
   pull_request:
-    branches: [ BranchThree ]
+    branches:
+      - BranchThree
 
-    
 jobs:
-    test:
-        runs-on: ubuntu-latest
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-        steps:
-            - name: Checkout repository
-              uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
 
-            - name: Setup Node.js
-              uses: actions/setup-node@v4
-              with:
-                node-version: 20
-                cache: 'npm'
+      - name: Install dependencies
+        run: npm ci
 
-            - name: Install dependencies
-              run: npm install
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps
 
-            - name: Install Playwright (Chromium)
-              run: npx playwright install chromium --with-deps
+      - name: Run Playwright tests
+        run: npx playwright test
 
-            - name: Run Playwright tests
-              run: npx playwright test
-
-            - name: Updload Playwright test report (if exists)
-              if: always()
-              uses: actions/upload-artifact@v4
-              with:
-                name: playwright-report
-                path: playwright-report/
-                if-no-files-found: ignore
-                
+      - name: Upload Playwright report
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: playwright-report
+          path: playwright-report/
+          if-no-files-found: ignore
