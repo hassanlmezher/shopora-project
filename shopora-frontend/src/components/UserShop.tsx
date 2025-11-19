@@ -6,18 +6,24 @@ import useNotificationStore from "../store/useNotificationStore";
 
 function UserShop() {
   const navigate = useNavigate();
-  const { isLoggedIn } = useAuthStore();
+  const { isLoggedIn, userEmail } = useAuthStore();
   const { requests, deleteUserShopItem } = useNotificationStore();
-  const acceptedRequest = requests.find((request) => request.status === "accepted");
-  const items = acceptedRequest?.items ?? [];
-  const canAddItems = Boolean(acceptedRequest);
+  const normalizedUserEmail = userEmail?.trim().toLowerCase() ?? "";
+  const ownerRequest = requests.find(
+    (request) =>
+      request.status === "accepted" &&
+      request.ownerEmail?.toLowerCase() === normalizedUserEmail
+  );
+  const visibleRequest = ownerRequest ?? requests.find((request) => request.status === "accepted");
+  const ownerRequestId = ownerRequest?.id;
+  const items = visibleRequest?.items ?? [];
+  const canAddItems = Boolean(ownerRequest);
 
     const handleAddItem = () => {
-        if (canAddItems) {
-            navigate("/itemform");
+        if (!canAddItems) {
             return;
         }
-        navigate("/DashboardLoggedIn");
+        navigate("/itemform");
     };
 
   const backPath = isLoggedIn ? "/DashboardLoggedIn" : "/dashboard";
@@ -35,10 +41,19 @@ function UserShop() {
         </button>
         <div className="space-y-2">
           <p className="text-3xl font-bold text-[#1F3B2F]">My shop</p>
-          {acceptedRequest ? (
+          {ownerRequest ? (
             <p className="text-sm text-[#4B5B56]">
-              Managing &quot;{acceptedRequest.shopTitle}&quot;. {acceptedRequest.description}
+              Managing &quot;{ownerRequest.shopTitle}&quot;. {ownerRequest.description}
             </p>
+          ) : visibleRequest ? (
+            <div className="space-y-1">
+              <p className="text-sm text-[#4B5B56]">
+                Previewing &quot;{visibleRequest.shopTitle}&quot;. {visibleRequest.description}
+              </p>
+              <p className="text-xs text-[#FF6B6B]">
+                Only the shop owner can add or remove items here.
+              </p>
+            </div>
           ) : (
             <p className="text-sm text-[#4B5B56]">
               Your request is still pending approval. Once approved, you can start selling.
@@ -52,7 +67,11 @@ function UserShop() {
               <YourItem
                 key={item.id}
                 item={item}
-                onRemove={() => acceptedRequest && deleteUserShopItem(acceptedRequest.id, item.id)}
+                onRemove={
+                  ownerRequestId
+                    ? () => deleteUserShopItem(ownerRequestId, item.id)
+                    : undefined
+                }
               />
             ))
           ) : (
@@ -63,21 +82,18 @@ function UserShop() {
               </p>
             </div>
           )}
-          <div className="flex min-h-[220px] flex-col items-center justify-center gap-4 rounded-3xl border-2 border-dashed border-[#3B7CFF]/40 bg-white px-6 py-10 text-center shadow-sm">
-            <button
-              type="button"
-              onClick={handleAddItem}
-              className="bg-[#3B7CFF] flex h-[10rem] w-[10rem] items-center justify-center rounded-2xl text-7xl font-bold text-white transition hover:bg-[#1A4ADC]"
-            >
-              +
-            </button>
-            <p className="text-[#3B7CFF] font-bold text-2xl">Add an item</p>
-            {!canAddItems && (
-              <p className="text-xs text-[#4B5B56]">
-                Get your shop approved first through the settings drawer on the dashboard.
-              </p>
-            )}
-          </div>
+          {ownerRequest && (
+            <div className="flex min-h-[220px] flex-col items-center justify-center gap-4 rounded-3xl border-2 border-dashed border-[#3B7CFF]/40 bg-white px-6 py-10 text-center shadow-sm">
+              <button
+                type="button"
+                onClick={handleAddItem}
+                className="bg-[#3B7CFF] flex h-[10rem] w-[10rem] items-center justify-center rounded-2xl text-7xl font-bold text-white transition hover:bg-[#1A4ADC]"
+              >
+                +
+              </button>
+              <p className="text-[#3B7CFF] font-bold text-2xl">Add an item</p>
+            </div>
+          )}
         </section>
       </div>
     </div>

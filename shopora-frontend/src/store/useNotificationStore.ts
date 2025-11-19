@@ -28,11 +28,16 @@ export interface ShopRequestNotification {
   status: ShopRequestStatus;
   submittedAt: number;
   items: UserShopItem[];
+  ownerEmail?: string;
 }
 
 export const EMPTY_USER_SHOP_ITEMS: UserShopItem[] = [];
 
-type ShopRequestPayload = Omit<ShopRequestNotification, "id" | "status" | "submittedAt"> & {
+type ShopRequestPayload = {
+  shopTitle: string;
+  description: string;
+  phone: string;
+  ownerEmail: string;
   items?: UserShopItem[];
 };
 
@@ -55,16 +60,21 @@ const useNotificationStore = create<NotificationStore>()(
     latestReadRequestCount: 0,
     submitShopRequest: (payload) =>
       set((state) => {
-          const hasActiveRequest = state.requests.some((request) => request.status !== "declined");
+          const normalizedOwnerEmail = payload.ownerEmail.trim().toLowerCase();
+          const hasActiveRequest = state.requests.some(
+            (request) =>
+              request.ownerEmail === normalizedOwnerEmail && request.status !== "declined"
+          );
           if (hasActiveRequest) {
             return state;
           }
-          const { items = [], ...rest } = payload;
+          const { items = [], ownerEmail, ...rest } = payload;
           const newRequest: ShopRequestNotification = {
             id: `${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
             status: "pending",
             submittedAt: Date.now(),
             items,
+            ownerEmail: normalizedOwnerEmail,
             ...rest,
           };
           return { requests: [...state.requests, newRequest] };

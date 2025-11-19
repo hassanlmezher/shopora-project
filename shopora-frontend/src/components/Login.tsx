@@ -3,6 +3,7 @@ import loginsignup from "../images/loginlogin.png"
 import { useNavigate } from 'react-router-dom'
 import useAuthStore from "../store/useAuthStore";
 import PopupMessage from "./PopupMessage";
+import { findRegisteredUserByEmail } from "../utils/registeredUsers";
 
 
 type FieldErrors = {
@@ -74,20 +75,30 @@ function Login() {
 
       setFieldErrors({});
 
+      const registeredUser = findRegisteredUserByEmail(trimmedEmail);
+
       if (adminEmail === trimmedEmail && adminPassword === trimmedPassword) {
         setPopupMessage("Welcome back Admin!");
         setPopupVariant("success");
         setShowPopup(true);
         scheduleHide(() => {
-          login();
+          login(trimmedEmail);
           navigate("/adminDashboard");
+        });
+      } else if (registeredUser && registeredUser.password === trimmedPassword) {
+        setPopupMessage("Login successful!");
+        setPopupVariant("success");
+        setShowPopup(true);
+        scheduleHide(() => {
+          login(trimmedEmail);
+          navigate('/DashboardLoggedIn');
         });
       } else if (email === trimmedEmail && password === trimmedPassword) {
         setPopupMessage("Login successful!");
         setPopupVariant("success");
         setShowPopup(true);
         scheduleHide(() => {
-          login();
+          login(trimmedEmail);
           navigate('/DashboardLoggedIn');
         });
       } else {

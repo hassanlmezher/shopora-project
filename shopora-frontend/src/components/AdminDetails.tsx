@@ -3,6 +3,51 @@ import { useNavigate, useParams } from "react-router-dom";
 import useAdminStores, { type AdminStoreItem } from "../store/useAdminStores";
 import PopupMessage from "./PopupMessage";
 
+const AdminItemCard = ({
+  item,
+  onView,
+  onDelete,
+}: {
+  item: AdminStoreItem;
+  onView: () => void;
+  onDelete: () => void;
+}) => (
+  <div className="rounded-[32px] bg-white p-6 shadow-lg shadow-[#101828]/5">
+    <div className="flex flex-col gap-6 md:flex-row md:items-start">
+      <div className="flex h-24 w-24 items-center justify-center rounded-2xl bg-[#F4F7F6]/80 p-3 shadow-sm">
+        <img src={item.image} alt={item.name} className="h-full w-full object-contain" />
+      </div>
+      <div className="flex flex-1 flex-col gap-1">
+        <p className="text-xl font-semibold text-[#1F3B2F]">{item.name}</p>
+        <p className="text-sm text-[#6A857C]">{item.namee}</p>
+        <div className="flex flex-wrap items-baseline gap-2">
+          <span className="text-2xl font-bold text-[#3B7CFF]">{item.price}</span>
+          <span className="text-[11px] font-semibold uppercase tracking-[0.3em] text-[#9AA9A4]">
+            {item.category} · {item.ratings}
+          </span>
+        </div>
+        <p className="text-sm text-[#4B5B56]">{item.description}</p>
+      </div>
+    </div>
+    <div className="mt-5 flex flex-col gap-3 sm:flex-row">
+      <button
+        type="button"
+        onClick={onView}
+        className="flex-1 rounded-full border border-[#3B7CFF] px-6 py-2 text-sm font-semibold text-[#1E3B86] transition hover:bg-[#3B7CFF] hover:text-white"
+      >
+        View details
+      </button>
+      <button
+        type="button"
+        onClick={onDelete}
+        className="flex-1 rounded-full bg-[#1F1F1F] px-6 py-2 text-sm font-semibold text-white transition hover:bg-black"
+      >
+        Delete item
+      </button>
+    </div>
+  </div>
+);
+
 type PopupVariant = "success" | "error" | "info";
 
 interface PopupState {
@@ -129,40 +174,12 @@ useEffect(() => {
           {itemCount > 0 ? (
             <div className="grid gap-6 sm:grid-cols-2">
               {activeItems.map((item) => (
-                <div key={item.itemId} className="flex flex-col gap-4 rounded-3xl bg-white p-5 shadow-md">
-                  <div className="flex items-start gap-4">
-                    <img
-                      src={item.image}
-                      alt={item.name}
-                      className="h-24 w-24 rounded-2xl bg-[#F4F7F6] object-contain"
-                    />
-                    <div className="space-y-1">
-                      <p className="text-lg font-semibold text-[#1F3B2F]">{item.name}</p>
-                      <p className="text-sm text-[#6A857C]">{item.namee}</p>
-                      <p className="text-xl font-bold text-[#8DB9FF]">{item.price}</p>
-                      <p className="text-xs uppercase tracking-wide text-[#9AA9A4]">
-                        {item.category} · {item.ratings}
-                      </p>
-                    </div>
-                  </div>
-                  <div className="text-sm text-[#4B5B56]">{item.description}</div>
-                  <div className="flex flex-wrap gap-3">
-                    <button
-                      type="button"
-                      onClick={() => handleViewItemDetails(item)}
-                      className="flex-1 rounded-2xl border border-[#8DB9FF] px-4 py-2 text-sm font-semibold text-[#1E3B86] transition hover:bg-[#8DB9FF] hover:text-white"
-                    >
-                      View details
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => handleDeleteItem(item)}
-                      className="flex-1 rounded-2xl border border-transparent bg-[#1F1F1F] px-4 py-2 text-sm font-semibold text-white transition hover:bg-black"
-                    >
-                      Delete item
-                    </button>
-                  </div>
-                </div>
+                <AdminItemCard
+                  key={item.itemId}
+                  item={item}
+                  onView={() => handleViewItemDetails(item)}
+                  onDelete={() => handleDeleteItem(item)}
+                />
               ))}
             </div>
           ) : (
