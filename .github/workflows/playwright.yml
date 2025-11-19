@@ -7,7 +7,7 @@ on:
   pull_request:
     branches:
       - BranchThree
-
+  
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -15,7 +15,7 @@ jobs:
     defaults:
       run:
         working-directory: shopora-frontend
-
+      
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -33,11 +33,3 @@ jobs:
 
       - name: Run Playwright tests
         run: npx playwright test
-
-      - name: Upload Playwright report
-        if: always()
-        uses: actions/upload-artifact@v3
-        with:
-          name: playwright-report
-          path: shopora-frontend/playwright-report/
-          if-no-files-found: ignore
