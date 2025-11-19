@@ -11,7 +11,12 @@ const statusStyles: Record<ShopRequestStatus, string> = {
 function AdminNotifications() {
   const navigate = useNavigate();
   const requests = useNotificationStore((state) => state.requests);
+  const updateRequestStatus = useNotificationStore((state) => state.updateRequestStatus);
   const sortedRequests = [...requests].reverse();
+
+  const handleDecision = (id: string, status: ShopRequestStatus) => {
+    updateRequestStatus(id, status);
+  };
 
   return (
     <div className="min-h-screen bg-[#F4F7F6] pb-16">
@@ -55,17 +60,24 @@ function AdminNotifications() {
                       {request.status}
                     </span>
                   </div>
-                  <div className="mt-4 flex flex-wrap gap-2">
-                    <button
-                      type="button"
-                      onClick={() =>
-                        navigate(`/admin/requests/${request.id}`, { state: { fromNotifications: true } })
-                      }
-                      className="rounded-2xl border border-[#8DB9FF] px-4 py-2 text-sm font-semibold text-[#1E3B86] transition hover:bg-[#8DB9FF] hover:text-white"
-                    >
-                      View details
-                    </button>
-                  </div>
+                  {request.status === "pending" && (
+                    <div className="mt-4 flex flex-wrap gap-2">
+                      <button
+                        type="button"
+                        onClick={() => handleDecision(request.id, "accepted")}
+                        className="rounded-2xl bg-[#16A34A] px-4 py-2 text-sm font-semibold text-white transition hover:bg-[#15803d]"
+                      >
+                        Accept
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => handleDecision(request.id, "declined")}
+                        className="rounded-2xl border border-[#DC2626] px-4 py-2 text-sm font-semibold text-[#DC2626] transition hover:bg-[#DC2626] hover:text-white"
+                      >
+                        Decline
+                      </button>
+                    </div>
+                  )}
                 </article>
               ))}
             </div>

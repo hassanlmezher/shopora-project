@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import logo from "../images/Logo.png";
 import AdminShopCard from "./AdminShopCard";
@@ -8,9 +9,16 @@ function AdminDashboard() {
   const navigate = useNavigate();
   const stores = useAdminStores((state) => state.stores);
   const totalStores = stores.length;
-  const pendingRequestCount = useNotificationStore((state) =>
-    state.requests.filter((request) => request.status === "pending").length
+  const requests = useNotificationStore((state) => state.requests);
+  const acceptedRequests = useMemo(
+    () => requests.filter((request) => request.status === "accepted"),
+    [requests]
   );
+  const pendingRequestCount = useMemo(
+    () => requests.filter((request) => request.status === "pending").length,
+    [requests]
+  );
+  const totalShopCount = totalStores + acceptedRequests.length;
 
   return (
     <div className="min-h-screen bg-[#F4F7F6] pb-16">
@@ -61,19 +69,32 @@ function AdminDashboard() {
               <p className="text-2xl font-bold text-[#1F3B2F]">Manage storefronts</p>
             </div>
             <span className="rounded-full bg-white px-4 py-2 text-sm font-semibold text-[#1E3B86] shadow-sm">
-              {totalStores} {totalStores === 1 ? "store" : "stores"}
+              {totalShopCount} {totalShopCount === 1 ? "store" : "stores"}
             </span>
           </div>
 
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            {totalStores > 0 ? (
-              stores.map((store) => (
-                <AdminShopCard
-                  key={store.id}
-                  storeName={store.name}
-                  onDetails={() => navigate(`/admin/stores/${store.id}`)}
-                />
-              ))
+            {totalShopCount > 0 ? (
+              <>
+                {stores.map((store) => (
+                  <AdminShopCard
+                    key={store.id}
+                    storeName={store.name}
+                    onDetails={() => navigate(`/admin/stores/${store.id}`)}
+                  />
+                ))}
+                {acceptedRequests.map((request) => (
+                  <AdminShopCard
+                    key={`request-${request.id}`}
+                    storeName={request.shopTitle}
+                    onDetails={() =>
+                      navigate(`/admin/requests/${request.id}`, {
+                        state: { fromNotifications: true },
+                      })
+                    }
+                  />
+                ))}
+              </>
             ) : (
               <div className="col-span-full rounded-3xl bg-white p-8 text-center text-[#1E3B86] shadow-sm">
                 All storefronts have been banned for now.

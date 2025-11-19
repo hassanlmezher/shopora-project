@@ -19,6 +19,7 @@ import useDashboardLayout from "../hooks/useDashboardLayout";
 import useNotificationStore, { EMPTY_USER_SHOP_ITEMS } from "../store/useNotificationStore";
 import Cart from "./Cart";
 import useFavoritesStore from "../store/useFavoritesStore";
+import useAuthStore from "../store/useAuthStore";
 
 function getUpdatedCatalogue() {
     return catalogue.map(item => {
@@ -64,8 +65,14 @@ function DashboardLoggedIn() {
     const notificationCount = useNotificationStore(
         (state) => Math.max(0, state.requests.length - state.latestReadRequestCount)
     );
+    const { userEmail } = useAuthStore();
+    const normalizedUserEmail = userEmail?.trim().toLowerCase() ?? "";
     const acceptedRequest = useNotificationStore((state) =>
-        state.requests.find((request) => request.status === "accepted")
+        state.requests.find(
+            (request) =>
+                request.status === "accepted" &&
+                request.ownerEmail?.toLowerCase() === normalizedUserEmail
+        )
     );
     const acceptedRequestItems = acceptedRequest?.items ?? EMPTY_USER_SHOP_ITEMS;
     const favoriteItems = useFavoritesStore((state) => state.items ?? []);

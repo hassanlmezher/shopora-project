@@ -12,7 +12,7 @@ function StoreCard({ image, name, onExplore }: StoreItem) {
       </p>
       <img className="mt-6 w-32 sm:w-36" src={image} alt={`${name} logo`} />
       <button
-        className="mt-8 w-full max-w-[140px] rounded-2xl bg-[#EAEAEA] py-2 font-bold transition duration-300 ease-in-out hover:bg-black hover:text-[#F7F0E0]"
+        className="mt-8 w-full max-w-[140px] rounded-2xl bg-blue-600 py-2 font-bold text-white transition duration-300 ease-in-out hover:bg-black hover:text-white"
         onClick={onExplore}
         type="button"
       >

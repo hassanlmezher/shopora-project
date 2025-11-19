@@ -81,6 +81,8 @@ function DashboardLogout() {
         }
         const creatorItems = acceptedRequestItems.map((item) => ({
             image: item.image || shirt,
+            id: item.id,
+            images: item.images || [item.image || shirt],
             name: item.name,
             namee: item.namee,
             price: item.price,

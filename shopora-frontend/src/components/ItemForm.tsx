@@ -1,6 +1,7 @@
 import { type FormEvent, useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import PopupMessage from "./PopupMessage";
+import useAuthStore from "../store/useAuthStore";
 import useNotificationStore from "../store/useNotificationStore";
 
 const categories = ["Shirts", "Headphones", "Shoes", "Accessories", "Tech", "Home", "Lifestyle"] as const;
@@ -8,8 +9,13 @@ const categories = ["Shirts", "Headphones", "Shoes", "Accessories", "Tech", "Hom
 function ItemForm() {
   const navigate = useNavigate();
   const addUserShopItem = useNotificationStore((state) => state.addUserShopItem);
-  const acceptedRequest = useNotificationStore((state) =>
-    state.requests.find((request) => request.status === "accepted")
+  const requests = useNotificationStore((state) => state.requests);
+  const { userEmail } = useAuthStore();
+  const normalizedUserEmail = userEmail?.trim().toLowerCase() ?? "";
+  const ownerAcceptedRequest = requests.find(
+    (request) =>
+      request.status === "accepted" &&
+      request.ownerEmail?.toLowerCase() === normalizedUserEmail
   );
   const [name, setName] = useState("");
   const [namee, setNamee] = useState("");
@@ -22,7 +28,7 @@ function ItemForm() {
   const [ratings, setRatings] = useState("(0)");
   const [popup, setPopup] = useState<{ message: string; variant: "success" | "error" } | null>(null);
 
-  const isSubmissionReady = Boolean(acceptedRequest);
+  const isSubmissionReady = Boolean(ownerAcceptedRequest);
 
   useEffect(() => {
     if (!popup) {
@@ -42,8 +48,11 @@ function ItemForm() {
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (!isSubmissionReady) {
-      setPopup({ message: "Get your shop approved before adding items.", variant: "error" });
+    if (!isSubmissionReady || !ownerAcceptedRequest) {
+      setPopup({
+        message: "Only the owner of an approved shop can add items.",
+        variant: "error",
+      });
       return;
     }
 
@@ -64,7 +73,7 @@ function ItemForm() {
       return;
     }
 
-    addUserShopItem(acceptedRequest!.id, {
+    addUserShopItem(ownerAcceptedRequest.id, {
       image: trimmedImages[0],
       images: trimmedImages,
       name: name.trim(),
@@ -72,7 +81,7 @@ function ItemForm() {
       price: formattedPrice || `$${numericPrice.toFixed(2)}`,
       priceValue: numericPrice,
       description: description.trim(),
-      by: acceptedRequest!.shopTitle,
+      by: ownerAcceptedRequest.shopTitle,
       category,
       ratings: ratings.trim() || "(0)",
       reviews: [],
@@ -174,7 +183,9 @@ function ItemForm() {
           </button>
           {!isSubmissionReady && (
             <p className="mt-2 text-xs text-[#4B5B56]">
-              Your shop must be approved before you can add items.
+              {userEmail
+                ? "Only the owner of an approved shop can add items."
+                : "Log in and submit a shop request before you can add items."}
             </p>
           )}
         </form>
