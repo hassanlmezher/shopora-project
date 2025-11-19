@@ -2,33 +2,16 @@ import { useEffect, useRef, useState } from "react";
 import auth from "../images/loginlogin.png";
 import { useNavigate } from 'react-router-dom';
 import PopupMessage from "./PopupMessage";
+import {
+  loadRegisteredUsers,
+  persistRegisteredUsers,
+  type RegisteredUser,
+} from "../utils/registeredUsers";
 
 type FieldErrors = {
   email?: string;
   password?: string;
   confirmPassword?: string;
-};
-
-interface RegisteredUser {
-  email: string;
-  password: string;
-}
-
-const USERS_STORAGE_KEY = "shopora-registered-users";
-
-const loadRegisteredUsers = (): RegisteredUser[] => {
-  if (typeof window === "undefined") {
-    return [];
-  }
-  try {
-    return JSON.parse(localStorage.getItem(USERS_STORAGE_KEY) ?? "[]");
-  } catch {
-    return [];
-  }
-};
-
-const persistRegisteredUsers = (users: RegisteredUser[]) => {
-  localStorage.setItem(USERS_STORAGE_KEY, JSON.stringify(users));
 };
 
 function Signup() {
@@ -100,8 +83,11 @@ function Signup() {
         return;
       }
 
-      const updatedUsers = [...existingUsers, { email: normalizedEmail, password: trimmedPassword }];
-      persistRegisteredUsers(updatedUsers);
+      const newUser: RegisteredUser = {
+        email: normalizedEmail,
+        password: trimmedPassword,
+      };
+      persistRegisteredUsers([...existingUsers, newUser]);
       setFieldErrors({});
       setPopupMessage("Signup successful! Redirecting to login.");
       setPopupVariant("success");
