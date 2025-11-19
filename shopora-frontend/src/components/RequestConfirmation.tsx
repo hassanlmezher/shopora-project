@@ -7,9 +7,10 @@ import type { ShopRequestStatus } from "../store/useNotificationStore";
 type ItemCardProps = {
   item: UserShopItem;
   onViewDetails?: () => void;
+  onDelete?: () => void;
 };
 
-function ItemCard({ item, onViewDetails }: ItemCardProps) {
+function ItemCard({ item, onViewDetails, onDelete }: ItemCardProps) {
   return (
     <div className="rounded-[32px] bg-white p-6 shadow-lg">
       <div className="flex flex-col gap-5 md:flex-row md:items-start">
@@ -38,8 +39,11 @@ function ItemCard({ item, onViewDetails }: ItemCardProps) {
         </button>
         <button
           type="button"
-          className="flex-1 rounded-full bg-[#1F1F1F] px-6 py-2 text-sm font-semibold text-white transition hover:bg-black"
-          disabled
+          className={`flex-1 rounded-full bg-[#1F1F1F] px-6 py-2 text-sm font-semibold text-white transition hover:bg-black ${
+            onDelete ? "" : "cursor-not-allowed opacity-40"
+          }`}
+          disabled={!onDelete}
+          onClick={onDelete}
         >
           Delete item
         </button>
@@ -54,9 +58,11 @@ function RequestConfirmation() {
   const { requestId } = useParams<{ requestId: string }>();
   const request = useNotificationStore((state) => state.requests.find((item) => item.id === requestId));
   const updateRequestStatus = useNotificationStore((state) => state.updateRequestStatus);
+  const deleteUserShopItem = useNotificationStore((state) => state.deleteUserShopItem);
   const [popup, setPopup] = useState<{ message: string; variant: "success" | "error" } | null>(null);
   const locationState = location.state as { fromNotifications?: boolean } | null;
   const sortedItems = useMemo(() => [...(request?.items ?? [])], [request?.items]);
+  const isPending = request?.status === "pending";
 
   const handleBack = () => {
     if (locationState?.fromNotifications) {
@@ -86,6 +92,25 @@ function RequestConfirmation() {
     });
   };
 
+  const handleBanShop = () => {
+    if (!request) {
+      return;
+    }
+    updateRequestStatus(request.id, "declined");
+    setPopup({ message: "Shop banned.", variant: "error" });
+    setTimeout(() => {
+      navigate("/adminDashboard");
+    }, 600);
+  };
+
+  const handleDeleteItem = (itemId: string) => {
+    if (!requestId) {
+      return;
+    }
+    deleteUserShopItem(requestId, itemId);
+    setPopup({ message: "Item deleted from this request.", variant: "success" });
+  };
+
   const handleViewItemDetails = (item: UserShopItem) => {
     navigate("/details", { state: { ...item, returnPath: location.pathname } });
   };
@@ -113,13 +138,22 @@ function RequestConfirmation() {
   return (
     <div className="min-h-screen bg-[#F4F7F6] px-4 py-10">
       <div className="mx-auto flex max-w-4xl flex-col gap-6">
-        <button
-          type="button"
-          onClick={handleBack}
-          className="flex w-fit items-center gap-3 rounded-full border border-gray-300 bg-white px-4 py-2 text-sm font-semibold text-[#1E3B86] shadow-sm transition hover:bg-[#8DB9FF] hover:text-white"
-        >
-          Back
-        </button>
+        <div className="flex flex-wrap items-center justify-between gap-4">
+          <button
+            type="button"
+            onClick={handleBack}
+            className="flex w-fit items-center gap-3 rounded-full border border-gray-300 bg-white px-4 py-2 text-sm font-semibold text-[#1E3B86] shadow-sm transition hover:bg-[#8DB9FF] hover:text-white"
+          >
+            Back
+          </button>
+          <button
+            type="button"
+            onClick={handleBanShop}
+            className="rounded-2xl border border-transparent bg-[#F87171] px-5 py-2 text-sm font-semibold text-white transition hover:bg-[#DC2626]"
+          >
+            Ban shop
+          </button>
+        </div>
 
         <section className="rounded-3xl border border-[#E1E9E4] bg-white p-8 shadow-xl">
           <div className="flex flex-wrap items-baseline justify-between gap-3">
@@ -157,24 +191,24 @@ function RequestConfirmation() {
             </div>
           </div>
 
-          <div className="mt-8 flex flex-wrap gap-3">
-            <button
-              type="button"
-              onClick={() => handleDecision("accepted")}
-              disabled={request.status !== "pending"}
-              className="rounded-2xl bg-[#16A34A] px-6 py-2 text-sm font-semibold text-white transition hover:bg-[#15803d] disabled:cursor-not-allowed disabled:opacity-40"
-            >
-              Accept
-            </button>
-            <button
-              type="button"
-              onClick={() => handleDecision("declined")}
-              disabled={request.status !== "pending"}
-              className="rounded-2xl border border-[#DC2626] px-6 py-2 text-sm font-semibold text-[#DC2626] transition hover:bg-[#DC2626] hover:text-white disabled:cursor-not-allowed disabled:opacity-40"
-            >
-              Decline
-            </button>
-          </div>
+          {isPending && (
+            <div className="mt-8 flex flex-wrap gap-3">
+              <button
+                type="button"
+                onClick={() => handleDecision("accepted")}
+                className="rounded-2xl bg-[#16A34A] px-6 py-2 text-sm font-semibold text-white transition hover:bg-[#15803d]"
+              >
+                Accept
+              </button>
+              <button
+                type="button"
+                onClick={() => handleDecision("declined")}
+                className="rounded-2xl border border-[#DC2626] px-6 py-2 text-sm font-semibold text-[#DC2626] transition hover:bg-[#DC2626] hover:text-white"
+              >
+                Decline
+              </button>
+            </div>
+          )}
         </section>
 
         <section className="space-y-4">
@@ -189,6 +223,7 @@ function RequestConfirmation() {
                   key={item.id}
                   item={item}
                   onViewDetails={() => handleViewItemDetails(item)}
+                  onDelete={() => handleDeleteItem(item.id)}
                 />
               ))}
             </div>
