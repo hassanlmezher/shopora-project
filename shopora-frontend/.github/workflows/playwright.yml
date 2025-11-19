@@ -1,13 +1,12 @@
 name: Playwright Tests
 
 on:
-    pull_request:
-        branches:
-            - main
-            - master
-            - develop
+  push:
+    branches: [ BranchThree ]
+  pull_request:
+    branches: [ BranchThree ]
 
-
+    
 jobs:
     test:
         runs-on: ubuntu-latest
