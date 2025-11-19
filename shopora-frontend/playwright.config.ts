@@ -1,27 +1,20 @@
 /// <reference types="node" />
 
-import { defineConfig } from "@playwright/test";
+import { defineConfig } from '@playwright/test';
+
 export default defineConfig({
-    testDir: './tests',
-    timeout: 30_000,
+  testDir: './tests',
 
-    use: {
-        baseURL: 'http://localhost:5173',
-        browserName: 'chromium',
-        headless: true,
-    },
+  webServer: {
+    command: 'npm run dev -- --port=5173',
+    url: 'http://localhost:5173',
+    reuseExistingServer: !process.env.CI,
+    timeout: 60000,
+  },
 
-    projects: [
-        {
-            name: 'chromium',
-            use: { browserName: 'chromium' },
-        },
-    ],
-
-    webServer: {
-        command: 'npm run dev -- --host 0.0.0.0 --port 5173',
-        port: 5173,
-        reuseExistingServer: !process.env.CI,
-        timeout: 120_000,
-    },
+  use: {
+    browserName: 'chromium',
+    headless: true,
+    trace: 'on-first-retry',
+  },
 });
