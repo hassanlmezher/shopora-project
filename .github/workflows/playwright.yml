@@ -3,10 +3,10 @@ name: Playwright Tests
 on:
   push:
     branches:
-      - BranchThree
+      - BranchFive
   pull_request:
     branches:
-      - BranchThree
+      - BranchFive
   
 jobs:
   test:
