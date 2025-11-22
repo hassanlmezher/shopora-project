@@ -4,9 +4,11 @@ on:
   push:
     branches:
       - BranchThree
+      - Main
   pull_request:
     branches:
       - BranchThree
+      - Main
   
 jobs:
   test:
