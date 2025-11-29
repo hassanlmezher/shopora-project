@@ -61,20 +61,7 @@ function ItemCard({
     };
   }, []);
 
-  useEffect(() => {
-    if (slides.length <= 1) {
-      setCurrentSlide(0);
-      return;
-    }
 
-    const slideInterval = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % slides.length);
-    }, 2000);
-
-    return () => {
-      clearInterval(slideInterval);
-    };
-  }, [slides.length]);
 
   const showToast = (message: string, variant: "success" | "error" | "info" = "info") => {
     setToast({ message, variant });
@@ -134,8 +121,8 @@ function ItemCard({
 
   return (
     <>
-      <article className="relative flex h-full w-full max-w-[320px] flex-col gap-5 rounded-[28px] border border-blue-100 bg-gradient-to-b from-blue-50 via-white to-white shadow-[0_25px_45px_rgba(59,124,255,0.18)]">
-        <div className="relative flex flex-1 flex-col gap-4 rounded-[24px] bg-white px-6 pb-6 pt-8">
+      <article className="relative flex h-full w-full max-w-[320px] flex-col gap-5 rounded-[28px] border border-blue-100 bg-linear-to-b from-blue-50 via-white to-white shadow-[0_25px_45px_rgba(59,124,255,0.18)]">
+        <div className="relative flex flex-1 flex-col gap-4 rounded-3xl bg-white px-6 pb-6 pt-8">
           <button
             type="button"
             onClick={handleToggleFavorite}
@@ -158,7 +145,7 @@ function ItemCard({
           </button>
           <div className="mx-auto flex h-32 w-32 items-center justify-center rounded-[26px] bg-blue-50 shadow-inner shadow-blue-500/20">
             <img
-              className="h-28 w-28 object-contain"
+              className="h-32 w-32 object-contain"
               src={displayedImage}
               alt={`${name} ${namee}`}
             />
@@ -166,9 +153,10 @@ function ItemCard({
           {slides.length > 1 && (
             <div className="flex justify-center gap-2">
               {slides.map((_, index) => (
-                <span
+                <button
                   key={index}
-                  className={`h-1.5 w-8 rounded-full transition-all ${currentSlide === index ? "bg-[#3875F0]" : "bg-blue-100"}`}
+                  onClick={() => setCurrentSlide(index)}
+                  className={`h-1.5 w-8 rounded-full transition-all cursor-pointer ${currentSlide === index ? "bg-[#3875F0]" : "bg-blue-100"}`}
                 />
               ))}
             </div>
@@ -203,13 +191,13 @@ function ItemCard({
         </div>
         <div className="flex gap-3 rounded-b-[28px] border-t border-blue-100 bg-white px-6 py-3">
           <button
-            className="flex-1 min-h-[42px] rounded-[20px] border border-transparent bg-[#3977fd] px-3 py-2 text-[11px] font-bold uppercase tracking-[0.1em] text-white shadow-md transition hover:bg-green-500 hover:text-white hover:scale-[1.01]"
+            className="flex-1 min-h-[42px] rounded-[20px] border border-transparent bg-[#3977fd] px-3 py-2 text-[11px] font-bold uppercase tracking-widest text-white shadow-md transition hover:bg-green-500 hover:text-white hover:scale-[1.01]"
             onClick={handleAddToCart}
           >
             Add to cart
           </button>
           <button
-            className="flex-1 min-h-[42px] rounded-[20px] border-2 border-[#3977fd] bg-white px-3 py-2 text-[11px] font-bold uppercase tracking-[0.1em] text-[#3977fd] transition hover:bg-black hover:text-white hover:border-none hover:scale-[1.01]"
+            className="flex-1 min-h-[42px] rounded-[20px] border-2 border-[#3977fd] bg-white px-3 py-2 text-[11px] font-bold uppercase tracking-widest text-[#3977fd] transition hover:bg-black hover:text-white hover:border-none hover:scale-[1.01]"
             onClick={handleDetailsClick}
           >
             Details

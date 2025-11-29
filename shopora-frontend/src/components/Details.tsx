@@ -135,7 +135,7 @@ function Details() {
 
   return (
     <div className="min-h-screen bg-slate-50 px-4 py-6 sm:px-6 md:px-10 lg:py-10">
-      <div className="mx-auto flex w-full max-w-5xl flex-col gap-5 rounded-[32px] border border-gray-200 bg-white p-5 shadow-xl">
+      <div className="mx-auto flex w-full max-w-5xl flex-col gap-5 rounded-4xl border border-gray-200 bg-white p-5 shadow-xl">
         <button
           type="button"
           onClick={handleBack}
@@ -145,7 +145,7 @@ function Details() {
         </button>
 
         <div className="grid items-start gap-6 lg:grid-cols-[minmax(0,1.3fr)_minmax(0,0.7fr)]">
-          <div className="flex flex-col items-center gap-4 rounded-3xl bg-gradient-to-b from-white via-slate-50 to-white p-6 text-center shadow-inner lg:items-start lg:text-left">
+          <div className="flex flex-col items-center gap-4 rounded-3xl bg-linear-to-b from-white via-slate-50 to-white p-6 text-center shadow-inner lg:items-start lg:text-left">
               <div className="w-full max-w-[360px] sm:max-w-[420px]">
                 {displayedImage && (
                   <img
