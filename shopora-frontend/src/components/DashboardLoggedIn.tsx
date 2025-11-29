@@ -307,6 +307,11 @@ function DashboardLoggedIn() {
             action: () => navigate("/profile"),
         },
         {
+            title: "Order History",
+            description: "View your past orders and track delivery status.",
+            action: () => navigate("/orders"),
+        },
+        {
             title: userAcceptedRequest ? "Your shop" : "Create shop",
             description: userAcceptedRequest
                 ? `Manage "${userAcceptedRequest.shopTitle}" items, pricing, and stock.`
