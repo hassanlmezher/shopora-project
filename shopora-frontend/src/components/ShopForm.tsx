@@ -83,7 +83,7 @@ function ShopForm() {
             onSubmit={handleSubmit}
             className="flex w-full flex-col items-center gap-5 rounded-3xl bg-white px-6 py-10 text-center shadow-xl sm:px-10 lg:px-16"
           >
-            <p className="text-2xl font-bold text-gray-400 sm:text-3xl">Ask the admin for a permission</p>
+            <p className="text-2xl font-bold text-[#2D54E0] sm:text-3xl">Ask the admin for a permission</p>
             <input
               type="text"
               value={shopTitle}
@@ -108,8 +108,8 @@ function ShopForm() {
             <button
               type="submit"
               disabled={!userEmail || hasActiveRequest}
-              className={`rounded-2xl px-10 py-3 font-bold text-white transition hover:bg-white hover:border-2 hover:border-[#8DB9FF] hover:text-[#8DB9FF] ${
-                !userEmail || hasActiveRequest ? "bg-[#B7CCFF] text-[#4C67A6] cursor-not-allowed" : "bg-[#8DB9FF]"
+              className={`rounded-2xl px-10 py-3 font-bold text-white transition hover:bg-white hover:border-2 hover:border-[#2D54E0] hover:text-[#2D54E0] ${
+                !userEmail || hasActiveRequest ? "bg-[#4C67A6] text-[#B7CCFF] cursor-not-allowed" : "bg-[#2D54E0]"
               }`}
             >
               Submit

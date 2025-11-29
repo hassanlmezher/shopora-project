@@ -177,7 +177,7 @@ function ItemForm() {
           <button
             type="submit"
             disabled={!isSubmissionReady}
-            className="mt-6 w-full rounded-2xl bg-[#8DB9FF] px-6 py-3 text-sm font-semibold text-white transition hover:bg-[#53b785] disabled:cursor-not-allowed disabled:opacity-60"
+            className="mt-6 w-full rounded-2xl bg-[#2D54E0] px-6 py-3 text-sm font-semibold text-white transition hover:bg-[#53b785] disabled:cursor-not-allowed disabled:opacity-60"
           >
             Save item
           </button>
