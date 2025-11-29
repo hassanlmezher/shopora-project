@@ -61,20 +61,7 @@ function ItemCard({
     };
   }, []);
 
-  useEffect(() => {
-    if (slides.length <= 1) {
-      setCurrentSlide(0);
-      return;
-    }
 
-    const slideInterval = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % slides.length);
-    }, 2000);
-
-    return () => {
-      clearInterval(slideInterval);
-    };
-  }, [slides.length]);
 
   const showToast = (message: string, variant: "success" | "error" | "info" = "info") => {
     setToast({ message, variant });
@@ -166,9 +153,10 @@ function ItemCard({
           {slides.length > 1 && (
             <div className="flex justify-center gap-2">
               {slides.map((_, index) => (
-                <span
+                <button
                   key={index}
-                  className={`h-1.5 w-8 rounded-full transition-all ${currentSlide === index ? "bg-[#3875F0]" : "bg-blue-100"}`}
+                  onClick={() => setCurrentSlide(index)}
+                  className={`h-1.5 w-8 rounded-full transition-all cursor-pointer ${currentSlide === index ? "bg-[#3875F0]" : "bg-blue-100"}`}
                 />
               ))}
             </div>
