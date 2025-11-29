@@ -18,6 +18,7 @@ import UserNotifications from './components/UserNotifications';
 import RequestConfirmation from './components/RequestConfirmation';
 import UserShop from './components/UserShop';
 import ItemForm from './components/ItemForm';
+import Orders from './components/Orders';
 
 function App() {
   return (
@@ -44,6 +45,7 @@ function App() {
           <Route path="/admin/requests/:requestId" element={<RequestConfirmation />} />
           <Route path="/my-shop" element={<UserShop />} />
           <Route path="/itemform" element={<ItemForm />} />
+          <Route path="/orders" element={<Orders />} />
         </Routes>
       </div>
     </Router>
