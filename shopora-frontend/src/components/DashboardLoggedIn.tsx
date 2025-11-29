@@ -860,41 +860,40 @@ function DashboardLoggedIn() {
                                     setIsSettingsExpanded((prev) => !prev);
                                 }
                             }}
-                            className={`flex w-full cursor-pointer flex-col gap-3 rounded-2xl border border-white/30 bg-white/10 px-4 ${
-                                isSettingsExpanded ? "py-6 text-left" : "py-3 items-center text-sm"
-                            } font-semibold text-white transition hover:border-white hover:bg-white/20`}
+                            className={`flex w-full cursor-pointer flex-col gap-0 rounded-2xl border border-white/30 bg-white/10 px-4 font-semibold text-white transition hover:border-white hover:bg-white/20`}
                         >
-                            <div className="flex w-full items-center justify-center gap-3">
-                                {!isSettingsExpanded && (
-                                    <>
-                                        <img className="w-6" src={settings} alt="settings logo" />
-                                        <span className="text-base">Settings</span>
-                                    </>
-                                )}
+                            <div className="flex w-full items-center gap-3 py-3">
+                                <img className="w-6" src={settings} alt="settings logo" />
+                                <span className="text-base">Settings</span>
                             </div>
-                            {isSettingsExpanded && (
-                                <div className="flex w-full flex-col gap-2">
-                                    {settingsDrawerItems.map((item) => (
-                                        <button
-                                            key={item.title}
-                                            type="button"
-                                            onClick={(event) => {
-                                                event.stopPropagation();
-                                                handleSettingsDrawerItemClick(item.action);
-                                            }}
-                                            className="flex w-full items-center justify-between rounded-2xl border border-white/30 bg-white/10 px-4 py-3 text-left text-sm font-semibold text-white transition hover:border-white hover:bg-white/20"
-                                        >
-                                            <span>{item.title}</span>
-                                            <span className="text-xs uppercase tracking-wide text-[#7CA6FF]">Go</span>
-                                        </button>
-                                    ))}
-                                </div>
-                            )}
+                            <div
+                                className={`flex w-full flex-col gap-2 overflow-hidden transition-[max-height,opacity] duration-200 ease-out ${isSettingsExpanded ? 'mt-2 mb-3' : ''}`}
+                                style={{
+                                    maxHeight: isSettingsExpanded ? `${(settingsDrawerItems.length - 1) * 8 + settingsDrawerItems.length * 80 + 50}px` : 0,
+                                    opacity: isSettingsExpanded ? 1 : 0,
+                                }}
+                                aria-hidden={!isSettingsExpanded}
+                            >
+                                {settingsDrawerItems.map((item) => (
+                                    <button
+                                        key={item.title}
+                                        type="button"
+                                        onClick={(event) => {
+                                            event.stopPropagation();
+                                            handleSettingsDrawerItemClick(item.action);
+                                        }}
+                                        className="flex w-full items-center justify-between rounded-2xl border border-white/30 bg-white/10 px-4 py-3 text-left text-sm font-semibold text-white transition hover:border-white hover:bg-white/20"
+                                    >
+                                        <span>{item.title}</span>
+                                        <span className="text-xs uppercase tracking-wide text-[#7CA6FF]">Go</span>
+                                    </button>
+                                ))}
+                            </div>
                         </div>
                     </div>
                 </nav>
                 <button
-                    className="flex w-full items-center h-10 justify-center gap-3 mt-[-11px] rounded-2xl bg-white/90 px-4 py-3 text-sm font-bold text-[#DDC59E] transition hover:bg-white"
+                    className="flex w-full items-center h-10 justify-center gap-3 mt-[-16px] rounded-2xl bg-white/90 px-4 py-3 text-sm font-bold text-[#DDC59E] transition hover:bg-white"
                     onClick={() => navigate('/login')}
                 >
                     <img className="w-6" src={logout} alt="logout logo" />
