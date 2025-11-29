@@ -17,9 +17,11 @@ import type { ChangeEvent, FocusEvent as ReactFocusEvent, KeyboardEvent as React
 import useCartStore from "../store/useCartStore";
 import useDashboardLayout from "../hooks/useDashboardLayout";
 import useNotificationStore, { EMPTY_USER_SHOP_ITEMS } from "../store/useNotificationStore";
+import type { ShopRequestNotification } from "../store/useNotificationStore";
 import Cart from "./Cart";
 import useFavoritesStore from "../store/useFavoritesStore";
 import useAuthStore from "../store/useAuthStore";
+import useAdminStores from "../store/useAdminStores";
 
 function getUpdatedCatalogue() {
     return catalogue.map(item => {
@@ -31,6 +33,9 @@ function getUpdatedCatalogue() {
         return item;
     });
 }
+
+const selectBannedStores = (state: { stores: { banned?: boolean; name: string }[] }) =>
+  state.stores.filter((store) => store.banned).map((store) => store.name.toLowerCase());
 
 const ALL_CATEGORIES = "All Categories";
 
@@ -73,10 +78,11 @@ function DashboardLoggedIn() {
                 request.status === "accepted" &&
                 request.ownerEmail?.toLowerCase() === normalizedUserEmail
         )
-    );
-    const globalAcceptedRequest = useNotificationStore((state) =>
-        state.requests.find((request) => request.status === "accepted")
-    );
+    ) as ShopRequestNotification | undefined;
+    const globalAcceptedRequest = useMemo(() =>
+        useNotificationStore.getState().requests.find((request) => request.status === "accepted"),
+        []
+    ) as ShopRequestNotification | undefined;
     const globalAcceptedRequestItems = globalAcceptedRequest?.items ?? EMPTY_USER_SHOP_ITEMS;
     const favoriteItems = useFavoritesStore((state) => state.items ?? []);
     const favoriteIds = useMemo(() => favoriteItems.map((item) => item.id), [favoriteItems]);
@@ -105,11 +111,15 @@ function DashboardLoggedIn() {
         };
     }, []);
 
+    const adminStores = useAdminStores();
+    const bannedStores = useMemo(() => adminStores.stores.filter((store) => store.banned).map((store) => store.name.toLowerCase()), [adminStores.stores]);
+
     const catalogueWithUserItems = useMemo(() => {
+        const filteredCatalogue = updatedCatalogue.filter((item) => !bannedStores.includes(item.by.toLowerCase()));
         if (!globalAcceptedRequestItems.length) {
-            return updatedCatalogue;
+            return filteredCatalogue;
         }
-        const creatorItems = globalAcceptedRequestItems.map((item) => ({
+        const creatorItems = globalAcceptedRequestItems.map((item: any) => ({
             id: item.id,
             image: item.image || shirt,
             images: item.images,
@@ -123,8 +133,8 @@ function DashboardLoggedIn() {
             category: item.category || "Creator",
             reviews: item.reviews ?? [],
         }));
-        return [...updatedCatalogue, ...creatorItems];
-    }, [updatedCatalogue, globalAcceptedRequestItems]);
+        return [...filteredCatalogue, ...creatorItems];
+    }, [updatedCatalogue, globalAcceptedRequestItems, bannedStores]);
 
     const dynamicPriceBounds = useMemo(() => {
         const allPrices = catalogueWithUserItems.map((item) => item.priceValue);
@@ -148,7 +158,7 @@ function DashboardLoggedIn() {
             }
             return updated;
         });
-    }, [dynamicPriceBounds]);
+    }, [dynamicPriceBounds.min, dynamicPriceBounds.max]);
 
     const filteredItems = useMemo(() => {
         const normalized = searchTerm.trim().toLowerCase();
@@ -305,6 +315,11 @@ function DashboardLoggedIn() {
             title: "Profile page",
             description: "Update your name, avatar, and account preferences.",
             action: () => navigate("/profile"),
+        },
+        {
+            title: "Order History",
+            description: "View your past orders and track delivery status.",
+            action: () => navigate("/orders"),
         },
         {
             title: userAcceptedRequest ? "Your shop" : "Create shop",

@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import CartCard from "./CartCard";
 import useCartStore from "../store/useCartStore";
 import useOrderStore from "../store/useOrderStore";
+import useAdminStores, { type AdminStore } from "../store/useAdminStores";
 import PopupMessage from "./PopupMessage";
 
 const formatCurrency = (value: number) =>
@@ -45,17 +46,19 @@ function Cart({ onClose }: CartProps) {
     const items = useCartStore((state) => state.items);
     const clearCart = useCartStore((state) => state.clear);
     const addOrders = useOrderStore((state) => state.addOrders);
+    const bannedStores = useAdminStores((state: { stores: AdminStore[] }) => state.stores.filter((store: AdminStore) => store.banned).map((store: AdminStore) => store.name.toLowerCase()));
+    const filteredItems = items.filter((item) => !bannedStores.includes(item.by.toLowerCase()));
     const [shippingOption, setShippingOption] = useState<ShippingOption>("pickup");
     const [toast, setToast] = useState<{ message: string; variant: "success" | "error" } | null>(null);
     const hideTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
     const subtotal = useMemo(
         () =>
-            items.reduce(
+            filteredItems.reduce(
                 (total, item) => total + item.price * item.quantity,
                 0
             ),
-        [items]
+        [filteredItems]
     );
 
     const shippingCost = shippingOption === "pickup" ? 0 : 9.99;
@@ -85,10 +88,10 @@ function Cart({ onClose }: CartProps) {
     };
 
     const handleCheckout = () => {
-        if (!items.length) {
+        if (!filteredItems.length) {
             return;
         }
-        addOrders(items);
+        addOrders(filteredItems);
         clearCart();
         showToast("Order confirmed! Review once you receive it.", "success");
     };
@@ -191,7 +194,7 @@ function Cart({ onClose }: CartProps) {
                             {itemsSection}
                         </div>
 
-                        {items.length > 0 && (
+                        {filteredItems.length > 0 && (
                             <div className="space-y-4 rounded-[28px] bg-white/95 p-5 shadow-lg">
                                 <p className="text-sm font-semibold uppercase tracking-[0.4em] text-slate-400">
                                     Shipping
@@ -237,8 +240,8 @@ function Cart({ onClose }: CartProps) {
                 <div className="mt-10 grid gap-8 lg:grid-cols-[1.5fr_0.7fr]">
                     <section className="rounded-4xl bg-white/90 p-6 shadow-xl">
                         <div className="flex items-center justify-between pb-3">
-                            <h2 className="text-xl font-semibold text-slate-700">Items ({items.length})</h2>
-                            {items.length > 0 && (
+                            <h2 className="text-xl font-semibold text-slate-700">Items ({filteredItems.length})</h2>
+                            {filteredItems.length > 0 && (
                                 <button
                                     type="button"
                                     onClick={() => {
@@ -256,7 +259,7 @@ function Cart({ onClose }: CartProps) {
                         </div>
                     </section>
 
-                    {items.length > 0 && (
+                    {filteredItems.length > 0 && (
                         <section className="flex flex-col gap-6 rounded-4xl bg-white/90 p-6 shadow-xl">
                             <div className="space-y-4">
                                 <p className="text-sm font-semibold uppercase tracking-[0.4em] text-slate-500">Shipping</p>

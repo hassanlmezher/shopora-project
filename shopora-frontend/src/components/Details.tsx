@@ -34,7 +34,6 @@ function Details() {
     return image ? [image] : [];
   }, [image, images]);
   const [currentSlide, setCurrentSlide] = useState(0);
-  const displayedImage = slides[currentSlide] ?? image ?? "";
 
   const [newReview, setNewReview] = useState("");
   const [selectedRating, setSelectedRating] = useState(5);

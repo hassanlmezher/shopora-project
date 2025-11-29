@@ -18,7 +18,8 @@ function Stores() {
   const navigate = useNavigate();
   const { isLoggedIn } = useAuthStore();
   const stores = useAdminStores((state) => state.stores);
-  const storefronts = stores.map((store) => ({
+  const activeStores = stores.filter((store) => !store.banned);
+  const storefronts = activeStores.map((store) => ({
     ...store,
     image: storeImages[store.id] ?? profileImage,
   }));
