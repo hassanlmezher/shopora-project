@@ -147,13 +147,18 @@ function Details() {
         <div className="grid items-start gap-6 lg:grid-cols-[minmax(0,1.3fr)_minmax(0,0.7fr)]">
           <div className="flex flex-col items-center gap-4 rounded-3xl bg-linear-to-b from-white via-slate-50 to-white p-6 text-center shadow-inner lg:items-start lg:text-left">
               <div className="w-full max-w-[360px] sm:max-w-[420px]">
-                {displayedImage && (
-                  <img
-                    src={displayedImage}
-                    alt={`${name ?? ""} ${namee ?? ""} pic`}
-                    className="w-70 rounded-3xl object-contain shadow-2xl"
-                  />
-                )}
+                <div className="relative w-70 h-70">
+                  {slides.map((slide, index) => (
+                    <img
+                      key={slide}
+                      src={slide}
+                      alt={`${name ?? ""} ${namee ?? ""} pic ${index + 1}`}
+                      className={`absolute inset-0 w-full h-full rounded-3xl object-contain shadow-2xl transition-opacity duration-500 ease-in-out ${
+                        index === currentSlide ? "opacity-100" : "opacity-0"
+                      }`}
+                    />
+                  ))}
+                </div>
               </div>
               {slides.length > 1 && (
                 <div className="flex justify-center gap-2 pt-2">
