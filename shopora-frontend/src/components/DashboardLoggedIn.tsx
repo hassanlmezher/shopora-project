@@ -689,204 +689,208 @@ function DashboardLoggedIn() {
                     ref={sidebarNavRef}
                     className={`flex flex-1 flex-col gap-4 overflow-y-auto pr-1 max-h-[calc(100vh-6rem)] ${isSettingsExpanded ? "pb-8" : "pb-4"}`}
                 >
-                    <button
-                        className="flex w-full items-center gap-3 rounded-2xl bg-white px-4 py-3 text-left font-bold text-[#E6C79A] shadow-lg transition hover:-translate-y-0.5 hover:shadow-xl"
-                        onClick={() => navigate('/DashboardLoggedIn')}
-                    >
-                        <img className="w-6" src={home} alt="home logo" />
-                        Home
-                    </button>
-                    <div
-                        className={`flex w-full items-center gap-3 rounded-2xl px-4 py-3 text-sm font-semibold transition focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 ${isSearchExpanded ? "bg-white text-[#7CA6FF] shadow-lg cursor-text" : "bg-white/10 text-white hover:bg-white/20 cursor-pointer"}`}
-                        onClick={expandSearch}
-                        onFocus={expandSearch}
-                        onKeyDown={handleSearchContainerKeyDown}
-                        role="button"
-                        tabIndex={0}
-                        aria-expanded={isSearchExpanded}
-                    >
-                        <img className="w-6" src={search} alt="search logo" />
-                        {isSearchExpanded ? (
-                            <input
-                                ref={searchInputRef}
-                                value={searchTerm}
-                                onChange={(event) => setSearchTerm(event.target.value)}
-                                onBlur={handleSearchBlur}
-                                onKeyDown={handleSearchInputKeyDown}
-                                onClick={(event) => event.stopPropagation()}
-                                type="search"
-                                placeholder="Type to search..."
-                                className="flex-1 bg-transparent text-base font-semibold text-[#7CA6FF] placeholder-[#9DB7AA] focus:outline-none"
-                            />
-                        ) : (
-                            <span className="font-bold text-base">Search</span>
-                        )}
-                    </div>
-                    <div
-                        className={`relative flex w-full items-center gap-3 rounded-2xl px-4 py-3 transition focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 ${isCategoriesExpanded ? "bg-white text-[#7CA6FF] shadow-lg" : "bg-white/10 text-white hover:bg-white/20 cursor-pointer"}`}
-                        onClick={(event) => {
-                            event.currentTarget.focus();
-                            toggleCategories();
-                        }}
-                        onBlur={handleCategoriesBlur}
-                        onKeyDown={handleCategoriesKeyDown}
-                        role="button"
-                        tabIndex={0}
-                        aria-haspopup="listbox"
-                        aria-expanded={isCategoriesExpanded}
-                        aria-label="Filter by product category"
-                    >
-                        <img className="w-6" src={categories} alt="categories logo" />
-                        <div className="flex flex-1 items-center justify-between">
-                            <span className="whitespace-nowrap text-sm font-bold">
-                                {selectedCategory}
-                            </span>
-                            <svg
-                                className={`h-3 w-3 transform transition-transform duration-200 ${isCategoriesExpanded ? "rotate-180" : ""}`}
-                                viewBox="0 0 12 8"
-                                xmlns="http://www.w3.org/2000/svg"
-                                aria-hidden="true"
-                            >
-                                <path
-                                    d="M1 1.333 6 6.333 11 1.333"
-                                    stroke="currentColor"
-                                    strokeWidth="1.5"
-                                    fill="none"
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                />
-                            </svg>
-                        </div>
-                        {isCategoriesExpanded && (
-                            <ul
-                                className="absolute left-0 top-full z-10 mt-2 w-full overflow-hidden rounded-2xl bg-white py-1 text-[#7CA6FF] shadow-xl ring-1 ring-[#CDE6D6]"
-                                role="listbox"
-                            >
-                                {categoryOptions.map(option => {
-                                    const isActive = option === selectedCategory;
-                                    return (
-                                        <li key={option}>
-                                            <button
-                                                type="button"
-                                                className={`w-full px-4 py-2 text-left text-sm font-semibold transition-colors duration-150 ${isActive ? "bg-[#7CA6FF] text-white" : "hover:bg-[#F3FBF6]"}`}
-                                                onClick={(event) => {
-                                                    event.stopPropagation();
-                                                    handleCategorySelect(option);
-                                                }}
-                                                role="option"
-                                                aria-selected={isActive}
-                                            >
-                                                {option}
-                                            </button>
-                                        </li>
-                                    );
-                                })}
-                            </ul>
-                        )}
-                    </div>
-                    <div
-                        ref={priceContainerRef}
-                        className={`flex w-full items-center gap-3 rounded-2xl px-4 py-3 transition focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 ${isPriceExpanded ? "bg-white text-[#7CA6FF] shadow-lg cursor-text" : "bg-white/10 text-white hover:bg-white/20 cursor-pointer"}`}
-                        onClick={handlePriceContainerClick}
-                        onFocus={expandPrice}
-                        onBlur={handlePriceBlur}
-                        onKeyDown={handlePriceContainerKeyDown}
-                        role="button"
-                        tabIndex={0}
-                        aria-expanded={isPriceExpanded}
-                        aria-label="Filter by price range"
-                    >
-                        <img className="w-8" src={price} alt="price range logo" />
-                        {isPriceExpanded ? (
-                            <div
-                                className="flex w-full items-center gap-2"
-                                onClick={(event) => event.stopPropagation()}
-                                role="group"
-                                aria-label="Price range inputs"
-                            >
+                    <div className="flex flex-col gap-2">
+                        <button
+                            className="flex w-full items-center gap-3 rounded-2xl bg-white px-4 py-3 text-left font-bold text-[#E6C79A] shadow-lg transition hover:-translate-y-0.5 hover:shadow-xl"
+                            onClick={() => navigate('/DashboardLoggedIn')}
+                        >
+                            <img className="w-6" src={home} alt="home logo" />
+                            Home
+                        </button>
+                        <div
+                            className={`flex w-full items-center gap-3 rounded-2xl px-4 py-3 text-sm font-semibold transition focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 ${isSearchExpanded ? "bg-white text-[#7CA6FF] shadow-lg cursor-text" : "bg-white/10 text-white hover:bg-white/20 cursor-pointer"}`}
+                            onClick={expandSearch}
+                            onFocus={expandSearch}
+                            onKeyDown={handleSearchContainerKeyDown}
+                            role="button"
+                            tabIndex={0}
+                            aria-expanded={isSearchExpanded}
+                        >
+                            <img className="w-6" src={search} alt="search logo" />
+                            {isSearchExpanded ? (
                                 <input
-                                    ref={minPriceInputRef}
-                                    value={priceDraft.min}
-                                    onChange={handleMinPriceChange}
-                                    onBlur={handleMinPriceBlur}
-                                    onKeyDown={handlePriceInputKeyDown}
-                                    type="number"
-                                    min={dynamicPriceBounds.min}
-                                    max={dynamicPriceBounds.max}
-                                    className="w-24 rounded-xl border border-[#CDE6D6] bg-white px-3 py-1 text-sm font-semibold text-[#7CA6FF] focus:border-transparent focus:outline-none focus:ring-2 focus:ring-[#7CA6FF]"
+                                    ref={searchInputRef}
+                                    value={searchTerm}
+                                    onChange={(event) => setSearchTerm(event.target.value)}
+                                    onBlur={handleSearchBlur}
+                                    onKeyDown={handleSearchInputKeyDown}
+                                    onClick={(event) => event.stopPropagation()}
+                                    type="search"
+                                    placeholder="Type to search..."
+                                    className="flex-1 bg-transparent text-base font-semibold text-[#7CA6FF] placeholder-[#9DB7AA] focus:outline-none"
                                 />
-                                <span className="text-[#7CA6FF] font-semibold">-</span>
-                                <input
-                                    ref={maxPriceInputRef}
-                                    value={priceDraft.max}
-                                    onChange={handleMaxPriceChange}
-                                    onBlur={handleMaxPriceBlur}
-                                    onKeyDown={handlePriceInputKeyDown}
-                                    type="number"
-                                    min={dynamicPriceBounds.min}
-                                    max={dynamicPriceBounds.max}
-                                    className="w-24 rounded-xl border border-[#CDE6D6] bg-white px-3 py-1 text-sm font-semibold text-[#7CA6FF] focus:border-transparent focus:outline-none focus:ring-2 focus:ring-[#7CA6FF]"
-                                />
-                            </div>
-                        ) : (
-                            <span className="text-base font-bold">Price Range</span>
-                        )}
-                    </div>
-                    <div
-                        role="button"
-                        tabIndex={0}
-                        aria-pressed={showFavoritesOnly}
-                        aria-label="Toggle favorites filter"
-                        onClick={() => setShowFavoritesOnly((prev) => !prev)}
-                        onKeyDown={handleFavoritesKeyDown}
-                        className={`flex w-full items-center gap-3 rounded-2xl px-4 py-3 transition focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 ${showFavoritesOnly ? "bg-white text-[#7CA6FF] shadow-lg cursor-pointer" : "bg-white/10 text-white hover:bg-white/20 cursor-pointer"}`}
-                    >
-                        <img className="w-6" src={heart} alt="favorites logo" />
-                        <span className="font-bold text-base">
-                            {showFavoritesOnly ? "Favorites only" : "Favorites"}
-                        </span>
-                    </div>
-                    <div
-                        role="button"
-                        tabIndex={0}
-                        aria-expanded={isSettingsExpanded}
-                        onClick={() => setIsSettingsExpanded((prev) => !prev)}
-                        onKeyDown={(event) => {
-                            if (event.key === "Enter" || event.key === " ") {
-                                event.preventDefault();
-                                setIsSettingsExpanded((prev) => !prev);
-                            }
-                        }}
-                        className={`flex w-full cursor-pointer flex-col gap-3 rounded-2xl border border-white/30 bg-white/10 px-4 ${
-                            isSettingsExpanded ? "py-6 text-left" : "py-3 items-center text-sm"
-                        } font-semibold text-white transition hover:border-white hover:bg-white/20`}
-                    >
-                        <div className="flex w-full items-center justify-center gap-3">
-                            {!isSettingsExpanded && (
-                                <>
-                                    <img className="w-6" src={settings} alt="settings logo" />
-                                    <span className="text-base">Settings</span>
-                                </>
+                            ) : (
+                                <span className="font-bold text-base">Search</span>
                             )}
                         </div>
-                        {isSettingsExpanded && (
-                            <div className="flex w-full flex-col gap-2">
-                                {settingsDrawerItems.map((item) => (
-                                    <button
-                                        key={item.title}
-                                        type="button"
-                                        onClick={(event) => {
-                                            event.stopPropagation();
-                                            handleSettingsDrawerItemClick(item.action);
-                                        }}
-                                        className="flex w-full items-center justify-between rounded-2xl border border-white/30 bg-white/10 px-4 py-3 text-left text-sm font-semibold text-white transition hover:border-white hover:bg-white/20"
-                                    >
-                                        <span>{item.title}</span>
-                                        <span className="text-xs uppercase tracking-wide text-[#7CA6FF]">Go</span>
-                                    </button>
-                                ))}
+                        <div
+                            className={`relative flex w-full items-center gap-3 rounded-2xl px-4 py-3 transition focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 ${isCategoriesExpanded ? "bg-white text-[#7CA6FF] shadow-lg" : "bg-white/10 text-white hover:bg-white/20 cursor-pointer"}`}
+                            onClick={(event) => {
+                                event.currentTarget.focus();
+                                toggleCategories();
+                            }}
+                            onBlur={handleCategoriesBlur}
+                            onKeyDown={handleCategoriesKeyDown}
+                            role="button"
+                            tabIndex={0}
+                            aria-haspopup="listbox"
+                            aria-expanded={isCategoriesExpanded}
+                            aria-label="Filter by product category"
+                        >
+                            <img className="w-6" src={categories} alt="categories logo" />
+                            <div className="flex flex-1 items-center justify-between">
+                                <span className="whitespace-nowrap text-sm font-bold">
+                                    {selectedCategory}
+                                </span>
+                                <svg
+                                    className={`h-3 w-3 transform transition-transform duration-200 ${isCategoriesExpanded ? "rotate-180" : ""}`}
+                                    viewBox="0 0 12 8"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    aria-hidden="true"
+                                >
+                                    <path
+                                        d="M1 1.333 6 6.333 11 1.333"
+                                        stroke="currentColor"
+                                        strokeWidth="1.5"
+                                        fill="none"
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                    />
+                                </svg>
                             </div>
-                        )}
+                            {isCategoriesExpanded && (
+                                <ul
+                                    className="absolute left-0 top-full z-10 mt-2 w-full overflow-hidden rounded-2xl bg-white py-1 text-[#7CA6FF] shadow-xl ring-1 ring-[#CDE6D6]"
+                                    role="listbox"
+                                >
+                                    {categoryOptions.map(option => {
+                                        const isActive = option === selectedCategory;
+                                        return (
+                                            <li key={option}>
+                                                <button
+                                                    type="button"
+                                                    className={`w-full px-4 py-2 text-left text-sm font-semibold transition-colors duration-150 ${isActive ? "bg-[#7CA6FF] text-white" : "hover:bg-[#F3FBF6]"}`}
+                                                    onClick={(event) => {
+                                                        event.stopPropagation();
+                                                        handleCategorySelect(option);
+                                                    }}
+                                                    role="option"
+                                                    aria-selected={isActive}
+                                                >
+                                                    {option}
+                                                </button>
+                                            </li>
+                                        );
+                                    })}
+                                </ul>
+                            )}
+                        </div>
+                        <div
+                            ref={priceContainerRef}
+                            className={`flex w-full items-center gap-3 rounded-2xl px-4 py-3 transition focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 ${isPriceExpanded ? "bg-white text-[#7CA6FF] shadow-lg cursor-text" : "bg-white/10 text-white hover:bg-white/20 cursor-pointer"}`}
+                            onClick={handlePriceContainerClick}
+                            onFocus={expandPrice}
+                            onBlur={handlePriceBlur}
+                            onKeyDown={handlePriceContainerKeyDown}
+                            role="button"
+                            tabIndex={0}
+                            aria-expanded={isPriceExpanded}
+                            aria-label="Filter by price range"
+                        >
+                            <img className="w-8" src={price} alt="price range logo" />
+                            {isPriceExpanded ? (
+                                <div
+                                    className="flex w-full items-center gap-2"
+                                    onClick={(event) => event.stopPropagation()}
+                                    role="group"
+                                    aria-label="Price range inputs"
+                                >
+                                    <input
+                                        ref={minPriceInputRef}
+                                        value={priceDraft.min}
+                                        onChange={handleMinPriceChange}
+                                        onBlur={handleMinPriceBlur}
+                                        onKeyDown={handlePriceInputKeyDown}
+                                        type="number"
+                                        min={dynamicPriceBounds.min}
+                                        max={dynamicPriceBounds.max}
+                                        className="w-24 rounded-xl border border-[#CDE6D6] bg-white px-3 py-1 text-sm font-semibold text-[#7CA6FF] focus:border-transparent focus:outline-none focus:ring-2 focus:ring-[#7CA6FF]"
+                                    />
+                                    <span className="text-[#7CA6FF] font-semibold">-</span>
+                                    <input
+                                        ref={maxPriceInputRef}
+                                        value={priceDraft.max}
+                                        onChange={handleMaxPriceChange}
+                                        onBlur={handleMaxPriceBlur}
+                                        onKeyDown={handlePriceInputKeyDown}
+                                        type="number"
+                                        min={dynamicPriceBounds.min}
+                                        max={dynamicPriceBounds.max}
+                                        className="w-24 rounded-xl border border-[#CDE6D6] bg-white px-3 py-1 text-sm font-semibold text-[#7CA6FF] focus:border-transparent focus:outline-none focus:ring-2 focus:ring-[#7CA6FF]"
+                                    />
+                                </div>
+                            ) : (
+                                <span className="text-base font-bold">Price Range</span>
+                            )}
+                        </div>
+                        <div
+                            role="button"
+                            tabIndex={0}
+                            aria-pressed={showFavoritesOnly}
+                            aria-label="Toggle favorites filter"
+                            onClick={() => setShowFavoritesOnly((prev) => !prev)}
+                            onKeyDown={handleFavoritesKeyDown}
+                            className={`flex w-full items-center gap-3 rounded-2xl px-4 py-3 transition focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 ${showFavoritesOnly ? "bg-white text-[#7CA6FF] shadow-lg cursor-pointer" : "bg-white/10 text-white hover:bg-white/20 cursor-pointer"}`}
+                        >
+                            <img className="w-6" src={heart} alt="favorites logo" />
+                            <span className="font-bold text-base">
+                                {showFavoritesOnly ? "Favorites only" : "Favorites"}
+                            </span>
+                        </div>
+                    </div>
+                    <div className="mt-6">
+                        <div
+                            role="button"
+                            tabIndex={0}
+                            aria-expanded={isSettingsExpanded}
+                            onClick={() => setIsSettingsExpanded((prev) => !prev)}
+                            onKeyDown={(event) => {
+                                if (event.key === "Enter" || event.key === " ") {
+                                    event.preventDefault();
+                                    setIsSettingsExpanded((prev) => !prev);
+                                }
+                            }}
+                            className={`flex w-full cursor-pointer flex-col gap-3 rounded-2xl border border-white/30 bg-white/10 px-4 ${
+                                isSettingsExpanded ? "py-6 text-left" : "py-3 items-center text-sm"
+                            } font-semibold text-white transition hover:border-white hover:bg-white/20`}
+                        >
+                            <div className="flex w-full items-center justify-center gap-3">
+                                {!isSettingsExpanded && (
+                                    <>
+                                        <img className="w-6" src={settings} alt="settings logo" />
+                                        <span className="text-base">Settings</span>
+                                    </>
+                                )}
+                            </div>
+                            {isSettingsExpanded && (
+                                <div className="flex w-full flex-col gap-2">
+                                    {settingsDrawerItems.map((item) => (
+                                        <button
+                                            key={item.title}
+                                            type="button"
+                                            onClick={(event) => {
+                                                event.stopPropagation();
+                                                handleSettingsDrawerItemClick(item.action);
+                                            }}
+                                            className="flex w-full items-center justify-between rounded-2xl border border-white/30 bg-white/10 px-4 py-3 text-left text-sm font-semibold text-white transition hover:border-white hover:bg-white/20"
+                                        >
+                                            <span>{item.title}</span>
+                                            <span className="text-xs uppercase tracking-wide text-[#7CA6FF]">Go</span>
+                                        </button>
+                                    ))}
+                                </div>
+                            )}
+                        </div>
                     </div>
                 </nav>
                 <button
