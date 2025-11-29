@@ -53,7 +53,7 @@ function AdminDashboard() {
             <button
               type="button"
               onClick={() => navigate("/login")}
-              className="rounded-2xl border border-transparent bg-[#8DB9FF] px-5 py-2 font-bold text-white transition hover:border-[#8DB9FF] hover:bg-white hover:text-[#8DB9FF]"
+              className="rounded-2xl border border-transparent bg-[#2D54E0] px-5 py-2 font-bold text-white transition hover:border-[#2D54E0] hover:bg-white hover:text-[#2D54E0]"
             >
               Logout
             </button>
