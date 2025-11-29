@@ -84,11 +84,22 @@ const useNotificationStore = create<NotificationStore>()(
         latestReadRequestCount: state.requests.length,
       })),
       updateRequestStatus: (id, status) =>
-        set((state) => ({
-          requests: state.requests.map((request) =>
+        set((state) => {
+          const updatedRequests = state.requests.map((request) =>
             request.id === id ? { ...request, status } : request
-          ),
-        })),
+          );
+          // If the status is "accepted", add the shop to admin stores
+          if (status === "accepted") {
+            const acceptedRequest = updatedRequests.find((request) => request.id === id);
+            if (acceptedRequest) {
+              // Import useAdminStores here to avoid circular dependency
+              import("../store/useAdminStores").then(({ default: useAdminStores }) => {
+                useAdminStores.getState().addUserShop(acceptedRequest.shopTitle);
+              });
+            }
+          }
+          return { requests: updatedRequests };
+        }),
       addUserShopItem: (requestId, item) =>
         set((state) => ({
           requests: state.requests.map((request) =>

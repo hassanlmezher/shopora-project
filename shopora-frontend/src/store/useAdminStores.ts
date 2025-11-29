@@ -30,6 +30,7 @@ const buildItemsMap = (): ItemsByStore => {
 interface AdminStoreState {
   stores: AdminStore[];
   itemsByStore: ItemsByStore;
+  addUserShop: (shopTitle: string) => void;
   removeStore: (storeId: string) => void;
   toggleBanStore: (storeId: string) => void;
   removeItem: (storeId: string, itemId: string) => void;
@@ -43,6 +44,24 @@ const initialItems = buildItemsMap();
 const useAdminStores = create<AdminStoreState>((set, get) => ({
   stores: adminStoresSeed,
   itemsByStore: initialItems,
+  addUserShop: (shopTitle) =>
+    set((state) => ({
+      stores: [
+        ...state.stores,
+        {
+          id: `user-shop-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
+          name: shopTitle,
+          owner: "User",
+          email: "user@example.com",
+          category: "General",
+          joined: new Date().toLocaleDateString(),
+          status: "active",
+          description: "User created shop",
+          banned: false,
+        },
+      ],
+      itemsByStore: state.itemsByStore, // No items for user shops initially
+    })),
   removeStore: (storeId) =>
     set((state) => {
       const rest = { ...state.itemsByStore };
