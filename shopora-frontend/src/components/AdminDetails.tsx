@@ -59,7 +59,7 @@ interface PopupState {
 function AdminDetails() {
   const navigate = useNavigate();
   const { storeId } = useParams<{ storeId: string }>();
-  const { stores, itemsByStore, removeStore, removeItem } = useAdminStores();
+  const { stores, itemsByStore, removeStore, toggleBanStore, removeItem } = useAdminStores();
 
   const store = storeId ? stores.find((entry) => entry.id === storeId) : undefined;
   const items = useMemo(() => (storeId ? itemsByStore[storeId] ?? [] : []), [storeId, itemsByStore]);
@@ -101,16 +101,16 @@ useEffect(() => {
     navigate("/adminDashboard");
   };
 
-  const handleBanStore = () => {
+  const handleToggleBanStore = () => {
     if (!storeId || !activeStore) {
       return;
     }
-    const currentName = activeStore.name;
-    removeStore(storeId);
-    showPopup(`${currentName} was banned.`, "error");
-    setTimeout(() => {
-      navigate("/adminDashboard");
-    }, 1200);
+    const isCurrentlyBanned = activeStore.banned;
+    toggleBanStore(storeId);
+    showPopup(
+      `${activeStore.name} was ${isCurrentlyBanned ? "unbanned" : "banned"}.`,
+      isCurrentlyBanned ? "success" : "error"
+    );
   };
 
   const handleViewItemDetails = (item: AdminStoreItem) => {
@@ -157,10 +157,14 @@ useEffect(() => {
           </button>
           <button
             type="button"
-            onClick={handleBanStore}
-            className="rounded-2xl border border-transparent bg-[#F87171] px-5 py-2 text-sm font-semibold text-white transition hover:bg-[#DC2626]"
+            onClick={handleToggleBanStore}
+            className={`rounded-2xl border border-transparent px-5 py-2 text-sm font-semibold text-white transition ${
+              activeStore?.banned
+                ? "bg-[#10B981] hover:bg-[#059669]"
+                : "bg-[#F87171] hover:bg-[#DC2626]"
+            }`}
           >
-            Ban shop
+            {activeStore?.banned ? "Unban shop" : "Ban shop"}
           </button>
         </div>
 

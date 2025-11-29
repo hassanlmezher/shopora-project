@@ -18,6 +18,8 @@ function AdminDashboard() {
     () => requests.filter((request) => request.status === "pending").length,
     [requests]
   );
+  const bannedStores = useMemo(() => stores.filter((store) => store.banned), [stores]);
+  const activeStores = useMemo(() => stores.filter((store) => !store.banned), [stores]);
   const totalShopCount = totalStores + acceptedRequests.length;
 
   return (
@@ -74,9 +76,9 @@ function AdminDashboard() {
           </div>
 
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            {totalShopCount > 0 ? (
+            {activeStores.length > 0 || acceptedRequests.length > 0 ? (
               <>
-                {stores.map((store) => (
+                {activeStores.map((store) => (
                   <AdminShopCard
                     key={store.id}
                     storeName={store.name}
@@ -102,6 +104,32 @@ function AdminDashboard() {
             )}
           </div>
         </section>
+
+        {bannedStores.length > 0 && (
+          <section className="space-y-4">
+            <div className="flex flex-wrap items-center justify-between gap-4">
+              <div>
+                <p className="text-sm font-semibold uppercase tracking-[0.2em] text-[#DC2626]/70">
+                  Banned stores
+                </p>
+                <p className="text-2xl font-bold text-[#DC2626]">Manage banned storefronts</p>
+              </div>
+              <span className="rounded-full bg-red-100 px-4 py-2 text-sm font-semibold text-[#DC2626] shadow-sm">
+                {bannedStores.length} {bannedStores.length === 1 ? "store" : "stores"}
+              </span>
+            </div>
+
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+              {bannedStores.map((store) => (
+                <AdminShopCard
+                  key={store.id}
+                  storeName={store.name}
+                  onDetails={() => navigate(`/admin/stores/${store.id}`)}
+                />
+              ))}
+            </div>
+          </section>
+        )}
       </div>
     </div>
   );
