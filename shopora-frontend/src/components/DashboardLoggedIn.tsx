@@ -893,7 +893,7 @@ function DashboardLoggedIn() {
                     </div>
                 </nav>
                 <button
-                    className="flex w-full items-center h-10 justify-center gap-3 mt-[-16px] rounded-2xl bg-white/90 px-4 py-3 text-sm font-bold text-[#DDC59E] transition hover:bg-white"
+                    className="flex w-full items-center h-10 justify-center gap-3 -mt-4 rounded-2xl bg-white/90 px-4 py-3 text-sm font-bold text-[#DDC59E] transition hover:bg-white"
                     onClick={() => navigate('/login')}
                 >
                     <img className="w-6" src={logout} alt="logout logo" />
