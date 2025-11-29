@@ -2,7 +2,7 @@ import { create } from "zustand";
 import { adminStoresSeed, type AdminStoreSeed } from "../data/adminStores";
 import { catalogue, type CatalogueItem } from "../data/catalogue";
 
-export type AdminStore = AdminStoreSeed;
+export type AdminStore = AdminStoreSeed & { banned?: boolean };
 
 export interface AdminStoreItem extends CatalogueItem {
   itemId: string;
@@ -28,11 +28,12 @@ const buildItemsMap = (): ItemsByStore => {
 };
 
 interface AdminStoreState {
-  stores: AdminStoreSeed[];
+  stores: AdminStore[];
   itemsByStore: ItemsByStore;
   removeStore: (storeId: string) => void;
+  toggleBanStore: (storeId: string) => void;
   removeItem: (storeId: string, itemId: string) => void;
-  getStoreById: (storeId: string) => AdminStoreSeed | undefined;
+  getStoreById: (storeId: string) => AdminStore | undefined;
   getItemsByStore: (storeId: string) => AdminStoreItem[];
   reset: () => void;
 }
@@ -51,6 +52,12 @@ const useAdminStores = create<AdminStoreState>((set, get) => ({
         itemsByStore: rest,
       };
     }),
+  toggleBanStore: (storeId) =>
+    set((state) => ({
+      stores: state.stores.map((store) =>
+        store.id === storeId ? { ...store, banned: !store.banned } : store
+      ),
+    })),
   removeItem: (storeId, itemId) =>
     set((state) => {
       const items = state.itemsByStore[storeId] ?? [];
