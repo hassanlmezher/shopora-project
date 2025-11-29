@@ -59,7 +59,7 @@ interface PopupState {
 function AdminDetails() {
   const navigate = useNavigate();
   const { storeId } = useParams<{ storeId: string }>();
-  const { stores, itemsByStore, removeStore, toggleBanStore, removeItem } = useAdminStores();
+  const { stores, itemsByStore, toggleBanStore, removeItem } = useAdminStores();
 
   const store = storeId ? stores.find((entry) => entry.id === storeId) : undefined;
   const items = useMemo(() => (storeId ? itemsByStore[storeId] ?? [] : []), [storeId, itemsByStore]);
