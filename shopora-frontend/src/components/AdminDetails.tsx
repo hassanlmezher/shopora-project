@@ -12,7 +12,7 @@ const AdminItemCard = ({
   onView: () => void;
   onDelete: () => void;
 }) => (
-  <div className="rounded-[32px] bg-white p-6 shadow-lg shadow-[#101828]/5">
+  <div className="rounded-4xl bg-white p-6 shadow-lg shadow-[#101828]/5">
     <div className="flex flex-col gap-6 md:flex-row md:items-start">
       <div className="flex h-24 w-24 items-center justify-center rounded-2xl bg-[#F4F7F6]/80 p-3 shadow-sm">
         <img src={item.image} alt={item.name} className="h-full w-full object-contain" />

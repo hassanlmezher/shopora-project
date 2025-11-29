@@ -166,7 +166,7 @@ function Cart({ onClose }: CartProps) {
             <div className="fixed inset-0 z-40 flex">
                 <div className="absolute inset-0 bg-slate-900/70 backdrop-blur-xl" />
                 <div
-                    className={`relative ml-auto flex h-full w-full max-w-[450px] flex-col overflow-y-hidden rounded-l-[32px] bg-gradient-to-b from-[#1F3B88] to-[#2555C0] px-6 py-8 shadow-2xl shadow-slate-900/60 transition-transform duration-300 ${
+                    className={`relative ml-auto flex h-full w-full max-w-[450px] flex-col overflow-y-hidden rounded-l-4xl bg-linear-to-b from-[#1F3B88] to-[#2555C0] px-6 py-8 shadow-2xl shadow-slate-900/60 transition-transform duration-300 ${
                         isVisible ? "translate-x-0" : "translate-x-full"
                     }`}
                 >
@@ -215,7 +215,7 @@ function Cart({ onClose }: CartProps) {
     }
 
     return (
-        <div className="min-h-screen bg-gradient-to-b from-[#0a1f36] via-[#132c5d] to-[#194ea7] pt-12 pb-16 text-white">
+        <div className="min-h-screen bg-linear-to-b from-[#0a1f36] via-[#132c5d] to-[#194ea7] pt-12 pb-16 text-white">
             <div className="mx-auto max-w-6xl px-4">
                 <div className="rounded-[36px] bg-white/80 p-8 text-slate-900 shadow-2xl">
                     <p className="text-sm font-semibold uppercase tracking-[0.4em] text-slate-500">Shopping bag</p>
@@ -235,7 +235,7 @@ function Cart({ onClose }: CartProps) {
                 </div>
 
                 <div className="mt-10 grid gap-8 lg:grid-cols-[1.5fr_0.7fr]">
-                    <section className="rounded-[32px] bg-white/90 p-6 shadow-xl">
+                    <section className="rounded-4xl bg-white/90 p-6 shadow-xl">
                         <div className="flex items-center justify-between pb-3">
                             <h2 className="text-xl font-semibold text-slate-700">Items ({items.length})</h2>
                             {items.length > 0 && (
@@ -257,7 +257,7 @@ function Cart({ onClose }: CartProps) {
                     </section>
 
                     {items.length > 0 && (
-                        <section className="flex flex-col gap-6 rounded-[32px] bg-white/90 p-6 shadow-xl">
+                        <section className="flex flex-col gap-6 rounded-4xl bg-white/90 p-6 shadow-xl">
                             <div className="space-y-4">
                                 <p className="text-sm font-semibold uppercase tracking-[0.4em] text-slate-500">Shipping</p>
                                 {renderShippingInputs("text-slate-900", "text-slate-500", "border-slate-200", "bg-slate-50")}
