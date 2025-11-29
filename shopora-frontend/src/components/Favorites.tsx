@@ -1,10 +1,13 @@
 import { useNavigate } from "react-router-dom";
 import ItemCard from "./ItemCard";
 import useFavoritesStore from "../store/useFavoritesStore";
+import useAdminStores, { type AdminStore } from "../store/useAdminStores";
 
 function Favorites() {
   const navigate = useNavigate();
   const items = useFavoritesStore((state) => state.items);
+  const bannedStores = useAdminStores((state: { stores: AdminStore[] }) => state.stores.filter((store: AdminStore) => store.banned).map((store: AdminStore) => store.name.toLowerCase()));
+  const filteredItems = items.filter((item) => !bannedStores.includes(item.by.toLowerCase()));
 
   return (
     <div className="min-h-screen bg-[#F4F7F6] pb-16">
@@ -22,13 +25,13 @@ function Favorites() {
             <p className="text-sm text-[#6C7A6D]">Items you have saved across Shopora.</p>
           </div>
         </div>
-        {items.length === 0 ? (
+        {filteredItems.length === 0 ? (
           <div className="rounded-3xl border-2 border-dashed border-[#1E3B86]/30 bg-white p-10 text-center text-lg font-semibold text-[#1E3B86]">
             You haven't favorited anything yet. Tap the heart on a product to save it here.
           </div>
         ) : (
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {items.map((item) => (
+            {filteredItems.map((item) => (
               <ItemCard key={item.id} {...item} reviews={item.reviews ?? []} />
             ))}
           </div>

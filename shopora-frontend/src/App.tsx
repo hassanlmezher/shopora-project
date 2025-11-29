@@ -14,6 +14,7 @@ import ShopForm from './components/ShopForm';
 import AdminDashboard from './components/AdminDashboard';
 import AdminDetails from './components/AdminDetails';
 import AdminNotifications from './components/AdminNotifications';
+import AdminShopRequests from './components/AdminShopRequests';
 import UserNotifications from './components/UserNotifications';
 import RequestConfirmation from './components/RequestConfirmation';
 import UserShop from './components/UserShop';
@@ -42,6 +43,7 @@ function App() {
           <Route path="/admin/stores/:storeId" element={<AdminDetails />} />
           <Route path="/notifications/user" element={<UserNotifications />} />
           <Route path="/notifications/admin" element={<AdminNotifications />} />
+          <Route path="/admin/shop-requests" element={<AdminShopRequests />} />
           <Route path="/admin/requests/:requestId" element={<RequestConfirmation />} />
           <Route path="/my-shop" element={<UserShop />} />
           <Route path="/itemform" element={<ItemForm />} />
