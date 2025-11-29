@@ -164,7 +164,7 @@ function Cart({ onClose }: CartProps) {
     if (isOverlay) {
         return (
             <div className="fixed inset-0 z-40 flex">
-                <div className="absolute inset-0 bg-slate-900/70 backdrop-blur-[24px]" />
+                <div className="absolute inset-0 bg-slate-900/70 backdrop-blur-xl" />
                 <div
                     className={`relative ml-auto flex h-full w-full max-w-[450px] flex-col overflow-y-hidden rounded-l-[32px] bg-gradient-to-b from-[#1F3B88] to-[#2555C0] px-6 py-8 shadow-2xl shadow-slate-900/60 transition-transform duration-300 ${
                         isVisible ? "translate-x-0" : "translate-x-full"

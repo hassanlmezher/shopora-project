@@ -203,13 +203,13 @@ function ItemCard({
         </div>
         <div className="flex gap-3 rounded-b-[28px] border-t border-blue-100 bg-white px-6 py-3">
           <button
-            className="flex-1 min-h-[42px] rounded-[20px] border border-transparent bg-gradient-to-r from-[#5F9EFF] to-[#7CA6FF] px-3 py-2 text-[11px] font-bold uppercase tracking-[0.1em] text-white shadow-md transition hover:opacity-90 hover:scale-[1.01]"
+            className="flex-1 min-h-[42px] rounded-[20px] border border-transparent bg-[#3977fd] px-3 py-2 text-[11px] font-bold uppercase tracking-[0.1em] text-white shadow-md transition hover:bg-green-500 hover:text-white hover:scale-[1.01]"
             onClick={handleAddToCart}
           >
             Add to cart
           </button>
           <button
-            className="flex-1 min-h-[42px] rounded-[20px] border-2 border-[#7CA6FF] bg-white px-3 py-2 text-[11px] font-bold uppercase tracking-[0.1em] text-[#7CA6FF] transition hover:bg-[#7CA6FF] hover:text-white hover:scale-[1.01]"
+            className="flex-1 min-h-[42px] rounded-[20px] border-2 border-[#3977fd] bg-white px-3 py-2 text-[11px] font-bold uppercase tracking-[0.1em] text-[#3977fd] transition hover:bg-black hover:text-white hover:border-none hover:scale-[1.01]"
             onClick={handleDetailsClick}
           >
             Details

@@ -187,7 +187,7 @@ function Details() {
                   type="button"
                   onClick={() => setShowAddReview((prev) => !prev)}
                   disabled={!hasOrdered || hasReviewed}
-                  className={`flex w-full items-center justify-center gap-2 rounded-xl bg-[#8DB9FF] px-4 py-2 text-sm font-semibold text-white transition hover:bg-[#2D54E0] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1E3B86] sm:w-auto ${
+                  className={`flex w-full items-center justify-center gap-2 rounded-xl bg-[#2D54E0] px-4 py-2 text-sm font-semibold text-white transition hover:bg-[#8DB9FF] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1E3B86] sm:w-auto ${
                     !hasOrdered || hasReviewed ? "cursor-not-allowed opacity-60" : ""
                   }`}
                 >
@@ -260,7 +260,7 @@ function Details() {
                   <button
                     type="button"
                     onClick={handleReviewSubmit}
-                    className="w-full rounded-xl bg-[#8DB9FF] px-4 py-2 text-sm font-semibold text-white transition hover:bg-[#2D54E0] sm:w-auto"
+                    className="w-full rounded-xl bg-[#2D54E0] px-4 py-2 text-sm font-semibold text-white transition hover:bg-[#8DB9FF] sm:w-auto"
                   >
                     Submit Review
                   </button>
