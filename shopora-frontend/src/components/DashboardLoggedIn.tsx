@@ -687,7 +687,7 @@ function DashboardLoggedIn() {
                 </div>
                 <nav
                     ref={sidebarNavRef}
-                    className={`flex flex-1 flex-col gap-4 overflow-y-auto pr-1 max-h-[calc(100vh-6rem)] ${isSettingsExpanded ? "pb-8" : "pb-4"}`}
+                    className={`flex flex-1 flex-col gap-4 overflow-y-auto pr-1 max-h-[calc(100vh-6rem)] ${isSettingsExpanded ? "pb-6" : "pb-2"}`}
                 >
                     <div className="flex flex-col gap-2">
                         <button
