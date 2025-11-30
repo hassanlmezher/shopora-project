@@ -5,7 +5,7 @@ const shopSchema = new mongoose.Schema({
     description: String,
     phone: String,
     status: { type: String, default: "pending" },
-    items: [{ type: mongoose.Schema.Types.ObjectId, red: "Item" }],
+    items: [{ type: mongoose.Schema.Types.ObjectId, ref: "Item" }],
 });
 
 export default mongoose.model("Shop", shopSchema);

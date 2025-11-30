@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 const itemSchema = new mongoose.Schema({
-    shopId: { type: mongoose.Schema.Types.ObjecId, ref: "Shpp" },
+    shopId: { type: mongoose.Schema.Types.ObjectId, ref: "Shop" },
     image: String,
     images: [String],
     name: String,
