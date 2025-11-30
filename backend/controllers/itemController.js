@@ -4,6 +4,7 @@ import Shop from "../models/Shop.js";
 export const addItem = async (req, res) => {
   try {
     const {
+      shopId: requestedShopId,
       image,
       images,
       name,
@@ -16,7 +17,9 @@ export const addItem = async (req, res) => {
     } = req.body;
 
     const ownerEmail = req.user;
-    const shop = await Shop.findOne({ ownerEmail });
+    const shop = requestedShopId
+      ? await Shop.findById(requestedShopId)
+      : await Shop.findOne({ ownerEmail });
 
     if (!shop || shop.status !== "accepted") {
       return res.status(400).json({ message: "Shop not approved or doesn't exist" });
@@ -28,8 +31,8 @@ export const addItem = async (req, res) => {
       images,
       name,
       namee,
-      price,
-      priceValue,
+      price: typeof price === "number" ? price : priceValue,
+      priceValue: priceValue ?? Number(price) ?? 0,
       description,
       by: shop.title,
       category,
@@ -40,6 +43,16 @@ export const addItem = async (req, res) => {
     await shop.save();
 
     return res.json(item);
+  } catch (err) {
+    return res.status(500).json({ message: err.message });
+  }
+};
+
+export const deleteItem = async (req, res) => {
+  try {
+    const { id } = req.params;
+    await Item.findByIdAndDelete(id);
+    return res.json({ success: true });
   } catch (err) {
     return res.status(500).json({ message: err.message });
   }

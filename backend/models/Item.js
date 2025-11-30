@@ -6,13 +6,13 @@ const itemSchema = new mongoose.Schema({
     images: [String],
     name: String,
     namee: String,
-    price: String,
+    price: Number,
     priceValue: Number,
     description: String,
     by: String,
     category: String,
     ratings: String,
     reviews: Array
-});
+}, { timestamps: true });
 
 export default mongoose.model("Item", itemSchema);
