@@ -44,4 +44,3 @@ test('Login succeeds with admin and redirects to adminDashboard', async ({ page 
 
     await expect(page).toHaveURL(/\/adminDashboard$/);
 });
-

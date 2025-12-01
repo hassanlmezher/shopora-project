@@ -112,7 +112,7 @@ const useOrderStore = create<OrderState>()(
               id: orderId,
               items,
               orderedAt: parseInt(timestamp),
-              status: 'delivered', 
+              status: 'delivered', // Assume old orders are delivered
             });
           });
 

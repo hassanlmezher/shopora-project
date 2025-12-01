@@ -19,4 +19,3 @@ test('User can sign up and is redirected to login', async ({ page }) => {
     await page.waitForURL('**/login');
     await expect(page).toHaveURL(/\/login$/);
 });
-
