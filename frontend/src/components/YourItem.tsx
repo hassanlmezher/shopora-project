@@ -57,7 +57,7 @@ function YourItem({ item, onRemove }: YourItemProps) {
           <p className="text-lg font-semibold text-[#3B7CFF]">{item.namee}</p>
         </div>
       </div>
-      <p className="mt-2 min-h-10 text-sm text-[#4B5B56]">{item.description || "No description provided yet."}</p>
+      <p className="mt-2 min-h-[40px] text-sm text-[#4B5B56]">{item.description || "No description provided yet."}</p>
       <div className="mt-2 flex items-center justify-center gap-2">
         <img className="h-6 w-24 object-contain" src={stars} alt="rating stars" />
         <p className="text-sm text-gray-600">{item.ratings}</p>

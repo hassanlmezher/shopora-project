@@ -87,7 +87,7 @@ function UserShop() {
               <button
                 type="button"
                 onClick={handleAddItem}
-                className="bg-[#3B7CFF] flex h-40 w-40 items-center justify-center rounded-2xl text-7xl font-bold text-white transition hover:bg-[#1A4ADC]"
+                className="bg-[#3B7CFF] flex h-[10rem] w-[10rem] items-center justify-center rounded-2xl text-7xl font-bold text-white transition hover:bg-[#1A4ADC]"
               >
                 +
               </button>

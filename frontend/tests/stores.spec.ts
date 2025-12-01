@@ -13,4 +13,3 @@ test('Stores page lists seeded storefronts with Explore buttons', async({ page }
     await exploreButtons.nth(0).click();
     await expect(page).toHaveURL(/\/stores\//);
 });
-
