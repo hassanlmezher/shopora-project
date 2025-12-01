@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import ItemCard from "./ItemCard";
 import useAdminStores from "../store/useAdminStores";
@@ -6,29 +5,10 @@ import useAdminStores from "../store/useAdminStores";
 function StoreItems() {
   const { shopId } = useParams<{ shopId?: string }>();
   const navigate = useNavigate();
-  const { stores, itemsByStore, fetchStores, fetchItemsForStore, hasFetched, loading } = useAdminStores();
-  const store = shopId ? stores.find((entry) => entry.id === shopId) : undefined;
-  const items = shopId ? itemsByStore[shopId] ?? [] : [];
+  const store = useAdminStores((state) => (shopId ? state.stores.find((entry) => entry.id === shopId) : undefined));
+  const items = useAdminStores((state) => (shopId ? state.itemsByStore[shopId] ?? [] : []));
 
-  useEffect(() => {
-    fetchStores().catch(() => undefined);
-  }, [fetchStores]);
-
-  useEffect(() => {
-    if (shopId) {
-      fetchItemsForStore(shopId).catch(() => undefined);
-    }
-  }, [shopId, fetchItemsForStore]);
-
-  if (!store && (loading || !hasFetched)) {
-    return (
-      <div className="flex min-h-screen flex-col items-center justify-center bg-[#F4F7F6] px-4">
-        <p className="text-xl font-semibold text-[#1E3B86]">Loading store...</p>
-      </div>
-    );
-  }
-
-  if (!store && hasFetched) {
+  if (!store) {
     return (
       <div className="flex min-h-screen flex-col items-center justify-center bg-[#F4F7F6] px-4">
         <p className="text-xl font-semibold text-[#1E3B86]">We couldn't find that shop.</p>

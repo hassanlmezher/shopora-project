@@ -93,7 +93,7 @@ const useNotificationStore = create<NotificationStore>()(
             const acceptedRequest = updatedRequests.find((request) => request.id === id);
             if (acceptedRequest) {
               // Import useAdminStores here to avoid circular dependency
-              import("./useAdminStores").then(({ default: useAdminStores }) => {
+              import("../store/useAdminStores").then(({ default: useAdminStores }) => {
                 useAdminStores.getState().addUserShop(acceptedRequest.shopTitle);
               });
             }

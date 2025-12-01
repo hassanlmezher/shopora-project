@@ -59,8 +59,7 @@ interface PopupState {
 function AdminDetails() {
   const navigate = useNavigate();
   const { storeId } = useParams<{ storeId: string }>();
-  const { stores, itemsByStore, toggleBanStore, removeItem, fetchStores, fetchItemsForStore, loading, hasFetched } =
-    useAdminStores();
+  const { stores, itemsByStore, toggleBanStore, removeItem } = useAdminStores();
 
   const store = storeId ? stores.find((entry) => entry.id === storeId) : undefined;
   const items = useMemo(() => (storeId ? itemsByStore[storeId] ?? [] : []), [storeId, itemsByStore]);
@@ -102,22 +101,12 @@ useEffect(() => {
     navigate("/adminDashboard");
   };
 
-  useEffect(() => {
-    fetchStores().catch(() => undefined);
-  }, [fetchStores]);
-
-  useEffect(() => {
-    if (storeId) {
-      fetchItemsForStore(storeId).catch(() => undefined);
-    }
-  }, [storeId, fetchItemsForStore]);
-
-  const handleToggleBanStore = async () => {
+  const handleToggleBanStore = () => {
     if (!storeId || !activeStore) {
       return;
     }
     const isCurrentlyBanned = activeStore.banned;
-    await toggleBanStore(storeId);
+    toggleBanStore(storeId);
     showPopup(
       `${activeStore.name} was ${isCurrentlyBanned ? "unbanned" : "banned"}.`,
       isCurrentlyBanned ? "success" : "error"
@@ -129,22 +118,13 @@ useEffect(() => {
     navigate("/details", { state: { ...item, returnPath } });
   };
 
-  const handleDeleteItem = async (item: AdminStoreItem) => {
+  const handleDeleteItem = (item: AdminStoreItem) => {
     if (!storeId) {
       return;
     }
-    await removeItem(storeId, item.itemId);
+    removeItem(storeId, item.itemId);
     showPopup(`${item.name} removed from ${activeStore?.name ?? "store"}.`, "success");
   };
-
-  if (!activeStore && (loading || !hasFetched)) {
-    return (
-      <div className="flex min-h-screen flex-col items-center justify-center bg-[#F4F7F6] px-4 text-center">
-        <p className="text-xl font-semibold text-[#1E3B86]">Loading shop details...</p>
-        <PopupMessage message="Loading store" isVisible />
-      </div>
-    );
-  }
 
   if (!activeStore) {
     return (

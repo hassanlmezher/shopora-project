@@ -6,7 +6,7 @@ function ProfilePage() {
 
   return (
     <div className="min-h-screen bg-slate-50 px-4 py-6">
-      <div className="mx-auto flex w-full max-w-4xl flex-col gap-6 rounded-[32px] bg-white p-6 shadow-lg">
+      <div className="mx-auto flex w-full max-w-4xl flex-col gap-6 rounded-4xl bg-white p-6 shadow-lg">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <button
             type="button"
@@ -19,7 +19,7 @@ function ProfilePage() {
         </div>
 
         <div className="flex flex-col items-center gap-4">
-          <img className="w-32 rounded-[24px] shadow-md" src={profile} alt="profile" />
+          <img className="w-32 rounded-3xl shadow-md" src={profile} alt="profile" />
           <p className="text-3xl font-bold text-slate-900">Hassan Mezher</p>
           <p className="text-sm text-slate-500">hassan.mezher@example.com</p>
         </div>

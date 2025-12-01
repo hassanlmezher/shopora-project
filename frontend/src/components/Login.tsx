@@ -3,7 +3,7 @@ import loginsignup from "../images/loginlogin.png"
 import { useNavigate } from 'react-router-dom'
 import useAuthStore from "../store/useAuthStore";
 import PopupMessage from "./PopupMessage";
-import { api } from "../api/client";
+import { findRegisteredUserByEmail } from "../utils/registeredUsers";
 
 
 type FieldErrors = {
@@ -13,9 +13,12 @@ type FieldErrors = {
 
 function Login() {
     const navigate = useNavigate();
+    const email = "hassan@gmail.com";
+    const password = "hassan123";
+    const adminEmail = "admin@gmail.com";
+    const adminPassword = "admin123";
     const [ emaill, setEmaill ] = useState("");
     const [ passwordd, setPassWordd ] = useState("");
-    const [isLoading, setIsLoading] = useState(false);
     const [showPopup, setShowPopup] = useState(false);
     const [popupMessage, setPopupMessage] = useState("");
     const [popupVariant, setPopupVariant] = useState<"success" | "error">("success");
@@ -50,7 +53,7 @@ function Login() {
       };
     }, []);
 
-    const handleLogIn = async () => {
+    const handleLogIn = () => {
       const errors: FieldErrors = {};
       const trimmedEmail = emaill.trim();
       const trimmedPassword = passwordd.trim();
@@ -72,26 +75,38 @@ function Login() {
 
       setFieldErrors({});
 
-      setIsLoading(true);
-      try {
-        const result = await api.login(trimmedEmail, trimmedPassword);
-        login({ user: result.user, token: result.token });
+      const registeredUser = findRegisteredUserByEmail(trimmedEmail);
+
+      if (adminEmail === trimmedEmail && adminPassword === trimmedPassword) {
+        setPopupMessage("Welcome back Admin!");
+        setPopupVariant("success");
+        setShowPopup(true);
+        scheduleHide(() => {
+          login(trimmedEmail);
+          navigate("/adminDashboard");
+        });
+      } else if (registeredUser && registeredUser.password === trimmedPassword) {
         setPopupMessage("Login successful!");
         setPopupVariant("success");
         setShowPopup(true);
         scheduleHide(() => {
-          const isAdmin = result.user.role === "admin";
-          navigate(isAdmin ? "/adminDashboard" : "/DashboardLoggedIn");
+          login(trimmedEmail);
+          navigate('/DashboardLoggedIn');
         });
-      } catch (error) {
-        const message = error instanceof Error ? error.message : "Login failed";
-        setPopupMessage(message);
+      } else if (email === trimmedEmail && password === trimmedPassword) {
+        setPopupMessage("Login successful!");
+        setPopupVariant("success");
+        setShowPopup(true);
+        scheduleHide(() => {
+          login(trimmedEmail);
+          navigate('/DashboardLoggedIn');
+        });
+      } else {
+        setPopupMessage("Login failed! Please check your credentials.");
         setPopupVariant("error");
         logout();
         setShowPopup(true);
         scheduleHide();
-      } finally {
-        setIsLoading(false);
       }
     };
   return (
@@ -135,11 +150,10 @@ function Login() {
             </button>
           </div>
           <button
-            className="w-full rounded-2xl bg-[#3875F0] py-3 text-lg font-bold text-white transition duration-300 ease-in-out hover:bg-white hover:text-[#8DB9FF] disabled:opacity-60"
+            className="w-full rounded-2xl bg-[#3875F0] py-3 text-lg font-bold text-white transition duration-300 ease-in-out hover:bg-white hover:text-[#8DB9FF]"
             onClick={handleLogIn}
-            disabled={isLoading}
           >
-            {isLoading ? "Logging in..." : "Log In"}
+            Log In
           </button>
         </div>
         <div className="flex w-full  bg-[#D9D9D9] lg:w-1/2">

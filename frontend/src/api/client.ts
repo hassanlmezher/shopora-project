@@ -1,4 +1,4 @@
-const API_URL = import.meta.env.VITE_API_URL ?? "http://localhost:5000";
+const API_URL = import.meta.env.VITE_API_URL ?? "/api";
 
 type HttpMethod = "GET" | "POST" | "PATCH" | "DELETE";
 
@@ -14,11 +14,27 @@ const withJson = (body?: unknown): RequestOptions =>
       }
     : {};
 
+const getToken = () => {
+  if (typeof localStorage === "undefined") return null;
+  try {
+    const raw = localStorage.getItem("shopora-auth");
+    if (!raw) return null;
+    const parsed = JSON.parse(raw);
+    return parsed?.state?.token ?? null;
+  } catch {
+    return null;
+  }
+};
+
 async function request<T>(path: string, options: RequestOptions = {}): Promise<T> {
+  const method = options.method || "GET";
+  const token = getToken();
   const response = await fetch(`${API_URL}${path}`, {
     ...options,
+    method,
     headers: {
-      "Content-Type": "application/json",
+      ...(method !== "GET" || options.body ? { "Content-Type": "application/json" } : {}),
+      ...(token ? { Authorization: token } : {}),
       ...(options.headers ?? {}),
     },
   });
@@ -33,7 +49,7 @@ async function request<T>(path: string, options: RequestOptions = {}): Promise<T
 }
 
 export interface AuthUser {
-  _id: string;
+  _id?: string;
   name?: string;
   email: string;
   role?: "user" | "admin";
@@ -45,6 +61,7 @@ export interface StorePayload {
   description?: string;
   owner?: string;
   email?: string;
+  phone?: string;
   category?: string;
 }
 
@@ -86,24 +103,46 @@ export const api = {
       ...withJson({ email, password }),
     }),
   register: (name: string, email: string, password: string) =>
-    request<AuthUser>("/auth/register", {
+    request<{ message: string }>("/auth/signup", {
       method: "POST",
       ...withJson({ name, email, password }),
     }),
-  getStores: () => request<StoreResponse[]>("/stores"),
+  getStores: () => request<StoreResponse[]>("/shops"),
   createStore: (payload: StorePayload) =>
-    request<StoreResponse>("/stores", { method: "POST", ...withJson(payload) }),
-  updateStore: (id: string, payload: Partial<StorePayload & { banned?: boolean }>) =>
-    request<StoreResponse>(`/stores/${id}`, { method: "PATCH", ...withJson(payload) }),
+    request<StoreResponse>("/shops/request", {
+      method: "POST",
+      ...withJson({
+        shopTitle: payload.name,
+        description: payload.description,
+        phone: payload.phone,
+        category: payload.category,
+        image: payload.image,
+        email: payload.email,
+        name: payload.name,
+      }),
+    }),
+  updateStore: (id: string, payload: Partial<StorePayload & { banned?: boolean; status?: string }>) =>
+    request<StoreResponse>(`/shops/${id}`, { method: "PATCH", ...withJson(payload) }),
   getStoreItems: (storeId: string) => request<ItemResponse[]>(`/items/${storeId}`),
   createItem: (payload: ItemPayload) =>
-    request<ItemResponse>("/items", { method: "POST", ...withJson(payload) }),
+    request<ItemResponse>("/items", {
+      method: "POST",
+      ...withJson({
+        shopId: payload.storeId,
+        image: payload.image,
+        name: payload.name,
+        namee: payload.namee,
+        price: payload.price,
+        description: payload.description,
+        category: payload.category,
+      }),
+    }),
   deleteItem: (id: string) => request<{ success: boolean }>(`/items/${id}`, { method: "DELETE" }),
-  getRequests: () => request<RequestResponse[]>("/requests"),
+  getRequests: () => request<RequestResponse[]>("/orders"),
   createRequest: (payload: RequestPayload) =>
-    request<RequestResponse>("/requests", { method: "POST", ...withJson(payload) }),
+    request<RequestResponse>("/orders", { method: "POST", ...withJson(payload) }),
   updateRequestStatus: (id: string, status: string) =>
-    request<RequestResponse>(`/requests/${id}`, { method: "PATCH", ...withJson({ status }) }),
+    request<RequestResponse>(`/orders/${id}`, { method: "PATCH", ...withJson({ status }) }),
 };
 
 export const apiConfig = { API_URL };
