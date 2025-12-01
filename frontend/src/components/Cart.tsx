@@ -46,11 +46,7 @@ function Cart({ onClose }: CartProps) {
     const items = useCartStore((state) => state.items);
     const clearCart = useCartStore((state) => state.clear);
     const addOrders = useOrderStore((state) => state.addOrders);
-    const { stores, fetchStores } = useAdminStores();
-    useEffect(() => {
-        fetchStores().catch(() => undefined);
-    }, [fetchStores]);
-    const bannedStores = stores.filter((store: AdminStore) => store.banned).map((store: AdminStore) => store.name.toLowerCase());
+    const bannedStores = useAdminStores((state: { stores: AdminStore[] }) => state.stores.filter((store: AdminStore) => store.banned).map((store: AdminStore) => store.name.toLowerCase()));
     const filteredItems = items.filter((item) => !bannedStores.includes(item.by.toLowerCase()));
     const [shippingOption, setShippingOption] = useState<ShippingOption>("pickup");
     const [toast, setToast] = useState<{ message: string; variant: "success" | "error" } | null>(null);

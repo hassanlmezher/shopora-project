@@ -2,7 +2,11 @@ import { useEffect, useRef, useState } from "react";
 import auth from "../images/loginlogin.png";
 import { useNavigate } from 'react-router-dom';
 import PopupMessage from "./PopupMessage";
-import { api } from "../api/client";
+import {
+  loadRegisteredUsers,
+  persistRegisteredUsers,
+  type RegisteredUser,
+} from "../utils/registeredUsers";
 
 type FieldErrors = {
   email?: string;
@@ -15,7 +19,6 @@ function Signup() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
-    const [isLoading, setIsLoading] = useState(false);
     const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
     const [showPopup, setShowPopup] = useState(false);
     const [popupMessage, setPopupMessage] = useState("");
@@ -41,7 +44,7 @@ function Signup() {
       };
     }, []);
 
-    const handleSignup = async () => {
+    const handleSignup = () => {
       const errors: FieldErrors = {};
       const trimmedEmail = email.trim();
       const trimmedPassword = password.trim();
@@ -66,32 +69,33 @@ function Signup() {
         errors.confirmPassword = "Passwords do not match.";
       }
 
+      const normalizedEmail = trimmedEmail.toLowerCase();
+      const existingUsers = loadRegisteredUsers();
+      if (
+        trimmedEmail &&
+        existingUsers.some((user) => user.email.toLowerCase() === normalizedEmail)
+      ) {
+        errors.email = "An account already exists with this email.";
+      }
+
       if (Object.keys(errors).length > 0) {
         setFieldErrors(errors);
         return;
       }
 
-      setIsLoading(true);
-      try {
-        const name = trimmedEmail.split("@")[0];
-        await api.register(name, trimmedEmail.toLowerCase(), trimmedPassword);
-        setFieldErrors({});
-        setPopupMessage("Signup successful! Redirecting to login.");
-        setPopupVariant("success");
-        setShowPopup(true);
-        setEmail("");
-        setPassword("");
-        setConfirmPassword("");
-        scheduleHide(() => navigate("/login"));
-      } catch (error) {
-        const message = error instanceof Error ? error.message : "Signup failed";
-        setPopupMessage(message);
-        setPopupVariant("error");
-        setShowPopup(true);
-        scheduleHide();
-      } finally {
-        setIsLoading(false);
-      }
+      const newUser: RegisteredUser = {
+        email: normalizedEmail,
+        password: trimmedPassword,
+      };
+      persistRegisteredUsers([...existingUsers, newUser]);
+      setFieldErrors({});
+      setPopupMessage("Signup successful! Redirecting to login.");
+      setPopupVariant("success");
+      setShowPopup(true);
+      setEmail("");
+      setPassword("");
+      setConfirmPassword("");
+      scheduleHide(() => navigate("/login"));
     };
 
   return (
@@ -145,13 +149,7 @@ function Signup() {
             <p>Already have an account?</p>
             <button className="font-bold text-[#5FC392] transition duration-300 ease-in-out hover:text-[#0E5861]" onClick={() => navigate('/login')}>Log In</button>
           </div>
-          <button
-            className="w-full rounded-2xl bg-[#3875F0] py-3 text-lg font-bold text-white transition duration-300 ease-in-out hover:bg-white hover:text-[#8DB9FF] disabled:opacity-60"
-            onClick={handleSignup}
-            disabled={isLoading}
-          >
-            {isLoading ? "Creating account..." : "Sign Up"}
-          </button>
+          <button className="w-full rounded-2xl bg-[#3875F0] py-3 text-lg font-bold text-white transition duration-300 ease-in-out hover:bg-white hover:text-[#8DB9FF]" onClick={handleSignup}>Sign Up</button>
         </div>
       </div>
       <PopupMessage message={popupMessage} isVisible={showPopup} variant={popupVariant} />

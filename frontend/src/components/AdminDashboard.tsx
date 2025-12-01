@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from "react";
+import { useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import logo from "../images/Logo.png";
 import AdminShopCard from "./AdminShopCard";
@@ -7,10 +7,7 @@ import useNotificationStore from "../store/useNotificationStore";
 
 function AdminDashboard() {
   const navigate = useNavigate();
-  const { stores, fetchStores, loading, error } = useAdminStores();
-  useEffect(() => {
-    fetchStores().catch(() => undefined);
-  }, [fetchStores]);
+  const stores = useAdminStores((state) => state.stores);
   const totalStores = stores.length;
   const requests = useNotificationStore((state) => state.requests);
   const acceptedRequests = useMemo(
@@ -67,17 +64,6 @@ function AdminDashboard() {
             </button>
           </div>
         </header>
-
-        {loading && (
-          <div className="rounded-3xl bg-white p-6 text-center text-[#1E3B86] shadow-sm">
-            Loading stores...
-          </div>
-        )}
-        {error && !loading && (
-          <div className="rounded-3xl bg-white p-6 text-center text-[#DC2626] shadow-sm">
-            {error}
-          </div>
-        )}
 
         <section className="space-y-4">
           <div className="flex flex-wrap items-center justify-between gap-4">

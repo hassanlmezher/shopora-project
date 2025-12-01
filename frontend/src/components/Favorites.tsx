@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import ItemCard from "./ItemCard";
 import useFavoritesStore from "../store/useFavoritesStore";
@@ -7,11 +6,7 @@ import useAdminStores, { type AdminStore } from "../store/useAdminStores";
 function Favorites() {
   const navigate = useNavigate();
   const items = useFavoritesStore((state) => state.items);
-  const { stores, fetchStores } = useAdminStores();
-  useEffect(() => {
-    fetchStores().catch(() => undefined);
-  }, [fetchStores]);
-  const bannedStores = stores.filter((store: AdminStore) => store.banned).map((store: AdminStore) => store.name.toLowerCase());
+  const bannedStores = useAdminStores((state: { stores: AdminStore[] }) => state.stores.filter((store: AdminStore) => store.banned).map((store: AdminStore) => store.name.toLowerCase()));
   const filteredItems = items.filter((item) => !bannedStores.includes(item.by.toLowerCase()));
 
   return (

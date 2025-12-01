@@ -1,4 +1,6 @@
-import { useEffect } from "react";
+import moustache from "../images/moustache.png";
+import gucci from "../images/gucci.png";
+import apple from "../images/apple.png";
 import profileImage from "../images/profile.png";
 import StoreCard from "./StoreCard";
 import { useNavigate } from "react-router-dom";
@@ -6,18 +8,20 @@ import useAuthStore from "../store/useAuthStore";
 import useAdminStores from "../store/useAdminStores";
 import useNotificationStore from "../store/useNotificationStore";
 
+const storeImages: Record<string, string> = {
+  hassan: moustache,
+  dani: gucci,
+  mhamad: apple,
+};
+
 function Stores() {
   const navigate = useNavigate();
   const { isLoggedIn } = useAuthStore();
-  const { stores, fetchStores, loading, error } = useAdminStores();
-  useEffect(() => {
-    fetchStores().catch(() => undefined);
-  }, [fetchStores]);
-
+  const stores = useAdminStores((state) => state.stores);
   const activeStores = stores.filter((store) => !store.banned);
   const storefronts = activeStores.map((store) => ({
     ...store,
-    image: store.image ?? profileImage,
+    image: storeImages[store.id] ?? profileImage,
   }));
   const acceptedRequest = useNotificationStore((state) =>
     state.requests.find((request) => request.status === "accepted")
@@ -37,17 +41,7 @@ function Stores() {
         >
           Back
         </button>
-        {loading && (
-          <div className="rounded-3xl bg-white p-10 text-center text-lg font-semibold text-[#1E3B86] shadow-sm">
-            Loading storefronts...
-          </div>
-        )}
-        {error && !loading && (
-          <div className="rounded-3xl bg-white p-10 text-center text-lg font-semibold text-[#DC2626] shadow-sm">
-            {error}
-          </div>
-        )}
-        {!loading && shouldShowGrid ? (
+        {shouldShowGrid ? (
           <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
             {storefronts.map((store) => (
               <StoreCard

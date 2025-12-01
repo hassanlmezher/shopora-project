@@ -112,10 +112,6 @@ function DashboardLoggedIn() {
     }, []);
 
     const adminStores = useAdminStores();
-    useEffect(() => {
-        adminStores.fetchStores().catch(() => undefined);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
     const bannedStores = useMemo(() => adminStores.stores.filter((store) => store.banned).map((store) => store.name.toLowerCase()), [adminStores.stores]);
 
     const catalogueWithUserItems = useMemo(() => {

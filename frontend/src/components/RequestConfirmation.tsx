@@ -11,7 +11,7 @@ type ItemCardProps = {
 
 function ItemCard({ item, onViewDetails, onDelete }: ItemCardProps) {
   return (
-    <div className="rounded-[32px] bg-white p-6 shadow-lg">
+    <div className="rounded-4xl bg-white p-6 shadow-lg">
       <div className="flex flex-col gap-5 md:flex-row md:items-start">
         <div className="flex h-24 w-24 items-center justify-center rounded-2xl bg-[#F4F7F6] p-3 shadow-sm">
           <img src={item.image} alt={`${item.name} ${item.namee}`} className="h-full w-full object-contain" />
