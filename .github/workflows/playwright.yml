@@ -14,7 +14,8 @@ jobs:
 
     defaults:
       run:
-        working-directory: shopora-frontend
+        # The frontend lives in the "frontend" folder of the repo.
+        working-directory: frontend
       
     steps:
       - name: Checkout code
