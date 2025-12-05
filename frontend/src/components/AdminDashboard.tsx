@@ -14,13 +14,24 @@ function AdminDashboard() {
     () => requests.filter((request) => request.status === "accepted"),
     [requests]
   );
+  const existingStoreNames = useMemo(
+    () => new Set(stores.map((store) => store.name.trim().toLowerCase())),
+    [stores]
+  );
+  const acceptedRequestsWithoutStore = useMemo(
+    () =>
+      acceptedRequests.filter(
+        (request) => !existingStoreNames.has(request.shopTitle.trim().toLowerCase())
+      ),
+    [acceptedRequests, existingStoreNames]
+  );
   const pendingRequestCount = useMemo(
     () => requests.filter((request) => request.status === "pending").length,
     [requests]
   );
   const bannedStores = useMemo(() => stores.filter((store) => store.banned), [stores]);
   const activeStores = useMemo(() => stores.filter((store) => !store.banned), [stores]);
-  const totalShopCount = totalStores + acceptedRequests.length;
+  const totalShopCount = totalStores + acceptedRequestsWithoutStore.length;
 
   return (
     <div className="min-h-screen bg-[#F4F7F6] pb-16">
@@ -88,7 +99,7 @@ function AdminDashboard() {
                     onDetails={() => navigate(`/admin/stores/${store.id}`)}
                   />
                 ))}
-                {acceptedRequests.map((request) => (
+                {acceptedRequestsWithoutStore.map((request) => (
                   <AdminShopCard
                     key={`request-${request.id}`}
                     storeName={request.shopTitle}

@@ -46,8 +46,15 @@ function Cart({ onClose }: CartProps) {
     const items = useCartStore((state) => state.items);
     const clearCart = useCartStore((state) => state.clear);
     const addOrders = useOrderStore((state) => state.addOrders);
-    const bannedStores = useAdminStores((state: { stores: AdminStore[] }) => state.stores.filter((store: AdminStore) => store.banned).map((store: AdminStore) => store.name.toLowerCase()));
-    const filteredItems = items.filter((item) => !bannedStores.includes(item.by.toLowerCase()));
+    const stores = useAdminStores((state: { stores: AdminStore[] }) => state.stores);
+    const bannedStores = useMemo(
+        () => stores.filter((store) => store.banned).map((store) => store.name.toLowerCase()),
+        [stores]
+    );
+    const filteredItems = useMemo(
+        () => items.filter((item) => !bannedStores.includes(item.by.toLowerCase())),
+        [items, bannedStores]
+    );
     const [shippingOption, setShippingOption] = useState<ShippingOption>("pickup");
     const [toast, setToast] = useState<{ message: string; variant: "success" | "error" } | null>(null);
     const hideTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
