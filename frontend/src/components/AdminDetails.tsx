@@ -59,13 +59,18 @@ interface PopupState {
 function AdminDetails() {
   const navigate = useNavigate();
   const { storeId } = useParams<{ storeId: string }>();
-  const { stores, itemsByStore, toggleBanStore, removeItem } = useAdminStores();
+  const { stores, itemsByStore, removedItemsByStore, toggleBanStore, removeItem, restoreItem } = useAdminStores();
 
   const store = storeId ? stores.find((entry) => entry.id === storeId) : undefined;
   const items = useMemo(() => (storeId ? itemsByStore[storeId] ?? [] : []), [storeId, itemsByStore]);
+  const removedItems = useMemo(
+    () => (storeId ? removedItemsByStore[storeId] ?? [] : []),
+    [storeId, removedItemsByStore]
+  );
 
   const [storeSnapshot, setStoreSnapshot] = useState(store);
   const [itemsSnapshot, setItemsSnapshot] = useState(items);
+  const [removedItemsSnapshot, setRemovedItemsSnapshot] = useState(removedItems);
   const [popup, setPopup] = useState<PopupState>({ message: "", variant: "info", isVisible: false });
 
   useEffect(() => {
@@ -90,8 +95,15 @@ useEffect(() => {
   }
 }, [items, store]);
 
+  useEffect(() => {
+    if (store) {
+      setRemovedItemsSnapshot(removedItems);
+    }
+  }, [removedItems, store]);
+
   const activeStore = store ?? storeSnapshot;
   const activeItems = store ? items : itemsSnapshot;
+  const archivedItems = store ? removedItems : removedItemsSnapshot;
 
   const showPopup = (message: string, variant: PopupVariant) => {
     setPopup({ message, variant, isVisible: true });
@@ -124,6 +136,14 @@ useEffect(() => {
     }
     removeItem(storeId, item.itemId);
     showPopup(`${item.name} removed from ${activeStore?.name ?? "store"}.`, "success");
+  };
+
+  const handleRestoreItem = (item: AdminStoreItem) => {
+    if (!storeId) {
+      return;
+    }
+    restoreItem(storeId, item.itemId);
+    showPopup(`${item.name} restored to ${activeStore?.name ?? "store"}.`, "success");
   };
 
   if (!activeStore) {
@@ -189,6 +209,53 @@ useEffect(() => {
           ) : (
             <div className="rounded-3xl bg-white p-8 text-center text-[#6A857C] shadow-sm">
               No items left in this store.
+            </div>
+          )}
+        </section>
+
+        <section className="space-y-4">
+          <div className="flex flex-wrap items-center justify-between gap-2">
+            <p className="text-xl font-semibold text-[#1F3B2F]">Recently removed</p>
+            <span className="text-sm text-[#6A857C]">
+              {archivedItems.length} {archivedItems.length === 1 ? "item" : "items"}
+            </span>
+          </div>
+          {archivedItems.length > 0 ? (
+            <div className="grid gap-6 sm:grid-cols-2">
+              {archivedItems.map((item) => (
+                <div key={item.itemId} className="rounded-4xl border border-dashed border-[#d8e3ff] bg-white p-6 shadow-sm">
+                  <div className="flex flex-col gap-4 md:flex-row md:items-start">
+                    <div className="flex h-20 w-20 items-center justify-center rounded-xl bg-[#F8FAFF] p-3">
+                      <img src={item.image} alt={item.name} className="h-full w-full object-contain" />
+                    </div>
+                    <div className="flex flex-1 flex-col gap-1">
+                      <p className="text-lg font-semibold text-[#1F3B2F]">{item.name}</p>
+                      <p className="text-sm text-[#6A857C]">{item.namee}</p>
+                      <p className="text-sm font-semibold text-[#3B7CFF]">{item.price}</p>
+                    </div>
+                  </div>
+                  <div className="mt-4 flex flex-col gap-3 sm:flex-row">
+                    <button
+                      type="button"
+                      onClick={() => handleRestoreItem(item)}
+                      className="flex-1 rounded-full bg-[#10B981] px-6 py-2 text-sm font-semibold text-white transition hover:bg-[#0EA271]"
+                    >
+                      Restore to shop
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => handleViewItemDetails(item)}
+                      className="flex-1 rounded-full border border-[#3B7CFF] px-6 py-2 text-sm font-semibold text-[#1E3B86] transition hover:bg-[#3B7CFF] hover:text-white"
+                    >
+                      View details
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="rounded-3xl bg-white p-8 text-center text-[#6A857C] shadow-sm">
+              Removed items will appear here if you delete them from the shop.
             </div>
           )}
         </section>

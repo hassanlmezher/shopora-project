@@ -10,6 +10,7 @@ export interface AdminStoreItem extends CatalogueItem {
 }
 
 type ItemsByStore = Record<string, AdminStoreItem[]>;
+type RemovedItemsByStore = Record<string, AdminStoreItem[]>;
 
 const normalizeKey = (value: string) => value.toLowerCase().replace(/[^a-z0-9]+/g, "-");
 
@@ -30,10 +31,12 @@ const buildItemsMap = (): ItemsByStore => {
 interface AdminStoreState {
   stores: AdminStore[];
   itemsByStore: ItemsByStore;
+  removedItemsByStore: RemovedItemsByStore;
   addUserShop: (shopTitle: string) => void;
   removeStore: (storeId: string) => void;
   toggleBanStore: (storeId: string) => void;
   removeItem: (storeId: string, itemId: string) => void;
+  restoreItem: (storeId: string, itemId: string) => void;
   getStoreById: (storeId: string) => AdminStore | undefined;
   getItemsByStore: (storeId: string) => AdminStoreItem[];
   reset: () => void;
@@ -44,6 +47,7 @@ const initialItems = buildItemsMap();
 const useAdminStores = create<AdminStoreState>((set, get) => ({
   stores: adminStoresSeed,
   itemsByStore: initialItems,
+  removedItemsByStore: {},
   addUserShop: (shopTitle) =>
     set((state) => ({
       stores: [
@@ -80,10 +84,42 @@ const useAdminStores = create<AdminStoreState>((set, get) => ({
   removeItem: (storeId, itemId) =>
     set((state) => {
       const items = state.itemsByStore[storeId] ?? [];
+      const removedList = state.removedItemsByStore[storeId] ?? [];
+      const itemToRemove = items.find((item) => item.itemId === itemId);
+      const remaining = items.filter((item) => item.itemId !== itemId);
+
       return {
         itemsByStore: {
           ...state.itemsByStore,
-          [storeId]: items.filter((item) => item.itemId !== itemId),
+          [storeId]: remaining,
+        },
+        removedItemsByStore: itemToRemove
+          ? {
+              ...state.removedItemsByStore,
+              [storeId]: [...removedList, itemToRemove],
+            }
+          : state.removedItemsByStore,
+      };
+    }),
+  restoreItem: (storeId, itemId) =>
+    set((state) => {
+      const removedList = state.removedItemsByStore[storeId] ?? [];
+      const itemToRestore = removedList.find((item) => item.itemId === itemId);
+      const remainingRemoved = removedList.filter((item) => item.itemId !== itemId);
+      const currentItems = state.itemsByStore[storeId] ?? [];
+
+      if (!itemToRestore) {
+        return state;
+      }
+
+      return {
+        itemsByStore: {
+          ...state.itemsByStore,
+          [storeId]: [...currentItems, itemToRestore],
+        },
+        removedItemsByStore: {
+          ...state.removedItemsByStore,
+          [storeId]: remainingRemoved,
         },
       };
     }),
@@ -93,6 +129,7 @@ const useAdminStores = create<AdminStoreState>((set, get) => ({
     set({
       stores: adminStoresSeed,
       itemsByStore: buildItemsMap(),
+      removedItemsByStore: {},
     }),
 }));
 
