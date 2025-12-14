@@ -10,9 +10,8 @@ function AdminShopCard({ storeName, onDetails }: AdminShopCardProps) {
   const secondaryText = rest.join(" ");
 
   return (
- 
-    <div className="flex h-full min-h-60 w-full flex-col items-center justify-center gap-6 rounded-2xl bg-[#2D54E0] p-6 text-center shadow-lg shadow-[#8DB9FF]/50">
-      <div className="space-y-1">
+    <div className="flex h-full min-h-60 w-full flex-col items-center gap-6 rounded-2xl bg-[#2D54E0] p-6 text-center shadow-lg shadow-[#8DB9FF]/50">
+      <div className="flex flex-1 flex-col items-center justify-center space-y-1">
         <p className="text-white text-3xl font-bold sm:text-4xl">{primaryText}</p>
         {secondaryText && (
           <p className="text-white text-3xl font-bold sm:text-4xl -mt-1">{secondaryText}</p>
