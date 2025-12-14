@@ -134,7 +134,7 @@ function Details() {
 
   return (
     <div className="min-h-screen bg-slate-50 px-4 py-6 sm:px-6 md:px-10 lg:py-10">
-      <div className="mx-auto flex w-full max-w-5xl flex-col gap-5 rounded-4xl border border-gray-200 bg-white p-5 shadow-xl">
+      <div className="mx-auto flex w-full max-w-6xl flex-col gap-5 rounded-4xl border border-gray-200 bg-white p-5 shadow-xl">
         <button
           type="button"
           onClick={handleBack}
@@ -143,16 +143,16 @@ function Details() {
           Back
         </button>
 
-        <div className="grid items-start gap-6 lg:grid-cols-[minmax(0,1.3fr)_minmax(0,0.7fr)]">
-          <div className="flex flex-col items-center gap-4 rounded-3xl bg-linear-to-b from-white via-slate-50 to-white p-6 text-center shadow-inner lg:items-start lg:text-left">
-              <div className="w-full max-w-[360px] sm:max-w-[420px]">
-                <div className="relative w-70 h-70">
+        <div className="grid items-start gap-6 lg:grid-cols-[minmax(0,1.25fr)_minmax(0,0.75fr)]">
+          <div className="flex flex-col items-center gap-6 rounded-3xl bg-linear-to-b from-white via-slate-50 to-white p-8 text-center shadow-inner lg:items-start lg:text-left">
+              <div className="w-full">
+                <div className="relative mx-auto aspect-square w-full max-w-[560px] sm:max-w-[640px]">
                   {slides.map((slide, index) => (
                     <img
                       key={slide}
                       src={slide}
                       alt={`${name ?? ""} ${namee ?? ""} pic ${index + 1}`}
-                      className={`absolute inset-0 w-full h-full rounded-3xl object-contain shadow-2xl transition-opacity duration-500 ease-in-out ${
+                      className={`absolute inset-0 h-full w-full rounded-[32px] object-contain shadow-2xl transition-opacity duration-500 ease-in-out ${
                         index === currentSlide ? "opacity-100" : "opacity-0"
                       }`}
                     />
@@ -164,7 +164,7 @@ function Details() {
                   {slides.map((_, index) => (
                     <span
                       key={index}
-                      className={`h-1.5 w-8 rounded-full transition-all ${
+                      className={`h-1.5 w-10 rounded-full transition-all ${
                         currentSlide === index ? "bg-[#1E3B86]" : "bg-blue-100"
                       }`}
                     />
