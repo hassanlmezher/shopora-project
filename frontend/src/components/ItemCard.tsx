@@ -124,7 +124,7 @@ function ItemCard({
       <article className="relative flex h-full w-full max-w-[320px] flex-col overflow-hidden rounded-[28px] border border-blue-100 bg-white shadow-[0_25px_45px_rgba(59,124,255,0.18)]">
         <div className="relative w-full bg-white">
           <img
-            className="block h-56 w-full object-contain"
+            className="block h-52 w-full object-contain"
             src={displayedImage}
             alt={`${name} ${namee}`}
           />

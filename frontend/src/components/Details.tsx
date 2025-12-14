@@ -144,15 +144,15 @@ function Details() {
         </button>
 
         <div className="grid items-start gap-6 lg:grid-cols-[minmax(0,1.25fr)_minmax(0,0.75fr)]">
-          <div className="flex flex-col items-center gap-6 rounded-3xl bg-linear-to-b from-white via-slate-50 to-white p-8 text-center shadow-inner lg:items-start lg:text-left">
+          <div className="flex flex-col items-center gap-6 rounded-[30px] bg-linear-to-br from-white via-slate-50 to-[#eef4ff] p-8 text-center shadow-[0_25px_55px_rgba(31,64,144,0.12)] lg:items-start lg:text-left">
               <div className="w-full">
-                <div className="relative mx-auto aspect-square w-full max-w-[560px] sm:max-w-[640px]">
+                <div className="relative mx-auto aspect-square w-full max-w-[500px] sm:max-w-[540px] rounded-[32px] border border-slate-100 bg-white p-6 shadow-[0_28px_60px_rgba(0,0,0,0.08)]">
                   {slides.map((slide, index) => (
                     <img
                       key={slide}
                       src={slide}
                       alt={`${name ?? ""} ${namee ?? ""} pic ${index + 1}`}
-                      className={`absolute inset-0 h-full w-full rounded-[32px] object-contain shadow-2xl transition-opacity duration-500 ease-in-out ${
+                      className={`absolute inset-6 h-[calc(100%-3rem)] w-[calc(100%-3rem)] rounded-[28px] object-contain transition-opacity duration-500 ease-in-out ${
                         index === currentSlide ? "opacity-100" : "opacity-0"
                       }`}
                     />
@@ -160,11 +160,11 @@ function Details() {
                 </div>
               </div>
               {slides.length > 1 && (
-                <div className="flex justify-center gap-2 pt-2">
+                <div className="flex justify-center gap-2 pt-1">
                   {slides.map((_, index) => (
                     <span
                       key={index}
-                      className={`h-1.5 w-10 rounded-full transition-all ${
+                      className={`h-1.5 w-8 rounded-full transition-all ${
                         currentSlide === index ? "bg-[#1E3B86]" : "bg-blue-100"
                       }`}
                     />
@@ -177,7 +177,7 @@ function Details() {
             </div>
           </div>
 
-          <div className="w-full rounded-3xl bg-white p-5 shadow-xl sm:p-6">
+          <div className="w-full rounded-3xl bg-white p-5 shadow-xl sm:p-6 lg:self-center">
             <div className="flex flex-col gap-4">
               <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
                 <div className="flex items-center gap-4">
