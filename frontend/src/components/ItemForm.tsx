@@ -1,4 +1,4 @@
-import { type FormEvent, useEffect, useMemo, useState } from "react";
+import { type FormEvent, type ChangeEvent, useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import PopupMessage from "./PopupMessage";
 import useAuthStore from "../store/useAuthStore";
@@ -45,6 +45,19 @@ function ItemForm() {
     const trimmed = priceLabel.trim();
     return trimmed.startsWith("$") ? trimmed : `$${trimmed}`;
   }, [priceLabel]);
+
+  const handleImageFile = (event: ChangeEvent<HTMLInputElement>, setter: (value: string) => void) => {
+    const file = event.target.files?.[0];
+    if (!file) {
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = () => {
+      const result = typeof reader.result === "string" ? reader.result : "";
+      setter(result);
+    };
+    reader.readAsDataURL(file);
+  };
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -142,30 +155,63 @@ function ItemForm() {
                 </option>
               ))}
             </select>
-            <input
-              type="text"
-              value={imageOne}
-              onChange={(event) => setImageOne(event.target.value)}
-              placeholder="Image URL #1"
-              className="rounded-2xl border border-[#E0E3E1] px-4 py-3 text-sm text-[#1F3B2F] focus:outline-none focus:ring-2 focus:ring-[#8DB9FF]"
-              required
-            />
-            <input
-              type="text"
-              value={imageTwo}
-              onChange={(event) => setImageTwo(event.target.value)}
-              placeholder="Image URL #2"
-              className="rounded-2xl border border-[#E0E3E1] px-4 py-3 text-sm text-[#1F3B2F] focus:outline-none focus:ring-2 focus:ring-[#8DB9FF]"
-              required
-            />
-            <input
-              type="text"
-              value={imageThree}
-              onChange={(event) => setImageThree(event.target.value)}
-              placeholder="Image URL #3"
-              className="rounded-2xl border border-[#E0E3E1] px-4 py-3 text-sm text-[#1F3B2F] focus:outline-none focus:ring-2 focus:ring-[#8DB9FF]"
-              required
-            />
+            <div className="flex flex-col gap-2">
+              <input
+                type="text"
+                value={imageOne}
+                onChange={(event) => setImageOne(event.target.value)}
+                placeholder="Image URL #1 (or upload below)"
+                className="rounded-2xl border border-[#E0E3E1] px-4 py-3 text-sm text-[#1F3B2F] focus:outline-none focus:ring-2 focus:ring-[#8DB9FF]"
+                required
+              />
+              <label className="flex cursor-pointer items-center justify-center rounded-2xl border border-dashed border-[#C9D3FF] bg-[#f4f7ff] px-4 py-2 text-xs font-medium text-[#1E3B86] transition hover:border-[#8DB9FF] hover:bg-white">
+                <input
+                  type="file"
+                  accept="image/*"
+                  className="hidden"
+                  onChange={(event) => handleImageFile(event, setImageOne)}
+                />
+                Upload from device
+              </label>
+            </div>
+            <div className="flex flex-col gap-2">
+              <input
+                type="text"
+                value={imageTwo}
+                onChange={(event) => setImageTwo(event.target.value)}
+                placeholder="Image URL #2 (or upload below)"
+                className="rounded-2xl border border-[#E0E3E1] px-4 py-3 text-sm text-[#1F3B2F] focus:outline-none focus:ring-2 focus:ring-[#8DB9FF]"
+                required
+              />
+              <label className="flex cursor-pointer items-center justify-center rounded-2xl border border-dashed border-[#C9D3FF] bg-[#f4f7ff] px-4 py-2 text-xs font-medium text-[#1E3B86] transition hover:border-[#8DB9FF] hover:bg-white">
+                <input
+                  type="file"
+                  accept="image/*"
+                  className="hidden"
+                  onChange={(event) => handleImageFile(event, setImageTwo)}
+                />
+                Upload from device
+              </label>
+            </div>
+            <div className="flex flex-col gap-2">
+              <input
+                type="text"
+                value={imageThree}
+                onChange={(event) => setImageThree(event.target.value)}
+                placeholder="Image URL #3 (or upload below)"
+                className="rounded-2xl border border-[#E0E3E1] px-4 py-3 text-sm text-[#1F3B2F] focus:outline-none focus:ring-2 focus:ring-[#8DB9FF]"
+                required
+              />
+              <label className="flex cursor-pointer items-center justify-center rounded-2xl border border-dashed border-[#C9D3FF] bg-[#f4f7ff] px-4 py-2 text-xs font-medium text-[#1E3B86] transition hover:border-[#8DB9FF] hover:bg-white">
+                <input
+                  type="file"
+                  accept="image/*"
+                  className="hidden"
+                  onChange={(event) => handleImageFile(event, setImageThree)}
+                />
+                Upload from device
+              </label>
+            </div>
             <textarea
               value={description}
               onChange={(event) => setDescription(event.target.value)}
