@@ -13,7 +13,6 @@ const userSchema = new mongoose.Schema(
         password: {
             type: String,
             required: true,
-            required: true,
             minlength: 6,
         },
 
@@ -23,7 +22,7 @@ const userSchema = new mongoose.Schema(
             default: "user",
         }
     },
-    { timestams: true }
+    { timestamps: true }
 );
 
 export default mongoose.model("User", userSchema);
