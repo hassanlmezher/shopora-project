@@ -121,14 +121,19 @@ function ItemCard({
 
   return (
     <>
-      <article className="relative flex h-full w-full max-w-[320px] flex-col gap-5 rounded-[28px] border border-blue-100 bg-linear-to-b from-blue-50 via-white to-white shadow-[0_25px_45px_rgba(59,124,255,0.18)]">
-        <div className="relative flex flex-1 flex-col gap-4 rounded-3xl bg-white px-6 pb-6 pt-8">
+      <article className="relative flex h-full w-full max-w-[320px] flex-col overflow-hidden rounded-[28px] border border-blue-100 bg-white shadow-[0_25px_45px_rgba(59,124,255,0.18)]">
+        <div className="relative w-full bg-white">
+          <img
+            className="block h-56 w-full object-contain"
+            src={displayedImage}
+            alt={`${name} ${namee}`}
+          />
           <button
             type="button"
             onClick={handleToggleFavorite}
             aria-label={isFavorite ? "Remove from favorites" : "Add to favorites"}
-            className={`absolute right-4 top-4 flex h-10 w-10 items-center justify-center rounded-full border transition ${
-              isFavorite ? "border-[#FF6B6B] bg-white shadow" : "border-slate-200 bg-white/90"
+            className={`absolute right-3 top-3 flex h-10 w-10 items-center justify-center rounded-full border bg-white transition ${
+              isFavorite ? "border-[#FF6B6B] shadow" : "border-slate-200/80"
             }`}
           >
             <svg
@@ -143,24 +148,19 @@ function ItemCard({
               <path d="M12 21s-6.2-4.35-9.33-7.47A5.5 5.5 0 1 1 11.4 5.4L12 6l.6-.6a5.5 5.5 0 0 1 7.73 7.73C18.2 16.65 12 21 12 21z" />
             </svg>
           </button>
-          <div className="mx-auto flex h-32 w-32 items-center justify-center rounded-[26px] bg-blue-50 shadow-inner shadow-blue-500/20">
-            <img
-              className="h-32 w-32 object-contain"
-              src={displayedImage}
-              alt={`${name} ${namee}`}
-            />
-          </div>
           {slides.length > 1 && (
-            <div className="flex justify-center gap-2">
+            <div className="absolute bottom-3 left-1/2 flex -translate-x-1/2 gap-2 rounded-full bg-white/80 px-2 py-1 shadow-sm backdrop-blur">
               {slides.map((_, index) => (
                 <button
                   key={index}
                   onClick={() => setCurrentSlide(index)}
-                  className={`h-1.5 w-8 rounded-full transition-all cursor-pointer ${currentSlide === index ? "bg-[#3875F0]" : "bg-blue-100"}`}
+                  className={`h-1.5 w-6 rounded-full transition-all cursor-pointer ${currentSlide === index ? "bg-[#3875F0]" : "bg-blue-100"}`}
                 />
               ))}
             </div>
           )}
+        </div>
+        <div className="flex flex-1 flex-col gap-4 px-6 pb-6 pt-5">
           <div className="text-center">
             <p className="text-lg font-bold text-slate-900">{name}</p>
             <p className="text-sm font-semibold text-blue-700">{namee}</p>

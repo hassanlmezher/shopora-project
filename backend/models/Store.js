@@ -33,4 +33,4 @@ const storeSchema = new mongoose.Schema(
     { timestamps: true }
 );
 
-export default mongoose.model.model("Store", storeSchema);
+export default mongoose.model("Store", storeSchema);
