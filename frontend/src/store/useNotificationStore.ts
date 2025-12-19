@@ -29,6 +29,7 @@ export interface ShopRequestNotification {
   submittedAt: number;
   items: UserShopItem[];
   ownerEmail?: string;
+  ownerId?: string;
 }
 
 export const EMPTY_USER_SHOP_ITEMS: UserShopItem[] = [];
@@ -38,6 +39,7 @@ type ShopRequestPayload = {
   description: string;
   phone: string;
   ownerEmail: string;
+  ownerId?: string;
   items?: UserShopItem[];
 };
 
@@ -68,13 +70,14 @@ const useNotificationStore = create<NotificationStore>()(
           if (hasActiveRequest) {
             return state;
           }
-          const { items = [], ownerEmail, ...rest } = payload;
+          const { items = [], ownerEmail, ownerId, ...rest } = payload;
           const newRequest: ShopRequestNotification = {
             id: `${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
             status: "pending",
             submittedAt: Date.now(),
             items,
             ownerEmail: normalizedOwnerEmail,
+            ownerId,
             ...rest,
           };
           return { requests: [...state.requests, newRequest] };
@@ -99,7 +102,7 @@ const useNotificationStore = create<NotificationStore>()(
                   (store) => store.name.trim().toLowerCase() === normalizedTitle
                 );
                 if (!alreadyExists) {
-                  useAdminStores.getState().addUserShop(acceptedRequest.shopTitle);
+                  useAdminStores.getState().addUserShop(acceptedRequest.shopTitle, acceptedRequest.ownerId);
                 }
               });
             }

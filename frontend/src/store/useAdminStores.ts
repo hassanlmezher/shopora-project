@@ -1,29 +1,25 @@
 import { create } from "zustand";
-import { adminStoresSeed, type AdminStoreSeed } from "../data/adminStores";
-import { catalogue, type CatalogueItem } from "../data/catalogue";
+import { api, type ApiProduct, type ApiStore } from "../api/client";
+import { mapApiProductToView, type ProductView } from "./useCatalogueStore";
 
-export type AdminStore = AdminStoreSeed & { banned?: boolean };
+export type AdminStore = ApiStore & { name: string; banned?: boolean };
 
-export interface AdminStoreItem extends CatalogueItem {
+export interface AdminStoreItem extends ProductView {
   itemId: string;
-  storeId: string;
 }
 
 type ItemsByStore = Record<string, AdminStoreItem[]>;
 type RemovedItemsByStore = Record<string, AdminStoreItem[]>;
 
-const normalizeKey = (value: string) => value.toLowerCase().replace(/[^a-z0-9]+/g, "-");
-
-const buildItemsMap = (): ItemsByStore => {
-  return adminStoresSeed.reduce<ItemsByStore>((acc, store) => {
-    const storeItems = catalogue
-      .filter((item) => item.by === store.name)
-      .map<AdminStoreItem>((item, index) => ({
-        ...item,
-        itemId: `${store.id}-${index}-${normalizeKey(item.name)}-${normalizeKey(item.namee)}`,
-        storeId: store.id,
-      }));
-    acc[store.id] = storeItems;
+const buildItemsMap = (products: ApiProduct[]): ItemsByStore => {
+  return products.reduce<ItemsByStore>((acc, product) => {
+    const mapped = mapApiProductToView(product);
+    const storeId = mapped.storeId;
+    const entry: AdminStoreItem = { ...mapped, itemId: mapped.id };
+    if (!acc[storeId]) {
+      acc[storeId] = [];
+    }
+    acc[storeId].push(entry);
     return acc;
   }, {});
 };
@@ -32,40 +28,69 @@ interface AdminStoreState {
   stores: AdminStore[];
   itemsByStore: ItemsByStore;
   removedItemsByStore: RemovedItemsByStore;
-  addUserShop: (shopTitle: string) => void;
+  loading: boolean;
+  error?: string;
+  refresh: () => Promise<void>;
+  addUserShop: (shopTitle: string, ownerId?: string) => Promise<void>;
   removeStore: (storeId: string) => void;
   toggleBanStore: (storeId: string) => void;
   removeItem: (storeId: string, itemId: string) => void;
   restoreItem: (storeId: string, itemId: string) => void;
   getStoreById: (storeId: string) => AdminStore | undefined;
   getItemsByStore: (storeId: string) => AdminStoreItem[];
-  reset: () => void;
 }
 
-const initialItems = buildItemsMap();
-
 const useAdminStores = create<AdminStoreState>((set, get) => ({
-  stores: adminStoresSeed,
-  itemsByStore: initialItems,
+  stores: [],
+  itemsByStore: {},
   removedItemsByStore: {},
-  addUserShop: (shopTitle) =>
-    set((state) => ({
-      stores: [
-        ...state.stores,
-        {
-          id: `user-shop-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
-          name: shopTitle,
-          owner: "User",
-          email: "user@example.com",
-          category: "General",
-          joined: new Date().toLocaleDateString(),
-          status: "active",
-          description: "User created shop",
+  loading: false,
+  error: undefined,
+  refresh: async () => {
+    set({ loading: true, error: undefined });
+    try {
+      const [stores, products] = await Promise.all([api.getStores(), api.getProducts()]);
+      set({
+        stores: stores.map((store) => ({ ...store, name: store.title, banned: store.status === "declined" })),
+        itemsByStore: buildItemsMap(products),
+        loading: false,
+      });
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "Unable to load stores";
+      set({ error: message, loading: false });
+    }
+  },
+  addUserShop: async (shopTitle: string, ownerId?: string) => {
+    try {
+      const trimmedTitle = shopTitle.trim();
+      let newStore: AdminStore | null = null;
+      if (ownerId) {
+        const created = await api.requestStore({
+          owner: ownerId,
+          title: trimmedTitle,
+          description: "User-submitted shop",
+          phone: "N/A",
+        });
+        newStore = { ...created, name: created.title };
+      } else {
+        newStore = {
+          id: `local-${Date.now()}`,
+          name: trimmedTitle,
+          title: trimmedTitle,
+          description: "User-submitted shop",
+          phone: "N/A",
+          status: "pending",
           banned: false,
-        },
-      ],
-      itemsByStore: state.itemsByStore, // No items for user shops initially
-    })),
+        };
+      }
+      set((state) => ({
+        stores: newStore ? [...state.stores, newStore] : state.stores,
+      }));
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "Unable to add shop";
+      set({ error: message });
+    }
+  },
   removeStore: (storeId) =>
     set((state) => {
       const rest = { ...state.itemsByStore };
@@ -125,12 +150,14 @@ const useAdminStores = create<AdminStoreState>((set, get) => ({
     }),
   getStoreById: (storeId) => get().stores.find((store) => store.id === storeId),
   getItemsByStore: (storeId) => get().itemsByStore[storeId] ?? [],
-  reset: () =>
-    set({
-      stores: adminStoresSeed,
-      itemsByStore: buildItemsMap(),
-      removedItemsByStore: {},
-    }),
 }));
+
+// Kick off an initial hydration so storefronts render without manual wiring.
+useAdminStores
+  .getState()
+  .refresh()
+  .catch(() => {
+    // error is captured in store state
+  });
 
 export default useAdminStores;

@@ -1,4 +1,4 @@
-import express from "express";
+import express, { type NextFunction, type Request, type Response } from "express";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 import cors from "cors";
@@ -14,31 +14,20 @@ import reviewRoutes from "./routes/reviewRoutes.js";
 dotenv.config();
 
 const app = express();
-
-app.use(express.json());
 app.use(cors());
+app.use(express.json());
 
 async function connectDB() {
-  try {
-    const mongoUri = process.env.MONGO_URI;
-    if (!mongoUri) {
-      throw new Error("MONGO_URI is not defined");
-    }
-    await mongoose.connect(mongoUri, {
-      dbName: "shopora",
-    });
-
-    console.log("MongoDB Connected Successfully");
-  } catch (error) {
-    const message = error instanceof Error ? error.message : String(error);
-    console.error("Mongo Connection Error:", message);
-    process.exit(1);
+  const mongoUri = process.env.MONGO_URI;
+  if (!mongoUri) {
+    throw new Error("MONGO_URI is not defined");
   }
+
+  await mongoose.connect(mongoUri, { dbName: "shopora" });
+  console.log("MongoDB Connected Successfully");
 }
 
-connectDB();
-
-app.get("/", (req, res) => {
+app.get("/", (_req: Request, res: Response) => {
   res.send("shopora backend running!");
 });
 
@@ -50,7 +39,27 @@ app.use("/api/favorites", favoriteRoutes);
 app.use("/api/orders", orderRoutes);
 app.use("/api/reviews", reviewRoutes);
 
-const PORT = Number(process.env.PORT) || 6000;
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+app.use((_req: Request, res: Response) => {
+  res.status(404).json({ message: "Route not found" });
 });
+
+
+app.use((err: unknown, _req: Request, res: Response, _next: NextFunction) => {
+  const message = err instanceof Error ? err.message : "Unexpected server error";
+  res.status(500).json({ message });
+});
+
+// Chrome blocks some "unsafe" ports like 6000; default to 6001 if none is provided.
+const PORT = Number(process.env.PORT) || 6001;
+
+connectDB()
+  .then(() => {
+    app.listen(PORT, () => {
+      console.log(`Server running on port ${PORT}`);
+    });
+  })
+  .catch((error) => {
+    const message = error instanceof Error ? error.message : String(error);
+    console.error("Mongo Connection Error:", message);
+    process.exit(1);
+  });
