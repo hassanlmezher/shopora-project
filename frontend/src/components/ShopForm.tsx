@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import PopupMessage from "./PopupMessage";
 import useNotificationStore from "../store/useNotificationStore";
 import useAuthStore from "../store/useAuthStore";
+import { api } from "../api/client";
 
 function ShopForm() {
   const navigate = useNavigate();
@@ -14,7 +15,7 @@ function ShopForm() {
     variant: "success" | "error";
   } | null>(null);
   const submitShopRequest = useNotificationStore((state) => state.submitShopRequest);
-  const { isLoggedIn, userEmail } = useAuthStore();
+  const { isLoggedIn, userEmail, user } = useAuthStore();
   const normalizedUserEmail = userEmail?.trim().toLowerCase() ?? "";
   const hasActiveRequest = useNotificationStore(
     (state) =>
@@ -33,7 +34,7 @@ function ShopForm() {
     return () => clearTimeout(timer);
   }, [popupContent]);
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const trimmedEmail = userEmail?.trim();
 
@@ -59,8 +60,25 @@ function ShopForm() {
       description: shopDescription.trim(),
       phone: phoneNumber.trim(),
       ownerEmail: trimmedEmail,
+      ownerId: user?.id,
       items: [],
     });
+
+    if (user?.id) {
+      try {
+        await api.requestStore({
+          owner: user.id,
+          title: shopTitle.trim(),
+          description: shopDescription.trim(),
+          phone: phoneNumber.trim(),
+        });
+        setPopupContent({ message: "Request submitted to the backend.", variant: "success" });
+      } catch (error) {
+        const message = error instanceof Error ? error.message : "Unable to submit request.";
+        setPopupContent({ message, variant: "error" });
+        return;
+      }
+    }
 
     setIsSubmitted(true);
     setHasAttemptedSubmit(true);

@@ -1,11 +1,14 @@
 import bcrypt from "bcryptjs";
 import User from "../models/User.js";
+const normalizeEmail = (email) => email?.trim().toLowerCase() ?? "";
 export const signup = async (req, res) => {
     try {
         const { email, password } = req.body;
-        const normalizedEmail = typeof email === "string" ? email.trim().toLowerCase() : "";
+        const normalizedEmail = normalizeEmail(email);
         if (!normalizedEmail || typeof password !== "string" || password.length < 6) {
-            return res.status(400).json({ message: "Provide a valid email and password (min 6 chars)." });
+            return res
+                .status(400)
+                .json({ message: "Provide a valid email and password (min 6 chars)." });
         }
         const exists = await User.findOne({ email: normalizedEmail });
         if (exists) {
@@ -13,24 +16,31 @@ export const signup = async (req, res) => {
         }
         const hashed = await bcrypt.hash(password, 10);
         const user = await User.create({ email: normalizedEmail, password: hashed });
-        res.status(201).json(user);
+        return res.status(201).json(user.toJSON());
     }
-    catch (err) {
-        res.status(500).json({ error: err.message });
+    catch (error) {
+        const message = error instanceof Error ? error.message : "Unable to sign up";
+        return res.status(500).json({ message });
     }
 };
 export const login = async (req, res) => {
     try {
         const { email, password } = req.body;
-        const normalizedEmail = typeof email === "string" ? email.trim().toLowerCase() : "";
-        const user = await User.findOne({ email: normalizedEmail });
-        const isValid = user && typeof password === "string" ? await bcrypt.compare(password, user.password) : false;
+        const normalizedEmail = normalizeEmail(email);
+        if (!normalizedEmail || typeof password !== "string") {
+            return res.status(400).json({ message: "Email and password are required." });
+        }
+        const user = await User.findOne({ email: normalizedEmail }).select("+password");
+        const isValid = user && typeof password === "string"
+            ? await bcrypt.compare(password, user.password)
+            : false;
         if (!isValid || !user) {
             return res.status(401).json({ message: "Invalid credentials" });
         }
-        res.json(user);
+        return res.json(user.toJSON());
     }
-    catch (err) {
-        res.status(500).json({ error: err.message });
+    catch (error) {
+        const message = error instanceof Error ? error.message : "Unable to log in";
+        return res.status(500).json({ message });
     }
 };
