@@ -1,7 +1,7 @@
-import mongoose from "mongoose";
-const productSchema = new mongoose.Schema({
+import { Schema, model } from "mongoose";
+const productSchema = new Schema({
     store: {
-        type: mongoose.Schema.Types.ObjectId,
+        type: Schema.Types.ObjectId,
         ref: "Store",
         required: true,
     },
@@ -17,11 +17,15 @@ const productSchema = new mongoose.Schema({
     price: {
         type: Number,
         required: true,
+        min: 0,
     },
     images: {
         type: [String],
         required: true,
-        validate: v => v.length === 3,
+        validate: {
+            validator: (value) => value.length > 0,
+            message: "At least one product image is required",
+        },
     },
     description: {
         type: String,
@@ -35,10 +39,23 @@ const productSchema = new mongoose.Schema({
     ratings: {
         type: Number,
         default: 0,
+        min: 0,
+        max: 5,
     },
     reviewsCount: {
         type: Number,
         default: 0,
-    }
+        min: 0,
+    },
 }, { timestamps: true });
-export default mongoose.model("Product", productSchema);
+productSchema.set("toJSON", {
+    versionKey: false,
+    transform: (_doc, ret) => {
+        if (ret._id) {
+            ret.id = String(ret._id);
+        }
+        delete ret._id;
+        return ret;
+    },
+});
+export default model("Product", productSchema);

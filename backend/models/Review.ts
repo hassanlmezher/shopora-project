@@ -1,31 +1,54 @@
-import mongoose from "mongoose";
+import { Schema, model, type Document, type Types } from "mongoose";
 
-const reviewSchema = new mongoose.Schema(
-    {
-        user: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "User",
-            required: true,
-        },
+export interface ReviewDocument extends Document {
+  user: Types.ObjectId;
+  product: Types.ObjectId;
+  rating: number;
+  comment: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
 
-        product: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "Product",
-            required: true,
-        },
-
-        rating: {
-            type: Number,
-            required: true,
-            min: 1,
-            max: 5,
-        },
-
-        comment: {
-            type: String,
-            trim: true,
-        }
+const reviewSchema = new Schema<ReviewDocument>(
+  {
+    user: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
     },
-    { timestamps: true }
+
+    product: {
+      type: Schema.Types.ObjectId,
+      ref: "Product",
+      required: true,
+      index: true,
+    },
+
+    rating: {
+      type: Number,
+      required: true,
+      min: 1,
+      max: 5,
+    },
+
+    comment: {
+      type: String,
+      trim: true,
+      default: "",
+    },
+  },
+  { timestamps: true }
 );
-export default mongoose.model("Review", reviewSchema);
+
+reviewSchema.set("toJSON", {
+  versionKey: false,
+  transform: (_doc, ret: any) => {
+    if (ret._id) {
+      ret.id = String(ret._id);
+    }
+    delete ret._id;
+    return ret;
+  },
+});
+
+export default model<ReviewDocument>("Review", reviewSchema);

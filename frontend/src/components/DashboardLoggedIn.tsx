@@ -2,7 +2,7 @@ import logo from "../images/Logo.png";
 import women from "../images/women.png";
 import shirt from "../images/shirt.png";
 import ItemCard from "./ItemCard";
-import { catalogue } from "../data/catalogue";
+import { catalogue, type CatalogueItem } from "../data/catalogue";
 import home from "../images/home.png";
 import search from "../images/search.png";
 import settings from "../images/settings.png";
@@ -22,41 +22,41 @@ import Cart from "./Cart";
 import useFavoritesStore from "../store/useFavoritesStore";
 import useAuthStore from "../store/useAuthStore";
 import useAdminStores from "../store/useAdminStores";
+import useCatalogueStore from "../store/useCatalogueStore";
 
-function getUpdatedCatalogue() {
-    return catalogue.map(item => {
-        const savedReviews = localStorage.getItem(`reviews-${item.name}-${item.namee}`);
-        if (savedReviews) {
-            const parsedReviews = JSON.parse(savedReviews);
-            return { ...item, reviews: parsedReviews };
-        }
-        return item;
-    });
+function getUpdatedCatalogue(items: CatalogueItem[]) {
+  return items.map((item) => {
+    const savedReviews = localStorage.getItem(`reviews-${item.name}-${item.namee}`);
+    if (savedReviews) {
+      const parsedReviews = JSON.parse(savedReviews);
+      return { ...item, reviews: parsedReviews };
+    }
+    return item;
+  });
 }
-
-const selectBannedStores = (state: { stores: { banned?: boolean; name: string }[] }) =>
-  state.stores.filter((store) => store.banned).map((store) => store.name.toLowerCase());
 
 const ALL_CATEGORIES = "All Categories";
 
 const categoryOptions = [ALL_CATEGORIES, "Shirts", "Headphones", "Shoes"] as const;
 
-const priceValues = catalogue.map(item => item.priceValue);
-const priceBounds = {
-    min: Math.min(...priceValues),
-    max: Math.max(...priceValues)
-};
-
 function DashboardLoggedIn() {
     const navigate = useNavigate();
+    const catalogueFromApi = useCatalogueStore((state) => state.products);
+    const baseCatalogue = useMemo(
+      () => (catalogueFromApi.length ? catalogueFromApi : catalogue),
+      [catalogueFromApi]
+    );
     const [searchTerm, setSearchTerm] = useState("");
     const [isSearchExpanded, setIsSearchExpanded] = useState(false);
     const [selectedCategory, setSelectedCategory] = useState<(typeof categoryOptions)[number]>(ALL_CATEGORIES);
     const [isCategoriesExpanded, setIsCategoriesExpanded] = useState(false);
-    const [priceRange, setPriceRange] = useState({ min: priceBounds.min, max: priceBounds.max });
-    const [priceDraft, setPriceDraft] = useState({ min: priceBounds.min.toString(), max: priceBounds.max.toString() });
+    const [updatedCatalogue, setUpdatedCatalogue] = useState<CatalogueItem[]>(() => getUpdatedCatalogue(baseCatalogue));
+    const priceValues = useMemo(() => updatedCatalogue.map((item) => item.priceValue), [updatedCatalogue]);
+    const defaultMin = priceValues.length ? Math.min(...priceValues) : 0;
+    const defaultMax = priceValues.length ? Math.max(...priceValues) : 0;
+    const [priceRange, setPriceRange] = useState({ min: defaultMin, max: defaultMax });
+    const [priceDraft, setPriceDraft] = useState({ min: defaultMin.toString(), max: defaultMax.toString() });
     const [isPriceExpanded, setIsPriceExpanded] = useState(false);
-    const [updatedCatalogue, setUpdatedCatalogue] = useState(getUpdatedCatalogue());
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [showFavoritesOnly, setShowFavoritesOnly] = useState(false);
     const searchInputRef = useRef<HTMLInputElement | null>(null);
@@ -70,7 +70,8 @@ function DashboardLoggedIn() {
     const notificationCount = useNotificationStore(
         (state) => Math.max(0, state.requests.length - state.latestReadRequestCount)
     );
-    const { userEmail } = useAuthStore();
+    const { user } = useAuthStore();
+    const userEmail = user?.email ?? null;
     const normalizedUserEmail = userEmail?.trim().toLowerCase() ?? "";
     const userAcceptedRequest = useNotificationStore((state) =>
         state.requests.find(
@@ -101,7 +102,7 @@ function DashboardLoggedIn() {
 
     useEffect(() => {
         const handleReviewsUpdate = () => {
-            setUpdatedCatalogue(getUpdatedCatalogue());
+            setUpdatedCatalogue(getUpdatedCatalogue(baseCatalogue));
         };
 
         window.addEventListener('reviewsUpdated', handleReviewsUpdate);
@@ -109,7 +110,11 @@ function DashboardLoggedIn() {
         return () => {
             window.removeEventListener('reviewsUpdated', handleReviewsUpdate);
         };
-    }, []);
+    }, [baseCatalogue]);
+
+    useEffect(() => {
+      setUpdatedCatalogue(getUpdatedCatalogue(baseCatalogue));
+    }, [baseCatalogue]);
 
     const adminStores = useAdminStores();
     const bannedStores = useMemo(() => adminStores.stores.filter((store) => store.banned).map((store) => store.name.toLowerCase()), [adminStores.stores]);
@@ -137,28 +142,20 @@ function DashboardLoggedIn() {
     }, [updatedCatalogue, globalAcceptedRequestItems, bannedStores]);
 
     const dynamicPriceBounds = useMemo(() => {
-        const allPrices = catalogueWithUserItems.map((item) => item.priceValue);
-        if (!allPrices.length) {
-            return priceBounds;
-        }
-        return {
-            min: Math.min(...allPrices),
-            max: Math.max(...allPrices),
-        };
-    }, [catalogueWithUserItems]);
+      const allPrices = catalogueWithUserItems.map((item) => item.priceValue);
+      if (!allPrices.length) {
+        return { min: defaultMin, max: defaultMax };
+      }
+      return {
+        min: Math.min(...allPrices),
+        max: Math.max(...allPrices),
+      };
+    }, [catalogueWithUserItems, defaultMin, defaultMax]);
 
     useEffect(() => {
-        setPriceRange((prev) => {
-            const updated = {
-                min: Math.min(prev.min, dynamicPriceBounds.min),
-                max: Math.max(prev.max, dynamicPriceBounds.max),
-            };
-            if (updated.min === prev.min && updated.max === prev.max) {
-                return prev;
-            }
-            return updated;
-        });
-    }, [dynamicPriceBounds.min, dynamicPriceBounds.max]);
+      setPriceRange({ min: defaultMin, max: defaultMax });
+      setPriceDraft({ min: defaultMin.toString(), max: defaultMax.toString() });
+    }, [defaultMin, defaultMax]);
 
     const filteredItems = useMemo(() => {
         const normalized = searchTerm.trim().toLowerCase();

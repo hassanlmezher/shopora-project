@@ -1,28 +1,47 @@
-import mongoose from "mongoose";
+import { Schema, model, type Document } from "mongoose";
 
-const userSchema = new mongoose.Schema(
-    {
-        email: {
-            type: String, 
-            required: true,
-            unique: true,
-            lowercase: true,
-            trim: true,
-        },
+export interface UserDocument extends Document {
+  email: string;
+  password: string;
+  role: "user" | "admin";
+  createdAt: Date;
+  updatedAt: Date;
+}
 
-        password: {
-            type: String,
-            required: true,
-            minlength: 6,
-        },
-
-        role: {
-            type: String,
-            enum: ["user", "admin"],
-            default: "user",
-        }
+const userSchema = new Schema<UserDocument>(
+  {
+    email: {
+      type: String,
+      required: true,
+      unique: true,
+      lowercase: true,
+      trim: true,
     },
-    { timestamps: true }
+    password: {
+      type: String,
+      required: true,
+      minlength: 6,
+      select: false,
+    },
+    role: {
+      type: String,
+      enum: ["user", "admin"],
+      default: "user",
+    },
+  },
+  { timestamps: true }
 );
 
-export default mongoose.model("User", userSchema);
+userSchema.set("toJSON", {
+  versionKey: false,
+  transform: (_doc, ret: any) => {
+    if (ret._id) {
+      ret.id = String(ret._id);
+    }
+    delete ret._id;
+    delete ret.password;
+    return ret;
+  },
+});
+
+export default model<UserDocument>("User", userSchema);
