@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import auth from "../images/loginlogin.png";
-import { useNavigate } from 'react-router-dom';
 import PopupMessage from "./PopupMessage";
 import useAuthStore from "../store/useAuthStore";
 
@@ -11,136 +11,173 @@ type FieldErrors = {
 };
 
 function Signup() {
-    const navigate = useNavigate();
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [confirmPassword, setConfirmPassword] = useState("");
-    const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
-    const [showPopup, setShowPopup] = useState(false);
-    const [popupMessage, setPopupMessage] = useState("");
-    const [popupVariant, setPopupVariant] = useState<"success" | "error">("success");
-    const hideTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-    const { signup, isLoading } = useAuthStore();
+  const navigate = useNavigate();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
+  const [showPopup, setShowPopup] = useState(false);
+  const [popupMessage, setPopupMessage] = useState("");
+  const [popupVariant, setPopupVariant] = useState<"success" | "error">("success");
+  const hideTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const { signup, isLoading } = useAuthStore();
 
-    const scheduleHide = (callback?: () => void) => {
+  const scheduleHide = (callback?: () => void) => {
+    if (hideTimerRef.current) {
+      clearTimeout(hideTimerRef.current);
+    }
+    hideTimerRef.current = setTimeout(() => {
+      setShowPopup(false);
+      hideTimerRef.current = null;
+      callback?.();
+    }, 1200);
+  };
+
+  useEffect(
+    () => () => {
       if (hideTimerRef.current) {
         clearTimeout(hideTimerRef.current);
       }
-      hideTimerRef.current = setTimeout(() => {
-        setShowPopup(false);
-        hideTimerRef.current = null;
-        callback?.();
-      }, 1200);
-    };
+    },
+    []
+  );
 
-    useEffect(() => {
-      return () => {
-        if (hideTimerRef.current) {
-          clearTimeout(hideTimerRef.current);
-        }
-      };
-    }, []);
+  const handleSignup = async () => {
+    const errors: FieldErrors = {};
+    const trimmedEmail = email.trim();
+    const trimmedPassword = password.trim();
+    const trimmedConfirmPassword = confirmPassword.trim();
+    const emailPattern = /^\S+@\S+\.\S+$/;
 
-    const handleSignup = async () => {
-      const errors: FieldErrors = {};
-      const trimmedEmail = email.trim();
-      const trimmedPassword = password.trim();
-      const trimmedConfirmPassword = confirmPassword.trim();
-      const emailPattern = /^\S+@\S+\.\S+$/;
+    if (!trimmedEmail) {
+      errors.email = "Email address is required.";
+    } else if (!emailPattern.test(trimmedEmail)) {
+      errors.email = "Enter a valid email address.";
+    }
 
-      if (!trimmedEmail) {
-        errors.email = "Email address is required.";
-      } else if (!emailPattern.test(trimmedEmail)) {
-        errors.email = "Enter a valid email address.";
-      }
+    if (!trimmedPassword) {
+      errors.password = "Password is required.";
+    } else if (trimmedPassword.length < 6) {
+      errors.password = "Password must be at least 6 characters.";
+    }
 
-      if (!trimmedPassword) {
-        errors.password = "Password is required.";
-      } else if (trimmedPassword.length < 6) {
-        errors.password = "Password must be at least 6 characters.";
-      }
+    if (!trimmedConfirmPassword) {
+      errors.confirmPassword = "Please confirm your password.";
+    } else if (trimmedPassword && trimmedPassword !== trimmedConfirmPassword) {
+      errors.confirmPassword = "Passwords do not match.";
+    }
 
-      if (!trimmedConfirmPassword) {
-        errors.confirmPassword = "Please confirm your password.";
-      } else if (trimmedPassword && trimmedPassword !== trimmedConfirmPassword) {
-        errors.confirmPassword = "Passwords do not match.";
-      }
-      if (Object.keys(errors).length > 0) {
-        setFieldErrors(errors);
-        return;
-      }
+    if (Object.keys(errors).length > 0) {
+      setFieldErrors(errors);
+      return;
+    }
 
-      const success = await signup(trimmedEmail, trimmedPassword);
-      if (!success) {
-        setPopupMessage("Signup failed. Please try again.");
-        setPopupVariant("error");
-        setShowPopup(true);
-        return;
-      }
-
-      setFieldErrors({});
-      setPopupMessage("Signup successful! Redirecting to login.");
-      setPopupVariant("success");
+    const success = await signup(trimmedEmail, trimmedPassword);
+    if (!success) {
+      setPopupMessage("Signup failed. Please try again.");
+      setPopupVariant("error");
       setShowPopup(true);
-      setEmail("");
-      setPassword("");
-      setConfirmPassword("");
-      scheduleHide(() => navigate("/login"));
-    };
+      return;
+    }
+
+    setFieldErrors({});
+    setPopupMessage("Signup successful! Redirecting to login.");
+    setPopupVariant("success");
+    setShowPopup(true);
+    setEmail("");
+    setPassword("");
+    setConfirmPassword("");
+    scheduleHide(() => navigate("/login"));
+  };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-linear-to-b from-[#6E98FF] to-[#1E3B86] px-4 py-10">
-      <div className="flex  max-w-5xl flex-col gap-20 overflow-hidden rounded-3xl bg-[#D9D9D9] shadow-xl lg:flex-row">
-        <div className="flex w-full items-center justify-center bg-[#D9D9D9]  lg:w-1/2 ">
-          <img className="w-full max-w-lg sm:max-w-sm rounded-l-2xl" src={auth} alt="auth illustration" />
-        </div>  
-        <div className="flex w-full flex-col justify-center gap-6 px-8 py-10 lg:w-1/2 lg:px-12">
-          <p className="text-center text-4xl font-bold text-[#3875F0] sm:text-5xl lg:text-left">Sign up</p>
-          <input
-            type="text"
-            value={email}
-            onChange={(event) => {
-              setEmail(event.target.value);
-              setFieldErrors((prev) => ({ ...prev, email: undefined }));
-            }}
-            className={`h-12 w-full rounded-2xl px-4 text-base text-black placeholder:text-[#6B7280] focus:outline-none ${fieldErrors.email ? "border border-red-500 focus:border-red-500" : "border border-[#0E5861] focus:border-[#8DB9FF]"}`}
-            placeholder="Email address"
-          />
-          {fieldErrors.email && (
-            <p className="text-left text-xs font-semibold text-red-500">{fieldErrors.email}</p>
-          )}
-          <input
-            type="password"
-            value={password}
-            onChange={(event) => {
-              setPassword(event.target.value);
-              setFieldErrors((prev) => ({ ...prev, password: undefined }));
-            }}
-            className={`h-12 w-full rounded-2xl px-4 text-base text-black placeholder:text-[#6B7280] focus:outline-none ${fieldErrors.password ? "border border-red-500 focus:border-red-500" : "border border-[#0E5861] focus:border-[#8DB9FF]"}`}
-            placeholder="Password"
-          />
-          {fieldErrors.password && (
-            <p className="text-left text-xs font-semibold text-red-500">{fieldErrors.password}</p>
-          )}
-          <input
-            type="password"
-            value={confirmPassword}
-            onChange={(event) => {
-              setConfirmPassword(event.target.value);
-              setFieldErrors((prev) => ({ ...prev, confirmPassword: undefined }));
-            }}
-            className={`h-12 w-full rounded-2xl px-4 text-base text-black placeholder:text-[#6B7280] focus:outline-none ${fieldErrors.confirmPassword ? "border border-red-500 focus:border-red-500" : "border border-[#0E5861] focus:border-[#8DB9FF]"}`}
-            placeholder="Confirm password"
-          />
-          {fieldErrors.confirmPassword && (
-            <p className="text-left text-xs font-semibold text-red-500">{fieldErrors.confirmPassword}</p>
-          )}
-          <div className="flex flex-col gap-2 text-center text-sm text-[#666666] sm:flex-row sm:items-center sm:justify-center lg:justify-start">
-            <p>Already have an account?</p>
-            <button className="font-bold text-[#5FC392] transition duration-300 ease-in-out hover:text-[#0E5861]" onClick={() => navigate('/login')}>Log In</button>
+    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-[#0A1B2E] via-[#1F3D73] to-[#6CA7FF] px-4 py-10">
+      <div className="grid w-full max-w-6xl grid-cols-1 overflow-hidden rounded-[32px] bg-white/85 shadow-2xl backdrop-blur-lg md:grid-cols-[1.05fr_1fr]">
+        <div className="relative hidden h-full md:block">
+          <img className="absolute inset-0 h-full w-full object-cover" src={auth} alt="signup illustration" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-transparent to-black/30" />
+          <div className="absolute bottom-8 left-8 right-8 text-white drop-shadow-md">
+            <p className="text-sm font-semibold uppercase tracking-[0.3em] text-blue-100">Create account</p>
+            <p className="mt-2 text-3xl font-bold leading-tight">Join the Shopora community</p>
+            <p className="mt-3 text-sm text-blue-100/90">
+              Track orders, favorite products, and manage your own storefront.
+            </p>
           </div>
+        </div>
+
+        <div className="flex flex-col gap-6 px-6 py-10 sm:px-10">
+          <p className="text-center text-3xl font-bold text-[#0F172A] sm:text-4xl md:text-left">Sign up</p>
+          <p className="text-center text-sm text-slate-500 md:text-left">
+            Create your account to start shopping and selling. Already have one?{" "}
+            <button
+              className="font-semibold text-[#1D4ED8] transition hover:text-[#0E86FF]"
+              onClick={() => navigate("/login")}
+            >
+              Log in
+            </button>
+          </p>
+
+          <div className="flex flex-col gap-4">
+            <div>
+              <label className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">Email</label>
+              <input
+                type="text"
+                value={email}
+                onChange={(event) => {
+                  setEmail(event.target.value);
+                  setFieldErrors((prev) => ({ ...prev, email: undefined }));
+                }}
+                className={`mt-2 h-12 w-full rounded-2xl border px-4 text-base text-black placeholder:text-slate-400 focus:outline-none focus:ring-2 ${
+                  fieldErrors.email ? "border-red-400 focus:ring-red-300" : "border-slate-200 focus:ring-blue-200"
+                }`}
+                placeholder="you@example.com"
+              />
+              {fieldErrors.email && <p className="mt-1 text-xs font-semibold text-red-500">{fieldErrors.email}</p>}
+            </div>
+
+            <div className="grid gap-4 sm:grid-cols-2">
+              <div>
+                <label className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">Password</label>
+                <input
+                  type="password"
+                  value={password}
+                  onChange={(event) => {
+                    setPassword(event.target.value);
+                    setFieldErrors((prev) => ({ ...prev, password: undefined }));
+                  }}
+                  className={`mt-2 h-12 w-full rounded-2xl border px-4 text-base text-black placeholder:text-slate-400 focus:outline-none focus:ring-2 ${
+                    fieldErrors.password ? "border-red-400 focus:ring-red-300" : "border-slate-200 focus:ring-blue-200"
+                  }`}
+                  placeholder="At least 6 characters"
+                />
+                {fieldErrors.password && (
+                  <p className="mt-1 text-xs font-semibold text-red-500">{fieldErrors.password}</p>
+                )}
+              </div>
+
+              <div>
+                <label className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">Confirm</label>
+                <input
+                  type="password"
+                  value={confirmPassword}
+                  onChange={(event) => {
+                    setConfirmPassword(event.target.value);
+                    setFieldErrors((prev) => ({ ...prev, confirmPassword: undefined }));
+                  }}
+                  className={`mt-2 h-12 w-full rounded-2xl border px-4 text-base text-black placeholder:text-slate-400 focus:outline-none focus:ring-2 ${
+                    fieldErrors.confirmPassword ? "border-red-400 focus:ring-red-300" : "border-slate-200 focus:ring-blue-200"
+                  }`}
+                  placeholder="Re-enter password"
+                />
+                {fieldErrors.confirmPassword && (
+                  <p className="mt-1 text-xs font-semibold text-red-500">{fieldErrors.confirmPassword}</p>
+                )}
+              </div>
+            </div>
+          </div>
+
           <button
-            className="w-full rounded-2xl bg-[#3875F0] py-3 text-lg font-bold text-white transition duration-300 ease-in-out hover:bg-white hover:text-[#8DB9FF]"
+            className="mt-2 w-full rounded-2xl bg-gradient-to-r from-[#2563EB] to-[#00B4D8] py-3 text-lg font-semibold text-white shadow-lg transition hover:translate-y-[-1px] hover:shadow-xl active:translate-y-[0px]"
             onClick={handleSignup}
             disabled={isLoading}
           >
@@ -150,7 +187,7 @@ function Signup() {
       </div>
       <PopupMessage message={popupMessage} isVisible={showPopup} variant={popupVariant} />
     </div>
-  )
+  );
 }
 
-export default Signup
+export default Signup;
