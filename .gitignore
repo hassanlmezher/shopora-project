@@ -3,7 +3,7 @@ dist/
 backend/dist/
 frontend/dist/
 
-# dependencies
+
 node_modules/
 
 
