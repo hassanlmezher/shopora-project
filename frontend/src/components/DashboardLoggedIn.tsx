@@ -984,9 +984,9 @@ function DashboardLoggedIn() {
                         <img className="w-6" src={heart} alt="favorites logo" />
                         {showFavoritesOnly ? "Favorites only" : "Show favorites"}
                     </button>
-                    <div className="mt-10">
+                    <div className="mt-6">
                         {filteredItems.length > 0 ? (
-                            <div className="grid gap-10 lg:grid-cols-2 xl:grid-cols-3 justify-items-center">
+                            <div className="grid gap-6 lg:grid-cols-2 xl:grid-cols-3 justify-items-center">
                                 {filteredItems.map(item => (
                                     <ItemCard
                                         key={item.id ?? `${item.name}-${item.namee}-${item.priceValue}`}
