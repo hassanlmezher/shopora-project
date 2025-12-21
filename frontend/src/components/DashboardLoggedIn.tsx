@@ -852,7 +852,7 @@ function DashboardLoggedIn() {
                             aria-label="Toggle favorites filter"
                             onClick={() => setShowFavoritesOnly((prev) => !prev)}
                             onKeyDown={handleFavoritesKeyDown}
-                            className={`flex w-full items-center gap-3 rounded-2xl px-4 py-3 transition focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 ${showFavoritesOnly ? "bg-white text-[#7CA6FF] shadow-lg cursor-pointer" : "bg-white/10 text-white hover:bg-white/20 cursor-pointer"}`}
+                            className={`flex w-full items-center gap-3 rounded-2xl px-4 py-3 transition focus:outline-none focus-visible:ring-2 focus-visible:ring-white/20 ${showFavoritesOnly ? "bg-red-500 text-white shadow-lg cursor-pointer" : "bg-white/10 text-white hover:bg-white/20 cursor-pointer"}`}
                         >
                             <img className="w-6" src={heart} alt="favorites logo" />
                             <span className="font-bold text-base">
@@ -978,7 +978,7 @@ function DashboardLoggedIn() {
                         type="button"
                         onClick={() => setShowFavoritesOnly((prev) => !prev)}
                         className={`flex w-full items-center gap-3 rounded-2xl px-4 py-3 text-sm font-semibold transition ${
-                            showFavoritesOnly ? "bg-white text-[#7CA6FF] shadow-lg" : "bg-white/10 text-white hover:bg-white/20"
+                            showFavoritesOnly ? "bg-red-500 text-white shadow-lg" : "bg-white/10 text-white hover:bg-white/20"
                         }`}
                     >
                         <img className="w-6" src={heart} alt="favorites logo" />
