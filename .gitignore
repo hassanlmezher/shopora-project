@@ -1,11 +1,4 @@
-# compiled TS output
-dist/
-backend/dist/
-frontend/dist/
-
-
 node_modules/
-
-
 .env
 .env.*
+dist/
